@@ -1,0 +1,1 @@
+--slurm_conf curta_inria_medium --nb_seeds 8 --exp_name test_easy_walker --env parametric-continuous-walker-v0 --student sac_v0.1.1 --backend tf1 --steps_per_ep 500000 --nb_test_episode 100 --nb_env_steps 10 --*teacher Random
