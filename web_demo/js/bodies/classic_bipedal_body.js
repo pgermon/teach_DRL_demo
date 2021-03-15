@@ -2,11 +2,11 @@ HULL_POLYGONS = [
     [[-30, +9], [+6, +9], [+34, +1], [+34, -8], [-30, -8]]
 ];
 HULL_BOTTOM_WIDTH = 64;
-SPEED_HIP = 400;
-SPEED_KNEE = 600;
+SPEED_HIP = 4;
+SPEED_KNEE = 6;
 
 class ClassicBipedalBody extends WalkerAbstractBody {
-    constructor(scale, motors_torque=8000, nb_steps_under_water=600, reset_on_hull_critical_contact=false) {
+    constructor(scale, motors_torque=80, nb_steps_under_water=600, reset_on_hull_critical_contact=false) {
         super(scale, motors_torque, nb_steps_under_water);
 
         this.LEG_DOWN = 3 / this.SCALE; // 0 = center of hull
@@ -26,7 +26,7 @@ class ClassicBipedalBody extends WalkerAbstractBody {
         let HULL_FIXTURES = [];
         let fd_polygon;
         let vertices;
-        let y_offset = 10;
+        let y_offset = 0;
 
         for(let polygon of HULL_POLYGONS){
             fd_polygon = new b2.FixtureDef();

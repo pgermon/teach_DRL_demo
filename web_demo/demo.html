@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-zoom=1">
     <title>Deep Reinforcement Learning Interactive Demo</title>
 
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
@@ -52,8 +52,8 @@
         </div>
         <div class="slidecontainer">
             <p>Zoom:</p>
-            <input type="range" min="0.4" max="1.5" value="1" class="slider" id="scaleSlider">
-            <p id="scaleValue"></p>
+            <input type="range" min="0.4" max="1" value="1" class="slider" id="zoomSlider">
+            <p id="zoomValue"></p>
         </div>
         <div>
             <button id="jointsButton"> Draw joints </button>
@@ -98,17 +98,17 @@
         scrollValue.innerHTML = this.value;
     }
 
-    // Scale slider
-    let scaleSlider = document.getElementById("scaleSlider");
-    scaleSlider.step = 0.01;
-    scaleSlider.value = 1;
-    let scaleValue = document.getElementById("scaleValue");
-    scaleValue.innerHTML = "x" + scaleSlider.value; // Display the default slider value
+    // zoom slider
+    let zoomSlider = document.getElementById("zoomSlider");
+    zoomSlider.step = 0.01;
+    zoomSlider.value = 1;
+    let zoomValue = document.getElementById("zoomValue");
+    zoomValue.innerHTML = "x" + zoomSlider.value; // Display the default slider value
 
     // Update the current slider value (each time you drag the slider handle)
-    scaleSlider.oninput = function() {
-        scaleValue.innerHTML = "x" + this.value;
-        window.game.env.set_rendering_scale(this.value);
+    zoomSlider.oninput = function() {
+        zoomValue.innerHTML = "x" + this.value;
+        window.game.env.set_zoom(this.value);
         scrollSlider.value = 0;
         scrollValue.innerHTML = 0;
         window.game.env.set_scroll_offset(0);

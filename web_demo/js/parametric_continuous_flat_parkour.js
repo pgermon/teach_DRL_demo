@@ -1,7 +1,7 @@
 //region Constants
 
 const FPS = 50
-const SCALE  = 1 // affects how fast-paced the game is, forces should be adjusted as well
+const SCALE  = 30 // affects how fast-paced the game is, forces should be adjusted as well
 const VIEWPORT_W = 1300
 const VIEWPORT_H = 350
 
@@ -37,14 +37,15 @@ class ParametricContinuousFlatParkour {
         if(this.main_screen){
             this.ctx = this.main_screen.getContext("2d");
         }*/
-        this.rendering_scale = 1;
+        this.scale = SCALE;
+        this.zoom = 1;
         this.render_change = true;
 
-        let gravity = new b2.Vec2(0, 0);
+        let gravity = new b2.Vec2(0, -10);
         this.world = new b2.World(gravity);
         this.terrain = [];
         this.creepers_joints = [];
-        //this.water_dynamics = WaterDynamics(this.world.m_gravity);
+        this.water_dynamics = new WaterDynamics(this.world.m_gravity);
         this.water_level = water_level;
         //this.climbing_dynamics = ClimbingDynamics();
 
@@ -66,7 +67,7 @@ class ParametricContinuousFlatParkour {
 
         this.set_environment(null,
             5,
-            5.5 * CREEPER_UNIT,
+            5.5 * SCALE * CREEPER_UNIT,
             20);
         this.reset();
 
@@ -149,14 +150,12 @@ class ParametricContinuousFlatParkour {
 
         //this.world.Step(1.0 / 60, 10, 10);
         this.world.Step(1.0 / FPS, 6 * 30, 2 * 30);
-        //this.world.Step(1.0 / this.config.time_step, this.config.velocity_iterations, this.config.position_iterations);
-        //this.world.ClearForces();
 
         /*if(this.agent_body.body_type == BodyTypesEnum.CLIMBER){
             this.climbing_dynamics.after_step_climbing_dynamics(this.world.contactListener, this.world);
         }*/
 
-        //this.water_dynamics.calculate_forces(this.world.m_contactManager.m_contactListener.water_contact_detector.fixture_pairs);
+        this.water_dynamics.calculate_forces(this.world.m_contactManager.m_contactListener.water_contact_detector.fixture_pairs);
 
         let head = this.agent_body.reference_head_object;
         let pos = head.GetPosition();
@@ -304,6 +303,10 @@ class ParametricContinuousFlatParkour {
             t.CreateFixture(this.fd_water);
             t.SetUserData(new CustomUserData("water", CustomUserDataObjectTypes.WATER)); // TODO: CustomUserData
             let color = "#77ACE5"; // [0.465, 0.676, 0.898];
+            this.water_poly = {
+                color: color,
+                vertices: water_poly,
+            };
             t.color1 = color;
             t.color2 = color;
             this.terrain.push(t);
@@ -428,9 +431,6 @@ class ParametricContinuousFlatParkour {
                         color = "#6F8060"; // [0.437, 0.504, 0.375];
                         t.color1 = color;
                         t.color2 = color;
-                        if(h != CREEPER_UNIT){
-                            t.ApplyForce(new b2.Vec2(100000, 0), t.GetPosition().Clone().Add(new b2.Vec2(0, - h + 0.1)), true);
-                        }
                         this.terrain.push(t);
                         poly_data = {
                             type : "creeper",
@@ -443,7 +443,7 @@ class ParametricContinuousFlatParkour {
                         let anchor = new b2.Vec2(this.terrain_x[i] + this.creepers_width/2, this.terrain_y[i] + VIEWPORT_H/SCALE/2 - (w * CREEPER_UNIT));
                         rjd_def.Initialize(previous_creeper_part, t, anchor);
                         rjd_def.enableMotor = false;
-                        rjd_def.enableLimit = false;
+                        rjd_def.enableLimit = true;
                         rjd_def.lowerAngle = 2 * Math.PI;
                         rjd_def.upperAngle = 2 * Math.PI;
                         let joint = this.world.CreateJoint(rjd_def);
@@ -520,16 +520,16 @@ class ParametricContinuousFlatParkour {
     }
 
     set_agent_position(position){
-        this.agent_body.reference_head_object.m_xf.p.Assign(new b2.Vec2(position/100 * TERRAIN_LENGTH * TERRAIN_STEP/this.rendering_scale, VIEWPORT_H/2));
+        this.agent_body.reference_head_object.m_xf.p.Assign(new b2.Vec2(position/100 * TERRAIN_LENGTH * TERRAIN_STEP/this.zoom, VIEWPORT_H/2));
     }
 
     set_scroll_offset(slider_value){
-        this.scroll_offset = slider_value/100 * (TERRAIN_LENGTH * TERRAIN_STEP * this.rendering_scale - VIEWPORT_W * 0.9) - VIEWPORT_W * 0.05;
+        this.scroll_offset = slider_value/100 * (TERRAIN_LENGTH * TERRAIN_STEP * SCALE * this.zoom - VIEWPORT_W * 0.9) - VIEWPORT_W * 0.05;
         this.render_change = true;
     }
 
-    set_rendering_scale(scale){
-        this.rendering_scale = scale;
+    set_zoom(scale){
+        this.zoom = scale;
         this.render_change = true;
     }
 
