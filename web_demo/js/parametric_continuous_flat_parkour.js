@@ -20,7 +20,7 @@ const TERRAIN_GRASS    = 10    // low long are grass spots, in steps
 const INITIAL_TERRAIN_STARTPAD = 20 // in steps
 const FRICTION = 2.5
 
-const WATER_DENSITY = 4.0
+const WATER_DENSITY = 1.0
 const NB_FIRST_STEPS_HANG = 5
 const CREEPER_UNIT = 10/SCALE;
 

@@ -7,7 +7,7 @@ class ParkourHeadlessGame {
 
     initWorld() {
 
-        this.env = new ParametricContinuousFlatParkour(0.2, this.config);
+        this.env = new ParametricContinuousFlatParkour(0.25, this.config);
 
         this.nb_actions = this.env.agent_body.motors.length;
         //this.stateSize = this.env.bodies.length * 10 + this.env.joints.length * 3

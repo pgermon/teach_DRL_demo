@@ -131,7 +131,7 @@ class OldClassicBipedalBody extends WalkerAbstractBody{
             lower_rjd.maxMotorTorque = this.MOTORS_TORQUE;
             lower_rjd.motorSpeed = 1;
             lower_rjd.lowerAngle = - 1.6;
-            lower_rjd.upperAngle = 0.1;
+            lower_rjd.upperAngle = -0.1;
             joint_motor = world.CreateJoint(lower_rjd);
             joint_motor.SetUserData(new CustomMotorUserData("knee", SPEED_KNEE, true, 1.0, lower));
             this.motors.push(joint_motor);

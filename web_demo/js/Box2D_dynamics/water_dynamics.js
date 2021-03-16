@@ -168,7 +168,7 @@ class WaterDynamics {
                             let angular_velocity = body_to_check.GetAngularVelocity();
                             let angular_inertia = moment_of_inertia * angular_velocity;
 
-                            // Calculate the force applied to the ovject
+                            // Calculate the force applied to the object
                             let world_center = body_to_check.GetWorldCenter();
                             let anchor = joint.GetAnchorB();
                             let lever_vector = b2.Vec2.Subtract(world_center, anchor); // vector from pivot to point of application of the force
@@ -180,8 +180,9 @@ class WaterDynamics {
                                 // Wrong approximation /!\
                                 let push_mag = push_dot * this.push_mod * edge_length * density * vel * vel;
                                 let force = b2.Vec2.Multiply(push_mag, b2.Vec2.Negate(force_applied_at_center));
-                                let push_force =  new b2.Vec2(Math.max(-this.max_push, Math.min(force.x, this.max_push)),
-                                                                Math.max(-this.max_push, Math.min(force.y, this.max_push)));
+                                let clip_force_x = Math.max(-this.max_push, Math.min(force.x, this.max_push));
+                                let clip_force_y = Math.max(-this.max_push, Math.min(force.y, this.max_push))
+                                let push_force =  new b2.Vec2(clip_force_x, clip_force_y);
                                 body_to_check.ApplyForce(push_force, joint.GetAnchorB(), true);
                             }
                         }

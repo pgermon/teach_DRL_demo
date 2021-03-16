@@ -48,15 +48,17 @@
         <div class="slidecontainer">
             <p>Horizontal scroll:</p>
             <input type="range" min="0" max="100" value="0" class="slider" id="scrollSlider">
+            <button id="followAgentButton"> Follow agent </button>
             <p id="scrollValue"></p>
         </div>
         <div class="slidecontainer">
             <p>Zoom:</p>
-            <input type="range" min="0.4" max="1" value="1" class="slider" id="zoomSlider">
+            <input type="range" min="0.4" max="1.5" value="1" class="slider" id="zoomSlider">
             <p id="zoomValue"></p>
         </div>
         <div>
             <button id="jointsButton"> Draw joints </button>
+            <button id="lidarsButton"> Draw lidars </button>
         </div>
     </div>
 </section>
@@ -118,6 +120,18 @@
     window.draw_joints = false;
     jointsButton.onclick = function (){
         window.draw_joints = !window.draw_joints;
+    }
+
+    let lidarsButton = document.getElementById("lidarsButton");
+    window.draw_lidars = false;
+    lidarsButton.onclick = function (){
+        window.draw_lidars = !window.draw_lidars;
+    }
+
+    let followAgentButton = document.getElementById("followAgentButton");
+    window.draw_lidars = false;
+    followAgentButton.onclick = function (){
+        window.follow_agent = !window.follow_agent;
     }
 </script>
 
