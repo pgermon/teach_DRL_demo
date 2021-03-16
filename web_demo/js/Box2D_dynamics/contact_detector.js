@@ -61,23 +61,18 @@ ContactDetector.prototype.EndContact = function (contact){
 function LidarCallback(agent_mask_filter){
     b2.RayCastCallback.call(this);
     this.agent_mask_filter = agent_mask_filter;
-    this.fixture = fixture;
+    this.fixture = null;
     this.is_water_detected = false;
-}
+};
 
 LidarCallback.prototype = Object.create(b2.RayCastCallback.prototype);
-    LidarCallback.prototype.constructor = LidarCallback;
-    LidarCallback.prototype.ReportFixture = function (fixture, point, normal, fraction){
-        if(fixture.filterData.categoryBits & this.agent_mask_filter == 0){
-            return -1;
-        }
-
-        this.p2 = point;
-        this.fraction = fraction;
-        if(fixture.body.GetUserData().object_type == CustomUserDataObjectTypes.WATER){
-            this.is_water_detected = true
-        }
-        else{
-            this.is_water_detected = false;
-        }
+LidarCallback.prototype.constructor = LidarCallback;
+LidarCallback.prototype.ReportFixture = function (fixture, point, normal, fraction){
+    if(fixture.GetFilterData().categoryBits & this.agent_mask_filter == 0){
+        return -1;
     }
+
+    this.p2 = point;
+    this.fraction = fraction;
+    this.is_water_detected = fixture.GetBody().GetUserData().object_type == CustomUserDataObjectTypes.WATER ? true : false;
+}

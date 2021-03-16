@@ -51,7 +51,6 @@ class ParametricContinuousFlatParkour {
 
         this.prev_shaping = null;
 
-        // TODO
         // Create Walker
         //this.agent_body = new OldClassicBipedalBody(SCALE);
         this.agent_body = new ClassicBipedalBody(SCALE);
@@ -64,6 +63,14 @@ class ParametricContinuousFlatParkour {
         }
 
         this.create_terrain_fixtures();
+
+        // Set info / action spaces
+        let agent_action_size = this.agent_body.get_action_size();
+        //this.action_space =
+
+        let agent_state_size = this.agent_body.get_state_size();
+        // let high = // TODO
+        // this.observation_space = // TODO
 
         this.set_environment(null,
             5,
@@ -98,7 +105,7 @@ class ParametricContinuousFlatParkour {
         }
         this.terrain = [];
         this.creepers_joints = [];
-        //this.agent_body.destroy(this.world);
+        this.agent_body.destroy(this.world);
     }
 
     reset(){
@@ -112,18 +119,10 @@ class ParametricContinuousFlatParkour {
 
         this.generate_game();
 
-        // Set info / action spaces
-        let agent_action_size = this.agent_body.get_action_size();
-        //this.action_space =
-
-        let agent_state_size = this.agent_body.get_state_size();
-        // let high = // TODO
-        // this.observation_space = // TODO
-
         this.lidar = [];
-        /*for(let i = 0; i < NB_LIDAR; i++){
+        for(let i = 0; i < NB_LIDAR; i++){
             this.lidar.push(new LidarCallback(this.agent_body.reference_head_object.GetFixtureList().GetFilterData().maskBits));
-        }*/
+        }
 
         // TODO
         let actions_to_play = Array.from({length: this.agent_body.motors.length}, () => Math.random() * 2 - 1);
@@ -159,12 +158,48 @@ class ParametricContinuousFlatParkour {
 
         let head = this.agent_body.reference_head_object;
         let pos = head.GetPosition();
-        //console.log(pos);
         let vel = head.GetLinearVelocity();
 
-        // TODO: LIDARS, STATE, REWARD
+        for(let i = 0; i < NB_LIDAR; i++){
+            this.lidar[i].fraction = 1.0;
+            this.lidar[i].p1 = pos;
+            this.lidar[i].p2 = new b2.Vec2(
+                pos.x + Math.sin(Math.PI * i / NB_LIDAR) * LIDAR_RANGE,
+                pos.y - Math.cos(Math.PI * i / NB_LIDAR) * LIDAR_RANGE
+            );
+            this.world.RayCast(this.lidar[i], this.lidar[i].p1, this.lidar[i].p2);
+        }
 
-        let state = [];
+        // TODO:STATE, REWARD
+
+        let state = [
+            head.GetAngle(), // Normal angles up to 0.5 here, but sure more is possible.
+            2.0 * head.GetAngularVelocity() / FPS, // Normalized to get [-1, 1] range
+            0.3 * vel.x * (VIEWPORT_W / SCALE) / FPS,
+            0.3 * vel.y * (VIEWPORT_H / SCALE) / FPS,
+            pos.y <= this.water_level * VIEWPORT_H/SCALE
+        ];
+
+        // add leg-related state
+        state = state.concat(this.agent_body.get_motors_state());
+
+        /*if(this.agent_body.body_type == BodyTypesEnum.CLIMBER){
+            state = state.concat(this.agent_body.get_sensors_state());
+        }*/
+
+        let nb_of_water_detected = 0;
+        for(let lidar of this.lidar){
+            state.push(lidar.fraction);
+            if(lidar.is_water_detected){
+                nb_of_water_detected += 1;
+            }
+        }
+        state.push(nb_of_water_detected / NB_LIDAR); // percentage of lidars that detect water
+
+        if(window.follow_agent){
+            this.scroll_offset = pos.x * SCALE * this.zoom - VIEWPORT_W/5;
+        }
+
         let reward = 0;
         let done = false;
 
@@ -262,7 +297,11 @@ class ParametricContinuousFlatParkour {
         // Generation of the terrain
         while(x < max_x){
             this.terrain_x.push(x);
-            this.terrain_y.push(TERRAIN_HEIGHT + (Math.random() * 20 - 10)/SCALE);
+            let offset = 0;
+            //if(x > this.TERRAIN_STARTPAD){
+                offset = (Math.random() * 20 - 10)/SCALE
+            //}
+            this.terrain_y.push(TERRAIN_HEIGHT + offset);
             x += TERRAIN_STEP;
         }
 

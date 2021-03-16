@@ -55,7 +55,7 @@ class AbstractBody {
     }
 
     destroy(world){
-        for(let body of body_parts){
+        for(let body of this.body_parts){
             world.Destroy(body);
         }
         this.body_parts = [];

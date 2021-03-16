@@ -1,8 +1,8 @@
 p5.disableFriendlyErrors = true; // disables FES
 
 let JOINTS_COLORS = {
-    "hip": "#FF0000",
-    "knee": "#0000FF",
+    "hip": "#FF7818",
+    "knee": "#F4BE18",
     "creeper": "#00B400"
 };
 
@@ -14,41 +14,6 @@ function setup() {
     //frameRate(30);
 }
 
-/*
-// TEST EXAMPLE IN P5.JS ONLINE EDITOR: https://editor.p5js.org/
-function draw() {
-  push()
-  let w = 20;
-  let s = 2;
-  let z = 1.5;
-  noFill()
-
-  rect(width/2, height/2, w, w);
-  scale(s)
-  translate((1 - s) * width/s/2, (1 - s) * height/s/2)
-  strokeWeight(1/s)
-  stroke("#00B400")
-  rect(width/2, height/2, w, w);
-
-  scale(z)
-  strokeWeight(1/z);
-  stroke("#0000FF");
-  translate((1 - z) * width/z/2, (1 - z) * height/2/z)
-  rect(width/2, height/2, w, w);
-
-  //translate(- width/2, 0)
-  //rect(width/2 - w/2, height/2 - w/2, w, w);
-
-  pop()
-
-  push()
-  stroke("#FF0000")
-  line(width/2, 0, width/2, height)
-  line(0, height/2, width, height/2)
-  pop()
-}
- */
-
 function draw() {
     let parkour = window.game.env;
 
@@ -56,17 +21,21 @@ function draw() {
     parkour.render_change = false;
     drawParkour(parkour);
     drawAgent(parkour.agent_body, parkour.scale);
+    if(window.draw_lidars){
+        drawLidars(parkour.lidar, parkour.scale);
+    }
+
 
     if(window.draw_joints){
         drawJoints(parkour.creepers_joints, parkour.scale);
         drawJoints(parkour.agent_body.motors, parkour.scale);
     }
     pop();
-    /*let vertices = [
+    /*let mid_line = [
         [-100, VIEWPORT_H/2],
         [VIEWPORT_W + 100, VIEWPORT_H/2]
     ];
-    drawLine(vertices, "#FF0000");*/
+    drawLine(mid_line, "#FF0000");*/
 }
 
 function drawJoints(joints, scale){
@@ -99,85 +68,69 @@ function drawAgent(agent, scale){
     }
 }
 
+function drawLidars(lidars, scale){
+    for(let i = 0; i < lidars.length; i++){
+        let vertices = [
+            [lidars[i].p1.x, lidars[i].p1.y],
+            [lidars[i].p2.x, lidars[i].p2.y]
+        ];
+        strokeWeight(1/scale);
+        drawLine(vertices, "#FF0000");
+    }
+}
+
 function drawParkour(parkour){
     // Sky
     noStroke();
     drawPolygon(parkour.sky_poly.vertices, parkour.sky_poly.color);
 
     // Water
-    /*let vertices = [
+    let vertices = [
         [0, 0],
         [0, VIEWPORT_H/2 - VIEWPORT_H/2 * parkour.zoom + parkour.water_level * VIEWPORT_H * parkour.zoom],
         [VIEWPORT_W, VIEWPORT_H/2 - VIEWPORT_H/2 * parkour.zoom + parkour.water_level * VIEWPORT_H * parkour.zoom],
         [VIEWPORT_W, 0]
-    ];*/
+    ];
+    drawPolygon(vertices, "#77ACE5");
 
-    /*let vertices = [
-        [0, 0],
-        [0, VIEWPORT_H/2 - VIEWPORT_H/parkour.scale/2 + parkour.water_level * VIEWPORT_H/parkour.scale],
-        [VIEWPORT_W, VIEWPORT_H/2 - VIEWPORT_H/parkour.scale/2 + parkour.water_level * VIEWPORT_H/parkour.scale],
-        [VIEWPORT_W, 0]
-    ];*/
-
-    /*let vertices = [
-        [0, 0],
-        [0, VIEWPORT_H/2 - VIEWPORT_H/2/parkour.scale * parkour.zoom + parkour.water_level * VIEWPORT_H/parkour.scale * parkour.zoom],
-        [VIEWPORT_W, VIEWPORT_H/2 - VIEWPORT_H/2/parkour.scale * parkour.zoom + parkour.water_level * VIEWPORT_H/parkour.scale * parkour.zoom],
-        [VIEWPORT_W, 0]
-    ];*/
-    //drawPolygon(vertices, "#77ACE5");
-
-
+    // Translation to scroll horizontally
     translate(- parkour.scroll_offset, 0);
 
     // Top and bottom strips to fill ground and ceiling
-    //if(parkour.zoom < 1){
-    /*
+    if(parkour.zoom < 1){
+
         // ground
         vertices = [
             [0, 0],
-            [(TERRAIN_LENGTH - 1) * TERRAIN_STEP * parkour.zoom, 0],
-            [(TERRAIN_LENGTH - 1) * TERRAIN_STEP * parkour.zoom, VIEWPORT_H/2 - VIEWPORT_H/2/parkour.scale * parkour.zoom],
-            [0, VIEWPORT_H/2 - VIEWPORT_H/2/parkour.scale * parkour.zoom]
+            [(TERRAIN_LENGTH - 1) * TERRAIN_STEP * parkour.scale * parkour.zoom, 0],
+            [(TERRAIN_LENGTH - 1) * TERRAIN_STEP * parkour.scale * parkour.zoom, VIEWPORT_H/2 - VIEWPORT_H/2 * parkour.zoom],
+            [0, VIEWPORT_H/2 - VIEWPORT_H/2 * parkour.zoom]
         ];
         drawPolygon(vertices, "#66994D");
 
         // ceiling
         vertices = [
             [0, VIEWPORT_H],
-            [(TERRAIN_LENGTH - 1) * TERRAIN_STEP * parkour.zoom, VIEWPORT_H],
-            [(TERRAIN_LENGTH - 1) * TERRAIN_STEP * parkour.zoom, VIEWPORT_H/2 + VIEWPORT_H/2/parkour.scale * parkour.zoom],
-            [0, VIEWPORT_H/2 + VIEWPORT_H/2/parkour.scale * parkour.zoom]
+            [(TERRAIN_LENGTH - 1) * TERRAIN_STEP * parkour.scale * parkour.zoom, VIEWPORT_H],
+            [(TERRAIN_LENGTH - 1) * TERRAIN_STEP * parkour.scale * parkour.zoom, VIEWPORT_H/2 + VIEWPORT_H/2 * parkour.zoom],
+            [0, VIEWPORT_H/2 + VIEWPORT_H/2 * parkour.zoom]
         ];
         drawPolygon(vertices, "#808080");
-    //}
-     */
+    }
 
-    // Works for any scale but without zoom
+
+    // Rescaling
     scale(parkour.scale);
     scale(parkour.zoom);
 
+    // Translating so that the environment is always horizontally centered
     translate(0, (1 - parkour.scale * parkour.zoom) * VIEWPORT_H/(parkour.scale * parkour.zoom));
-    //translate(0, (1 - parkour.zoom) * VIEWPORT_H/parkour.zoom);
-
-    // Works for scale = 1
-    //translate(0, (1 - parkour.scale * parkour.zoom) * VIEWPORT_H/2/parkour.scale);
-    //scale(parkour.scale * parkour.zoom);
-
-
-    // Water
-    let vertices = [
-        [- VIEWPORT_W, 0],
-        [- VIEWPORT_W, parkour.water_level * VIEWPORT_H/parkour.scale],
-        [2 * VIEWPORT_W, parkour.water_level * VIEWPORT_H/parkour.scale],
-        [2 * VIEWPORT_W, 0]
-    ];
-    drawPolygon(vertices, "#77ACE5");
+    translate(0, -(1 - parkour.zoom) * VIEWPORT_H/2/SCALE/parkour.zoom);
 
     // Draw all background elements
     for(let i = 0; i < parkour.background_polys.length; i++) {
         let poly = parkour.background_polys[i];
-        let pos = poly.vertices[0][0] * parkour.zoom - parkour.scroll_offset;
+        //let pos = poly.vertices[0][0] * parkour.zoom - parkour.scroll_offset;
         //if(pos >= -0.01 * VIEWPORT_W && pos < VIEWPORT_W){
             drawPolygon(poly.vertices, poly.color);
         //}
