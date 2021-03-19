@@ -18,7 +18,6 @@ function draw() {
     let parkour = window.game.env;
 
     push();
-    parkour.render_change = false;
     drawParkour(parkour);
     drawAgent(parkour.agent_body, parkour.scale);
     if(window.draw_lidars){

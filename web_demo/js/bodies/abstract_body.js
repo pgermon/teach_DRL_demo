@@ -54,6 +54,14 @@ class AbstractBody {
         return this.body_parts;
     }
 
+    get_parts_position(){
+        let positions = [];
+        for(let body of this.body_parts){
+            positions.push(body.GetPosition());
+        }
+        return positions;
+    }
+
     destroy(world){
         for(let body of this.body_parts){
             world.Destroy(body);

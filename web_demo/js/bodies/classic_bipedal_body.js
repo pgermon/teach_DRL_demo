@@ -26,7 +26,7 @@ class ClassicBipedalBody extends WalkerAbstractBody {
         let HULL_FIXTURES = [];
         let fd_polygon;
         let vertices;
-        let y_offset = 10/this.SCALE;
+        let y_offset = 0;//10/this.SCALE;
 
         for(let polygon of HULL_POLYGONS){
             fd_polygon = new b2.FixtureDef();

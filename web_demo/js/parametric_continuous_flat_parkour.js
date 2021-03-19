@@ -9,14 +9,14 @@ let RENDERING_VIEWER_W = VIEWPORT_W
 let RENDERING_VIEWER_H = VIEWPORT_H
 
 const NB_LIDAR = 10
-const LIDAR_RANGE   = 160/SCALE
+const LIDAR_RANGE = 160/SCALE
 
 const INITIAL_RANDOM = 5
 
 const TERRAIN_STEP   = 14/SCALE
 const TERRAIN_LENGTH = 200     // in steps
 const TERRAIN_HEIGHT = VIEWPORT_H/SCALE/4
-const TERRAIN_GRASS    = 10    // low long are grass spots, in steps
+const TERRAIN_GRASS = 10    // low long are grass spots, in steps
 const INITIAL_TERRAIN_STARTPAD = 20 // in steps
 const FRICTION = 2.5
 
@@ -340,7 +340,7 @@ class ParametricContinuousFlatParkour {
             body_def.type = b2.Body.b2_staticBody;
             let t = this.world.CreateBody(body_def);
             t.CreateFixture(this.fd_water);
-            t.SetUserData(new CustomUserData("water", CustomUserDataObjectTypes.WATER)); // TODO: CustomUserData
+            t.SetUserData(new CustomUserData("water", CustomUserDataObjectTypes.WATER));
             let color = "#77ACE5"; // [0.465, 0.676, 0.898];
             this.water_poly = {
                 color: color,
@@ -366,13 +366,7 @@ class ParametricContinuousFlatParkour {
             let t = this.world.CreateBody(body_def);
             t.CreateFixture(this.fd_edge);
             t.SetUserData(new CustomUserData("grass", CustomUserDataObjectTypes.TERRAIN));
-            let color;
-            if (i % 2 == 0){
-                color = "#4dff4d"; // [0.3, 1.0, 0.3];
-            }
-            else{
-                color = "#4dcc4d"; //[0.3, 0.8, 0.3];
-            }
+            let color = i % 2 == 0 ? "#4dff4d" : "#4dcc4d"; // [0.3, 1.0, 0.3] : [0.3, 0.8, 0.3]
             poly_data = {
                 type : "ground",
                 color : color,
