@@ -13,10 +13,10 @@ class BaseCPPN{
 
         this.init();
 
-        /*if(weights_path != null){
+        if(weights_path != null){
             let saver = tf.train.Saver();
             saver.restore(this.sess, weights_path);
-        }*/
+        }
     }
 
     init(){
@@ -28,12 +28,15 @@ class BaseCPPN{
     }
 
     generator(){
-        tf.reset_default_graph();
+        tf.resetStates();
+        //tf.reset_default_graph();
         // inputs to cppn
-        this.input = tf.placeholder(tf.float32, [this.x_dim, this.input_dim + 1]);
+        this.input = tf.SymbolicTensor('float32', [this.x_dim, this.input_dim + 1]);
+        //this.input = tf.placeholder(tf.float32, [this.x_dim, this.input_dim + 1]);
 
-        let output_weights = tf.Variable(tf.truncated_normal([this.input_dim + 1, this.output_dim]));
-        let output = tf.matmul(this.input, output_weights);
+        let output_weights = tf.variable(tf.truncatedNormal([this.input_dim + 1, this.output_dim]));
+        //let output_weights = tf.Variable(tf.truncated_normal([this.input_dim + 1, this.output_dim]));
+        let output = tf.matMul(this.input, output_weights);
         let result = tf.reshape(output, [this.x_dim]);
         return result;
     }
