@@ -9,8 +9,12 @@
     <script type="application/json" src="./js/CPPN/weights/same_ground_ceiling_cppn/tfjs_model/model.json"></script>
 
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@3.3.0/dist/tf-core.min.js"></script>
+
+    <!--<script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@3.3.0/dist/tf-core.min.js"></script>-->
+
+    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
+
     <script defer src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
 
     <!--SCRIPTS DEPENDENCIES-->
@@ -140,13 +144,12 @@
     }
 
     let lidarsButton = document.getElementById("lidarsButton");
-    window.draw_lidars = false;
+    window.draw_lidars = true;
     lidarsButton.onclick = function (){
         window.draw_lidars = !window.draw_lidars;
     }
 
     let followAgentButton = document.getElementById("followAgentButton");
-    window.draw_lidars = false;
     followAgentButton.onclick = function (){
         window.follow_agent = !window.follow_agent;
     }
