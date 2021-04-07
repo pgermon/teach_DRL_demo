@@ -274,7 +274,7 @@ class ParametricContinuousParkour {
 
         // Update scroll_offset to stay centered on the agent position
         if(window.follow_agent){
-            this.scroll_offset = pos.x * SCALE * this.zoom - RENDERING_VIEWER_W/5;
+            this.scroll_offset = pos.x * SCALE/2 * this.zoom - RENDERING_VIEWER_W/5;
         }
 
         let shaping = 130 * pos.x / SCALE; // moving forward is a way to receive reward (normalized to get 300 on completion)
@@ -579,8 +579,8 @@ class ParametricContinuousParkour {
             this.terrain_bodies.push(poly_data);
 
             // Visual poly to fill the ceiling
-            poly.push([poly[1][0], this.CEILING_LIMIT]);
-            poly.push([poly[0][0], this.CEILING_LIMIT]);
+            poly.push([poly[1][0], 2 * this.CEILING_LIMIT]);
+            poly.push([poly[0][0], 2 * this.CEILING_LIMIT]);
             color = "#808080"; // [0.5, 0.5, 0.5];
             poly_data = {
                 type : "ceiling",
