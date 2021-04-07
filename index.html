@@ -51,7 +51,7 @@
 
     <div>
         <span>
-            <button id="runButton"> Run </button>
+            <button id="runButton"> Start </button>
             <button id="resetButton"> Reset </button>
         </span>
 
@@ -121,11 +121,12 @@
 
     let runButton = document.getElementById("runButton");
     runButton.onclick = function (){
-        window.game.run();
+        this.innerText = window.game.run();
     }
 
     let resetButton = document.getElementById("resetButton");
     resetButton.onclick = function (){
+        runButton.innerText = "Start";
         let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
         window.game.reset(cppn_input_vector, smoothingSlider.value);
     }
@@ -192,6 +193,7 @@
     // Update the current slider value (each time you drag the slider handle)
     dim1Slider.oninput = function() {
         dim1Value.innerHTML = this.value;
+        runButton.innerText = "Start";
         let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
         init(cppn_input_vector, smoothingSlider.value);
     }
@@ -206,6 +208,7 @@
     // Update the current slider value (each time you drag the slider handle)
     dim2Slider.oninput = function() {
         dim2Value.innerHTML = this.value;
+        runButton.innerText = "Start";
         let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
         init(cppn_input_vector, smoothingSlider.value);
     }
@@ -220,6 +223,7 @@
     // Update the current slider value (each time you drag the slider handle)
     dim3Slider.oninput = function() {
         dim3Value.innerHTML = this.value;
+        runButton.innerText = "Start";
         let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
         init(cppn_input_vector, smoothingSlider.value);
     }
@@ -234,6 +238,7 @@
     // Update the current slider value (each time you drag the slider handle)
     smoothingSlider.oninput = function() {
         smoothingValue.innerHTML = this.value;
+        runButton.innerText = "Start";
         let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
         init(cppn_input_vector, smoothingSlider.value);
     }
