@@ -63,12 +63,14 @@ class ParkourGame extends ParkourHeadlessGame {
         if(this.running){
             clearInterval(this.runtime);
             this.running = false;
+            return "Resume";
         }
         else{
             this.runtime = setInterval(() => {
                 this.play(this.policy_model);
             }, 1000 / this.config.draw_fps);
             this.running = true;
+            return "Pause"
         }
     }
 
