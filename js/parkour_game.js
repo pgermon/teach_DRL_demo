@@ -2,13 +2,13 @@
 
 
 class ParkourHeadlessGame {
-    constructor(config) {
+    constructor(config, cppn_input_vector, smoothing) {
         this.config = config
         this.obs = [];
-        this.initWorld()
+        this.initWorld(cppn_input_vector, smoothing);
     }
 
-    initWorld() {
+    initWorld(cppn_input_vector, smoothing) {
 
         this.env = new ParametricContinuousParkour("old_classic_bipedal",
                                                     "./weights/same_ground_ceiling_cppn/tfjs_model/model.json",
@@ -19,8 +19,8 @@ class ParkourHeadlessGame {
                                                     'down',
                                                     20,
                                                     true);
-        let cppn_input_vector = Array.from({length: 3}, () => Math.random() * 2 - 1)
-        this.env.set_environment(cppn_input_vector, 0, 0.25, 5, 2);
+
+        this.env.set_environment(cppn_input_vector, 0, 0.25, 5, 2, smoothing);
 
         // Flat Parkour
         /*this.env = new ParametricContinuousFlatParkour(0.5, this.config);
@@ -45,22 +45,38 @@ tf.registerOp('RandomStandardNormal', (node) => {
 })
 
 class ParkourGame extends ParkourHeadlessGame {
-    constructor(config, canvas_id) {
-        config.canvas_id = canvas_id
-        super(config)
+    constructor(config, canvas_id, cppn_input_vector, smoothing) {
+        config.canvas_id = canvas_id;
+        super(config, cppn_input_vector, smoothing);
         this.nb_steps = 0;
         this.done = false;
+        this.running = false;
 
-        this.loop();
+        this.loadPolicy();
     }
 
-    async loop() {
+    async loadPolicy(){
+        this.policy_model = await tf.loadGraphModel('./js/bodies/policy_models/model.json');
+    }
 
-        const model = await tf.loadGraphModel('./js/bodies/policy_models/model.json');
+    run(){
+        if(this.running){
+            clearInterval(this.runtime);
+            this.running = false;
+        }
+        else{
+            this.runtime = setInterval(() => {
+                this.play(this.policy_model);
+            }, 1000 / this.config.draw_fps);
+            this.running = true;
+        }
+    }
 
-        setInterval(() => {
-            this.play(model);
-        }, 1000 / this.config.draw_fps)
+    reset(cppn_input_vector, smoothing){
+        clearInterval(this.runtime);
+        this.running = false;
+        this.initWorld(cppn_input_vector, smoothing);
+        this.env.render();
     }
 
     /**

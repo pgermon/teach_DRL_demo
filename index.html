@@ -37,69 +37,98 @@
     <script defer src="./js/draw_p5js.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
-    <!-- <style link="css/walkers.css"></style> -->
+    <link rel="stylesheet" href="./demo.css"></style>
 </head>
 
 <body>
 <section class="section">
-    <div class="container">
-        <h1 class="title has-text-centered">Deep Reinforcement Learning Interactive Demo</h1>
 
-        <div id="canvas_container">
-            <!--<canvas id="main_screen2" width="1300" height="350" style="background-color: lightgrey" ></canvas>-->
-        </div>
-        <!--
-        <div class="slidecontainer">
-            <p>Agent position:</p>
-            <input type="range" min="0" max="100" value="0" class="slider" id="agentSlider">
-            <p id="agentValue"></p>
-        </div>
-        -->
+    <h1 class="title has-text-centered">Deep Reinforcement Learning Interactive Demo</h1>
 
-        <div class="slidecontainer">
+    <div id="canvas_container">
+        <!--<canvas id="main_screen2" width="1300" height="350" style="background-color: lightgrey" ></canvas>-->
+    </div>
+
+    <div>
+        <span>
+            <button id="runButton"> Run </button>
+            <button id="resetButton"> Reset </button>
+        </span>
+
+        <span>
             <p>Horizontal scroll:</p>
             <input type="range" min="0" max="100" value="0" class="slider" id="scrollSlider">
-            <button id="followAgentButton"> Follow agent </button>
-            <p id="scrollValue"></p>
-        </div>
-        <div class="slidecontainer">
+            <span id="scrollValue"></span>
+        </span>
+
+        <span>
             <p>Zoom:</p>
             <input type="range" min="0.4" max="1.25" value="1" class="slider" id="zoomSlider">
-            <p id="zoomValue"></p>
-        </div>
-        <div>
-            <button id="jointsButton"> Draw joints </button>
-            <button id="lidarsButton"> Draw lidars </button>
-        </div>
+            <span id="zoomValue"></span>
+        </span>
     </div>
+
+    <div class="buttonscontainer">
+        <button id="followAgentButton"> Follow agent </button>
+        <button id="jointsButton"> Draw joints </button>
+        <button id="lidarsButton"> Draw lidars </button>
+    </div>
+
+
+    <hr>
+
+
+    <h1> Parkour Generation </h1>
+    <div class="slidecontainer">
+        <input type="range" min="-1" max="1" value="0" class="slider" id="dim1Slider">
+        <span id="dim1Value"></span>
+    </div>
+    <div class="slidecontainer">
+        <input type="range" min="-1" max="1" value="0" class="slider" id="dim2Slider">
+        <span id="dim2Value"></span>
+    </div>
+    <div class="slidecontainer">
+        <input type="range" min="-1" max="1" value="0" class="slider" id="dim3Slider">
+        <span id="dim3Value"></span>
+    </div>
+    <div class="slidecontainer">
+        <input type="range" min="10" max="20" value="10" class="slider" id="smoothingSlider">
+        <span id="smoothingValue"></span>
+    </div>
+
+
 </section>
 
 </body>
 
 <script>
-    function init() {
+    function init(cppn_input_vector, smoothing) {
         let canvas_id = 'main_screen2';
-        window.game = new ParkourGame(config, canvas_id);
-        //game.loop();
+
+        window.game = new ParkourGame(config, canvas_id, cppn_input_vector, smoothing);
+        window.game.env.render();
     }
 
     async function loadModel(){
         window.cppn_model = await tf.loadGraphModel('./js/CPPN/weights/same_ground_ceiling_cppn/tfjs_model/model.json');
-        init();
+        let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
+        init(cppn_input_vector, smoothingSlider.value);
     }
 
     window.addEventListener("load", loadModel, false);
 
-    // Agent position slider
-    /*let agentSlider = document.getElementById("agentSlider");
-    agentSlider.step = 0.1;
-    let agentValue = document.getElementById("agentValue");
-    agentValue.innerHTML = agentSlider.value; // Display the default slider value
-    // Update the current slider value (each time you drag the slider handle)
-    agentSlider.oninput = function() {
-        //window.game.env.set_agent_position(this.value);
-        agentValue.innerHTML = this.value;
-    }*/
+    /* BUTTONS AND SLIDERS */
+
+    let runButton = document.getElementById("runButton");
+    runButton.onclick = function (){
+        window.game.run();
+    }
+
+    let resetButton = document.getElementById("resetButton");
+    resetButton.onclick = function (){
+        let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
+        window.game.reset(cppn_input_vector, smoothingSlider.value);
+    }
 
     // Scroll slider
     let scrollSlider = document.getElementById("scrollSlider");
@@ -109,8 +138,9 @@
 
     // Update the current slider value (each time you drag the slider handle)
     scrollSlider.oninput = function() {
-        window.game.env.set_scroll_offset(this.value);
         scrollValue.innerHTML = this.value;
+        window.game.env.set_scroll_offset(this.value);
+        window.game.env.render();
     }
 
     // zoom slider
@@ -124,27 +154,90 @@
     zoomSlider.oninput = function() {
         zoomValue.innerHTML = "x" + this.value;
         window.game.env.set_zoom(this.value);
-        scrollSlider.value = 0;
-        scrollValue.innerHTML = 0;
-        window.game.env.set_scroll_offset(0);
+        window.game.env.render();
+        //scrollSlider.value = 0;
+        //scrollValue.innerHTML = 0;
+        //window.game.env.set_scroll_offset(0);
     }
 
     let jointsButton = document.getElementById("jointsButton");
     window.draw_joints = false;
     jointsButton.onclick = function (){
         window.draw_joints = !window.draw_joints;
+        window.game.env.render();
     }
 
     let lidarsButton = document.getElementById("lidarsButton");
     window.draw_lidars = true;
     lidarsButton.onclick = function (){
         window.draw_lidars = !window.draw_lidars;
+        window.game.env.render();
     }
 
     let followAgentButton = document.getElementById("followAgentButton");
     followAgentButton.onclick = function (){
         window.follow_agent = !window.follow_agent;
+        window.game.env.render();
     }
+
+    // CPPN encoding
+
+    // dim1 slider
+    let dim1Slider = document.getElementById("dim1Slider");
+    dim1Slider.step = 0.01;
+    dim1Slider.value = 0;
+    let dim1Value = document.getElementById("dim1Value");
+    dim1Value.innerHTML = dim1Slider.value; // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    dim1Slider.oninput = function() {
+        dim1Value.innerHTML = this.value;
+        let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
+        init(cppn_input_vector, smoothingSlider.value);
+    }
+
+    // dim2 slider
+    let dim2Slider = document.getElementById("dim2Slider");
+    dim2Slider.step = 0.01;
+    dim2Slider.value = 0;
+    let dim2Value = document.getElementById("dim2Value");
+    dim2Value.innerHTML = dim2Slider.value; // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    dim2Slider.oninput = function() {
+        dim2Value.innerHTML = this.value;
+        let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
+        init(cppn_input_vector, smoothingSlider.value);
+    }
+
+    // dim3 slider
+    let dim3Slider = document.getElementById("dim3Slider");
+    dim3Slider.step = 0.01;
+    dim3Slider.value = 0;
+    let dim3Value = document.getElementById("dim3Value");
+    dim3Value.innerHTML = dim3Slider.value; // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    dim3Slider.oninput = function() {
+        dim3Value.innerHTML = this.value;
+        let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
+        init(cppn_input_vector, smoothingSlider.value);
+    }
+
+    // smoothing slider
+    let smoothingSlider = document.getElementById("smoothingSlider");
+    smoothingSlider.step = 0.01;
+    smoothingSlider.value = 10;
+    let smoothingValue = document.getElementById("smoothingValue");
+    smoothingValue.innerHTML = smoothingSlider.value; // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    smoothingSlider.oninput = function() {
+        smoothingValue.innerHTML = this.value;
+        let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
+        init(cppn_input_vector, smoothingSlider.value);
+    }
+
 </script>
 
 
