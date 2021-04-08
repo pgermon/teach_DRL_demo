@@ -92,8 +92,30 @@
         <span id="dim3Value"></span>
     </div>
     <div class="slidecontainer">
-        <input type="range" min="10" max="20" value="10" class="slider" id="smoothingSlider">
+        <span>Smoothing: </span>
+        <input type="range" min="10" max="20" value="15" class="slider" id="smoothingSlider">
         <span id="smoothingValue"></span>
+    </div>
+    <div class="slidecontainer">
+        <span>Water level: </span>
+        <input type="range" min="0" max="1" value="0" class="slider" id="waterSlider">
+        <span id="waterValue"></span>
+    </div>
+    <p>Creepers:</p>
+    <div class="slidecontainer">
+        <span>Width: </span>
+        <input type="range" min="0.2" max="1" value="0.3" class="slider" id="creepersWidthSlider">
+        <span id="creepersWidthValue"></span>
+    </div>
+    <div class="slidecontainer">
+        <span>Height: </span>
+        <input type="range" min="0.2" max="5" value="3" class="slider" id="creepersHeightSlider">
+        <span id="creepersHeightValue"></span>
+    </div>
+    <div class="slidecontainer">
+        <span>Spacing: </span>
+        <input type="range" min="0.01" max="5" value="1" class="slider" id="creepersSpacingSlider">
+        <span id="creepersSpacingValue"></span>
     </div>
 
 
@@ -102,17 +124,17 @@
 </body>
 
 <script>
-    function init(cppn_input_vector, smoothing) {
+    function init(cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing) {
         let canvas_id = 'main_screen2';
 
-        window.game = new ParkourGame(config, canvas_id, cppn_input_vector, smoothing);
+        window.game = new ParkourGame(config, canvas_id, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing);
         window.game.env.render();
     }
 
     async function loadModel(){
         window.cppn_model = await tf.loadGraphModel('./js/CPPN/weights/same_ground_ceiling_cppn/tfjs_model/model.json');
         let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
-        init(cppn_input_vector, smoothingSlider.value);
+        init(cppn_input_vector, waterSlider.value, creepersWidthSlider.value, creepersHeightSlider.value, creepersSpacingSlider.value, smoothingSlider.value);
     }
 
     window.addEventListener("load", loadModel, false);
@@ -128,7 +150,7 @@
     resetButton.onclick = function (){
         runButton.innerText = "Start";
         let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
-        window.game.reset(cppn_input_vector, smoothingSlider.value);
+        window.game.reset(cppn_input_vector, waterSlider.value, creepersWidthSlider.value, creepersHeightSlider.value, creepersSpacingSlider.value, smoothingSlider.value);
     }
 
     // Scroll slider
@@ -195,7 +217,7 @@
         dim1Value.innerHTML = this.value;
         runButton.innerText = "Start";
         let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
-        init(cppn_input_vector, smoothingSlider.value);
+        init(cppn_input_vector, waterSlider.value, creepersWidthSlider.value, creepersHeightSlider.value, creepersSpacingSlider.value, smoothingSlider.value);
     }
 
     // dim2 slider
@@ -210,7 +232,7 @@
         dim2Value.innerHTML = this.value;
         runButton.innerText = "Start";
         let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
-        init(cppn_input_vector, smoothingSlider.value);
+        init(cppn_input_vector, waterSlider.value, creepersWidthSlider.value, creepersHeightSlider.value, creepersSpacingSlider.value, smoothingSlider.value);
     }
 
     // dim3 slider
@@ -225,13 +247,73 @@
         dim3Value.innerHTML = this.value;
         runButton.innerText = "Start";
         let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
-        init(cppn_input_vector, smoothingSlider.value);
+        init(cppn_input_vector, waterSlider.value, creepersWidthSlider.value, creepersHeightSlider.value, creepersSpacingSlider.value, smoothingSlider.value);
+    }
+
+    // water slider
+    let waterSlider = document.getElementById("waterSlider");
+    waterSlider.step = 0.01;
+    waterSlider.value = 0;
+    let waterValue = document.getElementById("waterValue");
+    waterValue.innerHTML = waterSlider.value; // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    waterSlider.oninput = function() {
+        waterValue.innerHTML = this.value;
+        runButton.innerText = "Start";
+        let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
+        init(cppn_input_vector, waterSlider.value, creepersWidthSlider.value, creepersHeightSlider.value, creepersSpacingSlider.value, smoothingSlider.value);
+    }
+
+    // creepersWidth slider
+    let creepersWidthSlider = document.getElementById("creepersWidthSlider");
+    creepersWidthSlider.step = 0.01;
+    creepersWidthSlider.value = 0.3;
+    let creepersWidthValue = document.getElementById("creepersWidthValue");
+    creepersWidthValue.innerHTML = creepersWidthSlider.value; // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    creepersWidthSlider.oninput = function() {
+        creepersWidthValue.innerHTML = this.value;
+        runButton.innerText = "Start";
+        let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
+        init(cppn_input_vector, waterSlider.value, creepersWidthSlider.value, creepersHeightSlider.value, creepersSpacingSlider.value, smoothingSlider.value);
+    }
+
+    // creepersHeight slider
+    let creepersHeightSlider = document.getElementById("creepersHeightSlider");
+    creepersHeightSlider.step = 0.01;
+    creepersHeightSlider.value = 3;
+    let creepersHeightValue = document.getElementById("creepersHeightValue");
+    creepersHeightValue.innerHTML = creepersHeightSlider.value; // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    creepersHeightSlider.oninput = function() {
+        creepersHeightValue.innerHTML = this.value;
+        runButton.innerText = "Start";
+        let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
+        init(cppn_input_vector, waterSlider.value, creepersWidthSlider.value, creepersHeightSlider.value, creepersSpacingSlider.value, smoothingSlider.value);
+    }
+
+    // creepersSpacing slider
+    let creepersSpacingSlider = document.getElementById("creepersSpacingSlider");
+    creepersSpacingSlider.step = 0.01;
+    creepersSpacingSlider.value = 1;
+    let creepersSpacingValue = document.getElementById("creepersSpacingValue");
+    creepersSpacingValue.innerHTML = creepersSpacingSlider.value; // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    creepersSpacingSlider.oninput = function() {
+        creepersSpacingValue.innerHTML = this.value;
+        runButton.innerText = "Start";
+        let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
+        init(cppn_input_vector, waterSlider.value, creepersWidthSlider.value, creepersHeightSlider.value, creepersSpacingSlider.value, smoothingSlider.value);
     }
 
     // smoothing slider
     let smoothingSlider = document.getElementById("smoothingSlider");
     smoothingSlider.step = 0.01;
-    smoothingSlider.value = 10;
+    smoothingSlider.value = 15;
     let smoothingValue = document.getElementById("smoothingValue");
     smoothingValue.innerHTML = smoothingSlider.value; // Display the default slider value
 
@@ -240,8 +322,10 @@
         smoothingValue.innerHTML = this.value;
         runButton.innerText = "Start";
         let cppn_input_vector = [dim1Slider.value, dim2Slider.value, dim3Slider.value];
-        init(cppn_input_vector, smoothingSlider.value);
+        init(cppn_input_vector, waterSlider.value, creepersWidthSlider.value, creepersHeightSlider.value, creepersSpacingSlider.value, smoothingSlider.value);
     }
+
+
 
 </script>
 
