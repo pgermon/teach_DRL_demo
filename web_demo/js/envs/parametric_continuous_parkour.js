@@ -118,7 +118,7 @@ class ParametricContinuousParkour {
     }
 
     set_environment(input_vector, water_level, creepers_width=null,
-                    creepers_height=null, creepers_spacing=0.1, terrain_cppn_scale=10){
+                    creepers_height=null, creepers_spacing=0.1, terrain_cppn_scale=10, movable_creepers){
         /*
          * Set the parameters controlling the PCG algorithm to generate a task.
          * Call this method before `reset()`.
@@ -128,6 +128,7 @@ class ParametricContinuousParkour {
         this.creepers_width = creepers_width;
         this.creepers_height = creepers_height;
         this.creepers_spacing = Math.max(0.01, creepers_spacing);
+        this.movable_creepers = movable_creepers;
         this.set_terrain_cppn_scale(terrain_cppn_scale,
                         this.ceiling_offset * this.TERRAIN_CPPN_SCALE,
                                     this.ceiling_clip_offset * this.TERRAIN_CPPN_SCALE);
@@ -652,7 +653,7 @@ class ParametricContinuousParkour {
                         color = "#6F8060"; // [0.437, 0.504, 0.375];
                         poly_data = {
                             type : "creeper",
-                            color : color,
+                            color1 : color,
                             body : t,
                         }
                         this.terrain_bodies.push(poly_data);
