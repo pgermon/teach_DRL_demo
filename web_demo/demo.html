@@ -139,6 +139,7 @@
         let canvas_id = 'main_screen2';
 
         window.game = new ParkourGame(config, canvas_id, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
+        window.game.env.set_zoom(zoomSlider.value);
         window.game.env.render();
     }
 
