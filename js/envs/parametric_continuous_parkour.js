@@ -124,7 +124,7 @@ class ParametricContinuousParkour {
          * Call this method before `reset()`.
          */
         this.CPPN_input_vector = input_vector;
-        this.water_level = Math.max(0.01, water_level);
+        this.water_level = water_level > 0 ? water_level : - 0.01;
         this.creepers_width = creepers_width;
         this.creepers_height = creepers_height;
         this.creepers_spacing = Math.max(0.01, creepers_spacing);
@@ -549,8 +549,9 @@ class ParametricContinuousParkour {
             this.terrain_bodies.push(poly_data);
 
             // Visual poly to fill the ground
-            poly.push([poly[1][0], this.GROUND_LIMIT]);
-            poly.push([poly[0][0], this.GROUND_LIMIT]);
+            let l = (i == 0 || i == this.terrain_x.length - 2) ? 0 : 3 * TERRAIN_STEP;
+            poly.push([poly[1][0] + l, this.GROUND_LIMIT]);
+            poly.push([poly[0][0] - l, this.GROUND_LIMIT]);
             color = "#66994D"; //[0.4, 0.6, 0.3];
             poly_data = {
                 type : "ground",
@@ -580,8 +581,8 @@ class ParametricContinuousParkour {
             this.terrain_bodies.push(poly_data);
 
             // Visual poly to fill the ceiling
-            poly.push([poly[1][0], 2 * this.CEILING_LIMIT]);
-            poly.push([poly[0][0], 2 * this.CEILING_LIMIT]);
+            poly.push([poly[1][0] + l, 2 * this.CEILING_LIMIT]);
+            poly.push([poly[0][0] - l, 2 * this.CEILING_LIMIT]);
             color = "#808080"; // [0.5, 0.5, 0.5];
             poly_data = {
                 type : "ceiling",
@@ -698,7 +699,7 @@ class ParametricContinuousParkour {
     }
 
     set_scroll_offset(slider_value){
-        this.scroll_offset = slider_value/2/100 * (TERRAIN_LENGTH * TERRAIN_STEP * SCALE * this.zoom - RENDERING_VIEWER_W * 0.9) - RENDERING_VIEWER_W * 0.05;
+        this.scroll_offset = (slider_value/100 * (TERRAIN_LENGTH * TERRAIN_STEP * SCALE * this.zoom - RENDERING_VIEWER_W * 0.9) - RENDERING_VIEWER_W * 0.05) / 2;
     }
 
     set_zoom(scale){
