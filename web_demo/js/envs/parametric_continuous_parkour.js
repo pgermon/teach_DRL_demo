@@ -28,7 +28,7 @@ const NB_FIRST_STEPS_HANG = 5
 class ParametricContinuousParkour {
 
     //constructor(water_level, config/*, agent_body_type*/, lidars_type="down"){
-    constructor(agent_body_type, CPPN_weights_path=null, input_CPPN_dim=3, terrain_cppn_scale=10,
+    constructor(agent_body_type, input_CPPN_dim=3, terrain_cppn_scale=10,
                 ceiling_offset=200, ceiling_clip_offset=0, lidars_type='down', water_clip=20,
                 movable_creepers=false, walker_args){
 
@@ -81,14 +81,8 @@ class ParametricContinuousParkour {
 
         // TODO: Cppn init
         this.input_CPPN_dim = input_CPPN_dim;
-
-        this.terrain_CPPN = new CPPN(TERRAIN_LENGTH,
-                                                input_CPPN_dim,
-                                                1,
-                                                2, // output_dim = ground + ceiling
-                                                 CPPN_weights_path);
+        this.terrain_CPPN = new CPPN(TERRAIN_LENGTH, input_CPPN_dim);
         this.set_terrain_cppn_scale(terrain_cppn_scale, ceiling_offset, ceiling_clip_offset);
-
 
         // Set info / action spaces
         //this._generate_agent(); // To get state / action sizes
@@ -703,6 +697,7 @@ class ParametricContinuousParkour {
     }
 
     set_scroll(h, v){
+        window.follow_agent = false;
         this.scroll = [
             parseFloat(h)/100 * ((TERRAIN_LENGTH + this.TERRAIN_STARTPAD) * TERRAIN_STEP * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9) - RENDERING_VIEWER_W * 0.05,
             parseFloat(v)/100 * this.air_max_distance/2 * this.scale * this.zoom

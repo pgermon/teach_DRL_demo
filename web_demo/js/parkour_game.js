@@ -11,11 +11,10 @@ class ParkourHeadlessGame {
     initWorld(cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
 
         this.env = new ParametricContinuousParkour("old_classic_bipedal",
-                                                    "./weights/same_ground_ceiling_cppn/tfjs_model/model.json",
                                                     3,
                                                     10,
                                                     200,
-                                                    0,
+                                                    25,
                                                     'down',
                                                     20,
                                                     creepers_type);
