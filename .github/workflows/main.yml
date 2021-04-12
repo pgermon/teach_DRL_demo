@@ -15,13 +15,7 @@ jobs:
           pip install tensorflowjs
 
       - name: Convert models to tfjs
-        run: ls models | xargs -I"{}" tensorflowjs_converter \
-                      --input_format=tf_saved_model \
-                      --output_node_names='parkour_walker' \
-                      --saved_model_tags=serve \
-                      --skip_op_check \
-                      models/{}/tf1_save \
-                      web_demo/models/{}
+        run: ls models | xargs -I"{}" tensorflowjs_converter --input_format=tf_saved_model --output_node_names='parkour_walker' --saved_model_tags=serve --skip_op_check models/{}/tf1_save web_demo/models/{}
 
       - name: Generate the list of models
         run:
