@@ -150,7 +150,8 @@ class ParametricContinuousParkour {
         this.world.SetContactListener(this.contact_listener);
         this.critical_contact = false;
         this.prev_shaping = null;
-        this.scroll_offset = - 0.05 * RENDERING_VIEWER_W;
+        //this.scroll = [- 0.05 * RENDERING_VIEWER_W, 0];
+        this.scroll = [0, 0];
         this.lidar_render = 0;
         this.water_y = this.GROUND_LIMIT;
         this.nb_steps_outside_water = 0;
@@ -273,9 +274,12 @@ class ParametricContinuousParkour {
 
         state = state.concat(surface_detected)
 
-        // Update scroll_offset to stay centered on the agent position
+        // Update scroll to stay centered on the agent position
         if(window.follow_agent){
-            this.scroll_offset = pos.x * SCALE/2 * this.zoom - RENDERING_VIEWER_W/5;
+            this.scroll = [
+                pos.x * this.scale * this.zoom - RENDERING_VIEWER_W/5,
+                pos.y * this.scale * this.zoom - RENDERING_VIEWER_H/3
+            ];
         }
 
         let shaping = 130 * pos.x / SCALE; // moving forward is a way to receive reward (normalized to get 300 on completion)
@@ -698,12 +702,15 @@ class ParametricContinuousParkour {
         this.agent_body.reference_head_object.m_xf.p.Assign(new b2.Vec2(position/100 * TERRAIN_LENGTH * TERRAIN_STEP/this.zoom, VIEWPORT_H/2));
     }
 
-    set_scroll_offset(slider_value){
-        this.scroll_offset = (slider_value/100 * (TERRAIN_LENGTH * TERRAIN_STEP * SCALE * this.zoom - RENDERING_VIEWER_W * 0.9) - RENDERING_VIEWER_W * 0.05) / 2;
+    set_scroll(h, v){
+        this.scroll = [
+            parseFloat(h)/100 * ((TERRAIN_LENGTH + this.TERRAIN_STARTPAD) * TERRAIN_STEP * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9) - RENDERING_VIEWER_W * 0.05,
+            parseFloat(v)/100 * this.air_max_distance/2 * this.scale * this.zoom
+        ];
     }
 
-    set_zoom(scale){
-        this.zoom = scale;
+    set_zoom(zoom){
+        this.zoom = parseFloat(zoom);
     }
 
     //endregion
