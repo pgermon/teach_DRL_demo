@@ -49,11 +49,6 @@ function draw() {
             drawJoints(parkour.agent_body.motors, parkour.scale);
         }
         pop();
-        /*let mid_line = [
-            [-100, VIEWPORT_H/2],
-            [RENDERING_VIEWER_W + 100, VIEWPORT_H/2]
-        ];
-        drawLine(mid_line, "#FF0000");*/
     }
 
 }
@@ -65,7 +60,7 @@ function drawJoints(joints, scale){
         noStroke();
         let joint_type = joints[i].GetUserData().name;
         fill(JOINTS_COLORS[joint_type]);
-        let radius = joint_type == "creeper" ? 4 : 7;
+        let radius = joint_type == "creeper" ? 5 : 7;
         circle(posA.x, VIEWPORT_H - posA.y, radius/scale);
         circle(posB.x, VIEWPORT_H - posB.y, radius/scale);
 
@@ -119,9 +114,6 @@ function drawParkour(parkour){
     ];*/
 
 
-    // Translation to scroll horizontally
-    translate(- parkour.scroll_offset, 0);
-
     // Flat Parkour -- Top and bottom strips to fill ground and ceiling
     /*if(parkour.zoom < 1){
 
@@ -144,14 +136,18 @@ function drawParkour(parkour){
         drawPolygon(vertices, "#808080");
     }*/
 
+    // Translation to scroll horizontally and vertically
+    translate(- parkour.scroll[0], parkour.scroll[1]);
 
     // Rescaling
-    scale(parkour.scale/2);
+    scale(parkour.scale);
     scale(parkour.zoom);
 
     // Translating so that the environment is always horizontally centered
-    translate(0, (1 - parkour.scale/2 * parkour.zoom) * VIEWPORT_H/(parkour.scale/2 * parkour.zoom));
-    translate(0, (parkour.zoom - 1) * (parkour.ceiling_offset)/parkour.zoom * 2/3);
+    translate(0, (1 - parkour.scale * parkour.zoom) * VIEWPORT_H/(parkour.scale * parkour.zoom));
+    translate(0, (parkour.zoom - 1) * (parkour.ceiling_offset)/parkour.zoom * 1/3);
+
+
 
     // Flat Parkour
     //translate(0, (parkour.zoom - 1) * VIEWPORT_H/2/parkour.scale/parkour.zoom);
