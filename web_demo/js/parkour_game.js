@@ -10,10 +10,10 @@ class ParkourHeadlessGame {
 
     initWorld(cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
 
-        //let agent_body_type = "old_classic_bipedal";
-        //let lidars_type = "down";
-        let agent_body_type = "climbing_profile_chimpanzee";
-        let lidars_type = "up";
+        let agent_body_type = "old_classic_bipedal";
+        let lidars_type = "down";
+        //let agent_body_type = "climbing_profile_chimpanzee";
+        //let lidars_type = "up";
         this.env = new ParametricContinuousParkour(agent_body_type,
                                                     3,
                                                     10,
@@ -80,26 +80,19 @@ class ParkourGame extends ParkourHeadlessGame {
      * Play one step
      */
     play(model) {
-        let actions = [];
-        if(this.env.agent_body.body_type == BodyTypesEnum.CLIMBER){
-            actions = Array.from({length: this.env.agent_body.get_action_size()}, () => Math.random() * 2 - 1);
-            for(let i = 0; i < this.env.agent_body.sensors.length; i++) {
-                actions[actions.length - i - 1] = i == 0 ? 1 : Math.floor(Math.random() * 2);
-            }
-        }
-        else{
-            let state = this.obs[this.obs.length - 1];
 
-            let envState = tf.tensor(state,[1, 36]);
+        let state = this.obs[this.obs.length - 1];
 
-            let inputs = {
-                "Placeholder_1:0": envState
-            };
+        let envState = tf.tensor(state,[1, state.length]);
 
-            let output = 'main/mul:0'
-              
-            actions = model.execute(inputs, output).arraySync()[0];
-        }
+        let inputs = {
+            "Placeholder_1:0": envState
+        };
+
+        let output = 'main/mul:0'
+
+        let actions = model.execute(inputs, output).arraySync()[0];
+
 
         let ret = this.env.step(actions, 1);
         this.obs.push(ret[0]);
