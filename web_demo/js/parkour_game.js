@@ -10,14 +10,16 @@ class ParkourHeadlessGame {
 
     initWorld(cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
 
-        let agent_body_type = "old_classic_bipedal";
-        //let agent_body_type = "climbing_profile_chimpanzee";
+        //let agent_body_type = "old_classic_bipedal";
+        //let lidars_type = "down";
+        let agent_body_type = "climbing_profile_chimpanzee";
+        let lidars_type = "up";
         this.env = new ParametricContinuousParkour(agent_body_type,
                                                     3,
                                                     10,
                                                     200,
                                                     25,
-                                                    'down',
+                                                    lidars_type,
                                                     20,
                                                     creepers_type);
 
@@ -87,9 +89,9 @@ class ParkourGame extends ParkourHeadlessGame {
     play(model) {
         let actions = [];
         if(this.env.agent_body.body_type == BodyTypesEnum.CLIMBER){
-            actions = Array.from({length: this.env.agent_body.get_action_size()}, () => 0/*Math.random() * 2 - 1*/);
+            actions = Array.from({length: this.env.agent_body.get_action_size()}, () => Math.random() * 2 - 1);
             for(let i = 0; i < this.env.agent_body.sensors.length; i++) {
-                actions[actions.length - i - 1] = 1;
+                actions[actions.length - i - 1] = i == 0 ? 1 : Math.floor(Math.random() * 2);
             }
         }
         else{
