@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-zoom=1">
+    <title>Deep Reinforcement Learning Interactive Demo</title>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+    <!--<script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@3.3.0/dist/tf-core.min.js"></script>-->
+
+    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+
+    <!--SCRIPTS DEPENDENCIES-->
+    <script defer src="./js/box2d.js">  </script>
+    <script defer src="./js/config.js"></script>
+
+    <script defer src="js/Box2D_dynamics/water_dynamics.js"></script>
+    <script defer src="js/Box2D_dynamics/climbing_dynamics.js"></script>
+    <script defer src="js/Box2D_dynamics/contact_detector.js"></script>
+    <script defer src="./js/utils/custom_user_data.js"></script>
+
+    <script defer src="./js/bodies/bodies_enum.js"></script>
+    <script defer src="./js/bodies/abstract_body.js"></script>
+    <script defer src="js/bodies/walkers/walker_abstract_body.js"></script>
+    <script defer src="js/bodies/walkers/old_classic_bipedal_body.js"></script>
+    <script defer src="js/bodies/walkers/classic_bipedal_body.js"></script>
+    <script defer src="js/bodies/climbers/climber_abstract_body.js"></script>
+    <script defer src="js/bodies/climbers/climbing_profile_chimpanzee.js"></script>
+
+    <script defer src="js/CPPN/cppn.js"></script>
+    <script defer src="js/envs/parametric_continuous_parkour.js"></script>
+    <!--<script defer src="js/envs/parametric_continuous_flat_parkour.js"></script>-->
+    <script defer src="./js/parkour_game.js"></script>
+    <script defer src="./js/draw_p5js.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <link rel="stylesheet" href="./demo.css">
+    </style>
+</head>
+
+<body>
+    <section class="section">
+
+        <h1 class="title has-text-centered">Deep Reinforcement Learning Interactive Demo</h1>
+
+        <div id="canvas_container">
+            <!--<canvas id="main_screen2" width="1300" height="350" style="background-color: lightgrey" ></canvas>-->
+        </div>
+
+
+        <div>
+            <div class="buttonscontainer ib">
+                <button id="runButton"> Start </button>
+                <button id="resetButton"> Reset Simulation </button>
+            </div>
+            <div class="buttonscontainer ib">
+                <button id="followAgentButton"> Follow agent </button>
+            </div>
+            <div class="buttonscontainer ib">
+                <button id="jointsButton"> Draw joints </button>
+                <button id="lidarsButton"> Draw lidars </button>
+                <button id="sensorsButton"> Draw sensors </button>
+            </div>
+            <form class="ib" onsubmit="return false">
+                <label for="models">Choose a model to load:</label>
+                <select name="models" id="models">
+                </select>
+            </form>
+            <div class="ib">
+                <p>Resize the canvas: </p>
+                <input type="range" min="1" max="2" value="1" class="slider" id="resizeCanvasSlider">
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="ib">
+            <div>
+                <p>Horizontal scroll:</p>
+                <input type="range" min="0" max="100" value="0" class="slider" id="hScrollSlider">
+                <!--<span id="hScrollValue"></span>-->
+                <button id="resetHScroll">Reset</button>
+            </div>
+
+            <div>
+                <p>Vertical scroll:</p>
+                <input type="range" min="-50" max="100" value="0" class="slider" id="vScrollSlider">
+                <!--<span id="vScrollValue"></span>-->
+                <button id="resetVScroll">Reset</button>
+            </div>
+
+            <div>
+                <p>Zoom:</p>
+                <input type="range" min="0.3" max="1.5" value="1" class="slider" id="zoomSlider">
+                <span id="zoomValue"></span>
+                <button id="resetZoom">Reset</button>
+            </div>
+        </div>
+
+        <div class="ib">
+            <h1> <strong>Parkour Generation</strong> </h1>
+            <div class="ib">
+                <p>Terrain shape:</p>
+                <div class="slidecontainer">
+                    <input type="range" min="-1" max="1" value="0" class="slider" id="dim1Slider">
+                    <span id="dim1Value"></span>
+                </div>
+                <div class="slidecontainer">
+                    <input type="range" min="-1" max="1" value="0" class="slider" id="dim2Slider">
+                    <span id="dim2Value"></span>
+                </div>
+                <div class="slidecontainer">
+                    <input type="range" min="-1" max="1" value="0" class="slider" id="dim3Slider">
+                    <span id="dim3Value"></span>
+                </div>
+                <div class="slidecontainer">
+                    <span>Smoothing: </span>
+                    <input type="range" min="10" max="40" value="20" class="slider" id="smoothingSlider">
+                    <span id="smoothingValue"></span>
+                </div>
+                <div class="slidecontainer">
+                    <span>Water level: </span>
+                    <input type="range" min="0" max="1" value="0" class="slider" id="waterSlider">
+                    <span id="waterValue"></span>
+                </div>
+            </div>
+            <div id="creepers" class="ib">
+                <p>Creepers:</p>
+                <div class="slidecontainer">
+                    <span>Width: </span>
+                    <input type="range" min="0.2" max="1" value="0.3" class="slider" id="creepersWidthSlider">
+                    <span id="creepersWidthValue"></span>
+                </div>
+                <div class="slidecontainer">
+                    <span>Height: </span>
+                    <input type="range" min="0.2" max="5" value="3" class="slider" id="creepersHeightSlider">
+                    <span id="creepersHeightValue"></span>
+                </div>
+                <div class="slidecontainer">
+                    <span>Spacing: </span>
+                    <input type="range" min="0.01" max="5" value="1" class="slider" id="creepersSpacingSlider">
+                    <span id="creepersSpacingValue"></span>
+                </div>
+                <form id="creepersType">
+                    <div>
+                        Type:
+                        <input id="rigid" type="radio" name="creepersType" value=false checked>
+                        <label for="rigid">Rigid</label>
+
+                        <input id="swingable" type="radio" name="creepersType" value=true>
+                        <label for="swingable">Swingable</label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script src="./index.js"></script>
+</body>
+</html>
