@@ -8,16 +8,11 @@
 
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
         crossorigin="anonymous"></script>
-
-
-    <!--<script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@3.3.0/dist/tf-core.min.js"></script>-->
 
     <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
 
@@ -52,122 +47,208 @@
 </head>
 
 <body>
-    <section class="section">
 
-        <h1 class="title has-text-centered">Deep Reinforcement Learning Interactive Demo</h1>
+    <h1 class="title has-text-centered">Deep Reinforcement Learning Interactive Demo</h1>
 
-        <div id="canvas_container">
-            <!--<canvas id="main_screen2" width="1300" height="350" style="background-color: lightgrey" ></canvas>-->
+    <div class="container">
+
+        <div class="row justify-content-md-center">
+            <div class="col col-md-auto">
+                <div id="canvas_container"></div>
+            </div>
         </div>
 
-
-        <div>
-            <div class="buttonscontainer ib">
-                <button id="runButton" class="btn btn-primary"> Start </button>
-                <button id="resetButton" class="btn btn-primary"> Reset Simulation </button>
+        <div class="row justify-content-md-center g-2 mt-1">
+            <div class="col col-md-auto">
+                <button id="runButton" class="btn btn-success"> Start </button>
             </div>
-            <div class="buttonscontainer ib">
+            <div class="col col-md-auto">
+                <button id="resetButton" class="btn btn-danger"> Reset Simulation </button>
+            </div>
+            <div class="col col-md-auto">
                 <button id="followAgentButton" class="btn btn-primary"> Follow agent </button>
             </div>
-            <div class="buttonscontainer ib">
+            <div class="col col-md-auto">
                 <button id="jointsButton" class="btn btn-primary"> Draw joints </button>
+            </div>
+            <div class="col col-md-auto">
                 <button id="lidarsButton" class="btn btn-primary"> Draw lidars </button>
+            </div>
+            <div class="col col-md-auto">
                 <button id="sensorsButton" class="btn btn-primary"> Draw sensors </button>
             </div>
-            <form class="ib" onsubmit="return false">
-                <label for="models">Choose a model to load:</label>
-                <select name="models" id="models">
-                </select>
-            </form>
-            <div class="ib">
-                <p>Resize the canvas: </p>
-                <input type="range" min="1" max="2" value="1" class="slider" id="resizeCanvasSlider">
-            </div>
-
         </div>
 
-        <hr>
+        <form id="config-form" onsubmit="return false">
+            <div class="row justify-content-md-center g-2 mt-1">
+                <div class="col col-md-auto">
+                    <label for="models">Choose a model to load:</label>
+                    <select name="models" id="models" class="form-select">
+                    </select>
+                </div>
 
-        <div class="ib">
-            <div>
-                <p>Horizontal scroll:</p>
-                <input type="range" min="0" max="100" value="0" class="slider" id="hScrollSlider">
-                <!--<span id="hScrollValue"></span>-->
-                <button id="resetHScroll">Reset</button>
+                <div class="col">
+                    <p>Canvas size </p>
+                    <input type="range" class="form-range" min="1" max="2" value="1" id="resizeCanvasSlider">
+                </div>
             </div>
 
-            <div>
-                <p>Vertical scroll:</p>
-                <input type="range" min="-50" max="100" value="0" class="slider" id="vScrollSlider">
-                <!--<span id="vScrollValue"></span>-->
-                <button id="resetVScroll">Reset</button>
-            </div>
-
-            <div>
-                <p>Zoom:</p>
-                <input type="range" min="0.3" max="1.5" value="1" class="slider" id="zoomSlider">
-                <span id="zoomValue"></span>
-                <button id="resetZoom">Reset</button>
-            </div>
-        </div>
-
-        <div class="ib">
-            <h1> <strong>Parkour Generation</strong> </h1>
-            <div class="ib">
-                <p>Terrain shape:</p>
-                <div class="slidecontainer">
-                    <input type="range" min="-1" max="1" value="0" class="slider" id="dim1Slider">
-                    <span id="dim1Value"></span>
-                </div>
-                <div class="slidecontainer">
-                    <input type="range" min="-1" max="1" value="0" class="slider" id="dim2Slider">
-                    <span id="dim2Value"></span>
-                </div>
-                <div class="slidecontainer">
-                    <input type="range" min="-1" max="1" value="0" class="slider" id="dim3Slider">
-                    <span id="dim3Value"></span>
-                </div>
-                <div class="slidecontainer">
-                    <span>Smoothing: </span>
-                    <input type="range" min="10" max="40" value="20" class="slider" id="smoothingSlider">
-                    <span id="smoothingValue"></span>
-                </div>
-                <div class="slidecontainer">
-                    <span>Water level: </span>
-                    <input type="range" min="0" max="1" value="0" class="slider" id="waterSlider">
-                    <span id="waterValue"></span>
-                </div>
-            </div>
-            <div id="creepers" class="ib">
-                <p>Creepers:</p>
-                <div class="slidecontainer">
-                    <span>Width: </span>
-                    <input type="range" min="0.2" max="1" value="0.3" class="slider" id="creepersWidthSlider">
-                    <span id="creepersWidthValue"></span>
-                </div>
-                <div class="slidecontainer">
-                    <span>Height: </span>
-                    <input type="range" min="0.2" max="5" value="3" class="slider" id="creepersHeightSlider">
-                    <span id="creepersHeightValue"></span>
-                </div>
-                <div class="slidecontainer">
-                    <span>Spacing: </span>
-                    <input type="range" min="0.01" max="5" value="1" class="slider" id="creepersSpacingSlider">
-                    <span id="creepersSpacingValue"></span>
-                </div>
-                <form id="creepersType">
-                    <div>
-                        Type:
-                        <input id="rigid" type="radio" name="creepersType" value=false checked>
-                        <label for="rigid">Rigid</label>
-
-                        <input id="swingable" type="radio" name="creepersType" value=true>
-                        <label for="swingable">Swingable</label>
+            <div class="row justify-content-md-center g-2 mt-1">
+                <div class="row justify-content-md-center g-2 mt-1">
+                    <div class="col">
+                        <label for="hScrollSlider" class="form-label">Horizontal scroll</label>
+                        <input type="range" class="form-range" min="0" max="100" value="0" id="hScrollSlider">
+                        <button id="resetHScroll" class="btn btn-primary"> Reset </button>
                     </div>
-                </form>
+
+                    <div class="col">
+                        <label for="vScrollSlider" class="form-label">Vertical scroll</label>
+                        <input type="range" class="form-range" min="-50" max="100" value="0" id="vScrollSlider">
+                        <button id="resetVScroll" class="btn btn-primary"> Reset </button>
+                    </div>
+
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <label for="zoomSlider" class="form-label">Zoom</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                <input type="range" class="form-range" min="0.3" max="1.5" value="1" id="zoomSlider">
+                            </div>
+                            <div class="col-1">
+                                <span id="zoomValue"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button id="resetZoom" class="btn btn-primary"> Reset </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-md-center mt-3 mx-1">
+                    Parkour Generation
+                </div>
+
+                <div class="row justify-content-md-center mt-3 mx-1">
+                    <div class="col">
+                        <div class="row">
+                            <label for="hScrollSlider" class="form-label">Terrain shape</label>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                <input type="range" class="form-range" min="-1" max="1" id="dim1Slider">
+                            </div>
+                            <div class="col">
+                                <span id="dim1Value"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                <input type="range" class="form-range" min="-1" max="1" id="dim2Slider">
+                            </div>
+                            <div class="col">
+                                <span id="dim2Value"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                <input type="range" class="form-range" min="-1" max="1" id="dim3Slider">
+                            </div>
+                            <div class="col">
+                                <span id="dim3Value"></span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <label for="hScrollSlider" class="form-label">Smoothing</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="range" class="form-range" min="10" max="40" value="20"
+                                    id="smoothingSlider">
+                            </div>
+                            <div class="col">
+                                <span id="smoothingValue"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="hScrollSlider" class="form-label">Water level</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="range" class="form-range" min="0" max="1" value="0" id="waterSlider">
+                            </div>
+                            <div class="col">
+                                <span id="waterValue"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-md-center mt-3 mx-1">
+                    Creepers
+                </div>
+
+                <div class="row justify-content-md-center mt-3 mx-1">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <label for="creepersWidthSlider" class="form-label">Width</label>
+                            </div>
+                            <div class="col">
+                                <input type="range" class="form-range" min="0.2" max="1" value="0.3"
+                                    id="creepersWidthSlider">
+                            </div>
+                            <div class="col">
+                                <span id="creepersWidthValue"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label for="creepersHeightSlider" class="form-label">Height</label>
+                            </div>
+                            <div class="col">
+                                <input type="range" class="form-range" min="0.2" max="5" value="3"
+                                    id="creepersHeightSlider">
+                            </div>
+                            <div class="col">
+                                <span id="creepersHeightValue"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label for="creepersSpacingSlider" class="form-label">Spacing</label>
+                            </div>
+                            <div class="col">
+                                <input type="range" class="form-range" min="0.01" max="5" value="1"
+                                    id="creepersSpacingSlider">
+                            </div>
+                            <div class="col">
+                                <span id="creepersSpacingValue"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        Type:
+                        <select name="creepersType" id="creepersType" class="form-select">
+                            <option>Rigid</option>
+                            <option>Swingable</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
-        </div>
-    </section>
+        </form>
+    </div>
     <script src="./index.js"></script>
 </body>
 

@@ -86,7 +86,7 @@ lidarsButton.onclick = function () {
 }
 
 let sensorsButton = document.getElementById("sensorsButton");
-window.draw_sensors = true;
+window.draw_sensors = false; // todo: fix the sensor rendering before enabling this
 sensorsButton.onclick = function () {
     window.draw_sensors = !window.draw_sensors;
     window.game.env.render();
@@ -201,17 +201,12 @@ initializeSlider("smoothing", 0.01, 20);
 
 
 function getCreepersType() {
-    let data = new FormData(creepersTypeForm);
-    let output = "";
-    for (const entry of data) {
-        output = entry[1];
-    };
-    return output == 'true';
+    return document.getElementById("creepersType").value == 'Rigid';
 }
 
 // Creeper Type form
-let creepersTypeForm = document.getElementById("creepersType");
-creepersTypeForm.onclick = function () {
+let creepersTypeSelect = document.getElementById("creepersType");
+creepersType.onclick = function () {
     init_default();
 }
 
