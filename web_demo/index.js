@@ -1,6 +1,3 @@
-
-
-
 function init(cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
     let canvas_id = 'main_screen2';
 
@@ -8,6 +5,16 @@ function init(cppn_input_vector, water_level, creepers_width, creepers_height, c
     window.game.env.set_zoom(parseFloat(zoomSlider.value) * parseFloat(resizeCanvasSlider.value));
     window.game.env.set_scroll(hScrollSlider.value, vScrollSlider.value);
     window.game.env.render();
+}
+
+function init_default() {
+    init([dim1Slider.value, dim2Slider.value, dim3Slider.value],
+        waterSlider.value,
+        creepersWidthSlider.value,
+        creepersHeightSlider.value,
+        creepersSpacingSlider.value,
+        smoothingSlider.value,
+        getCreepersType());
 }
 
 function addAgentModel(modelName) {
@@ -169,148 +176,29 @@ resetZoom.onclick = function () {
 /* CPPN ENCODING */
 
 // dim1 slider
-let dim1Slider = document.getElementById("dim1Slider");
-dim1Slider.step = 0.01;
-dim1Slider.value = 0;
-let dim1Value = document.getElementById("dim1Value");
-dim1Value.innerHTML = dim1Slider.value; // Display the default slider value
-dim1Slider.oninput = function () {
-    dim1Value.innerHTML = this.value;
-    runButton.innerText = "Start";
-    init([dim1Slider.value, dim2Slider.value, dim3Slider.value],
-        waterSlider.value,
-        creepersWidthSlider.value,
-        creepersHeightSlider.value,
-        creepersSpacingSlider.value,
-        smoothingSlider.value,
-        getCreepersType());
-}
+initializeSlider("dim1", 0.01, 0);
 
 // dim2 slider
-let dim2Slider = document.getElementById("dim2Slider");
-dim2Slider.step = 0.01;
-dim2Slider.value = 0;
-let dim2Value = document.getElementById("dim2Value");
-dim2Value.innerHTML = dim2Slider.value; // Display the default slider value
-dim2Slider.oninput = function () {
-    dim2Value.innerHTML = this.value;
-    runButton.innerText = "Start";
-    init([dim1Slider.value, dim2Slider.value, dim3Slider.value],
-        waterSlider.value,
-        creepersWidthSlider.value,
-        creepersHeightSlider.value,
-        creepersSpacingSlider.value,
-        smoothingSlider.value,
-        getCreepersType());
-}
+initializeSlider("dim2", 0.01, 0);
 
 // dim3 slider
-let dim3Slider = document.getElementById("dim3Slider");
-dim3Slider.step = 0.01;
-dim3Slider.value = 0;
-let dim3Value = document.getElementById("dim3Value");
-dim3Value.innerHTML = dim3Slider.value; // Display the default slider value
-dim3Slider.oninput = function () {
-    dim3Value.innerHTML = this.value;
-    runButton.innerText = "Start";
-    init([dim1Slider.value, dim2Slider.value, dim3Slider.value],
-        waterSlider.value,
-        creepersWidthSlider.value,
-        creepersHeightSlider.value,
-        creepersSpacingSlider.value,
-        smoothingSlider.value,
-        getCreepersType());
-}
+initializeSlider("dim3", 0.01, 0);
 
 // water slider
-let waterSlider = document.getElementById("waterSlider");
-waterSlider.step = 0.01;
-waterSlider.value = 0;
-let waterValue = document.getElementById("waterValue");
-waterValue.innerHTML = waterSlider.value; // Display the default slider value
-waterSlider.oninput = function () {
-    waterValue.innerHTML = this.value;
-    runButton.innerText = "Start";
-    init([dim1Slider.value, dim2Slider.value, dim3Slider.value],
-        waterSlider.value,
-        creepersWidthSlider.value,
-        creepersHeightSlider.value,
-        creepersSpacingSlider.value,
-        smoothingSlider.value,
-        getCreepersType());
-}
+initializeSlider("water", 0.01, 0);
 
 // creepersWidth slider
-let creepersWidthSlider = document.getElementById("creepersWidthSlider");
-creepersWidthSlider.step = 0.01;
-creepersWidthSlider.value = 0.3;
-let creepersWidthValue = document.getElementById("creepersWidthValue");
-creepersWidthValue.innerHTML = creepersWidthSlider.value; // Display the default slider value
-creepersWidthSlider.oninput = function () {
-    creepersWidthValue.innerHTML = this.value;
-    runButton.innerText = "Start";
-    init([dim1Slider.value, dim2Slider.value, dim3Slider.value],
-        waterSlider.value,
-        creepersWidthSlider.value,
-        creepersHeightSlider.value,
-        creepersSpacingSlider.value,
-        smoothingSlider.value,
-        getCreepersType());
-}
+initializeSlider("creepersWidth", 0.01, 0.3);
 
 // creepersHeight slider
-let creepersHeightSlider = document.getElementById("creepersHeightSlider");
-creepersHeightSlider.step = 0.01;
-creepersHeightSlider.value = 3;
-let creepersHeightValue = document.getElementById("creepersHeightValue");
-creepersHeightValue.innerHTML = creepersHeightSlider.value; // Display the default slider value
-creepersHeightSlider.oninput = function () {
-    creepersHeightValue.innerHTML = this.value;
-    runButton.innerText = "Start";
-    init([dim1Slider.value, dim2Slider.value, dim3Slider.value],
-        waterSlider.value,
-        creepersWidthSlider.value,
-        creepersHeightSlider.value,
-        creepersSpacingSlider.value,
-        smoothingSlider.value,
-        getCreepersType());
-}
+initializeSlider("creepersHeight", 0.01, 3);
 
 // creepersSpacing slider
-let creepersSpacingSlider = document.getElementById("creepersSpacingSlider");
-creepersSpacingSlider.step = 0.01;
-creepersSpacingSlider.value = 1;
-let creepersSpacingValue = document.getElementById("creepersSpacingValue");
-creepersSpacingValue.innerHTML = creepersSpacingSlider.value; // Display the default slider value
-creepersSpacingSlider.oninput = function () {
-    creepersSpacingValue.innerHTML = this.value;
-    runButton.innerText = "Start";
-    init([dim1Slider.value, dim2Slider.value, dim3Slider.value],
-        waterSlider.value,
-        creepersWidthSlider.value,
-        creepersHeightSlider.value,
-        creepersSpacingSlider.value,
-        smoothingSlider.value,
-        getCreepersType());
-}
+initializeSlider("creepersSpacing", 0.01, 1);
 
 // smoothing slider
-let smoothingSlider = document.getElementById("smoothingSlider");
-smoothingSlider.step = 0.01;
-smoothingSlider.value = 20;
-let smoothingValue = document.getElementById("smoothingValue");
-smoothingValue.innerHTML = smoothingSlider.value; // Display the default slider value
-smoothingSlider.oninput = function () {
-    smoothingValue.innerHTML = this.value;
-    runButton.innerText = "Start";
-    init([dim1Slider.value, dim2Slider.value, dim3Slider.value],
-        waterSlider.value,
-        creepersWidthSlider.value,
-        creepersHeightSlider.value,
-        creepersSpacingSlider.value,
-        smoothingSlider.value,
-        getCreepersType());
-}
+initializeSlider("smoothing", 0.01, 20);
+
 
 function getCreepersType() {
     let data = new FormData(creepersTypeForm);
@@ -324,11 +212,19 @@ function getCreepersType() {
 // Creeper Type form
 let creepersTypeForm = document.getElementById("creepersType");
 creepersTypeForm.onclick = function () {
-    init([dim1Slider.value, dim2Slider.value, dim3Slider.value],
-        waterSlider.value,
-        creepersWidthSlider.value,
-        creepersHeightSlider.value,
-        creepersSpacingSlider.value,
-        smoothingSlider.value,
-        getCreepersType());
+    init_default();
+}
+
+
+function initializeSlider(id, step, value) {
+    const slider = document.getElementById(`${id}Slider`);
+    slider.step = step;
+    slider.value = value;
+    const sliderValue = document.getElementById(`${id}Value`);
+    sliderValue.innerHTML = slider.value; // Display the default slider value
+    slider.oninput = function () {
+        sliderValue.innerHTML = this.value;
+        runButton.innerText = "Start";
+        init_default();
+    }
 }
