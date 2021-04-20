@@ -2,4 +2,7 @@
 node_modules
 .idea
 web_demo/models
+web_demo/policy_models
+policies.json
 models.csv
+.ipynb_checkpoints/
