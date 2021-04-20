@@ -5,7 +5,8 @@ const SCALE  = 30 // affects how fast-paced the game is, forces should be adjust
 const VIEWPORT_W = 600
 const VIEWPORT_H = 400
 
-let RENDERING_VIEWER_W = 2 * VIEWPORT_W
+//let RENDERING_VIEWER_W = 2 * VIEWPORT_W
+let RENDERING_VIEWER_W = 0.8 * window.innerWidth;
 let RENDERING_VIEWER_H = VIEWPORT_H
 
 const NB_LIDAR = 10
