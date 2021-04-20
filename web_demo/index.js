@@ -63,12 +63,14 @@ async function testAgentModelSelector(){
                     //let morph_group = createSelectOptGroup(morphology["morphology"]);
                     select_morphology.appendChild(createSelectOption(morphology["morphology"]));
 
-                    morphology["seeds"].forEach(seed => {
-                        //console.log(seed["seed"] + ":" + seed["path"]);
-                        //morph_group.appendChild(createSelectOption(type["type"] + " > " + morphology["morphology"] + " > " + seed["seed"]));
-                        select_models.appendChild(createSelectOption(/*type["type"] + " > " + morphology["morphology"] + " > " +*/ seed["seed"],
-                                                            seed["path"]));
-                    });
+                    if(morphologyDropdown.value == morphology["morphology"]){
+                        morphology["seeds"].forEach(seed => {
+                            //console.log(seed["seed"] + ":" + seed["path"]);
+                            //morph_group.appendChild(createSelectOption(type["type"] + " > " + morphology["morphology"] + " > " + seed["seed"]));
+                            select_models.appendChild(createSelectOption(morphology["morphology"] + "_" + seed["seed"],
+                                seed["path"]));
+                        });
+                    }
                     //type_group.appendChild(morph_group);
                 });
                 //select.appendChild(type_group);
@@ -89,8 +91,7 @@ morphologyDropdown.oninput = function (){
         for(let morphology of type["morphologies"]){
             if(morphology["morphology"] == this.value) {
                 for(let seed of morphology["seeds"]){
-                    modelsDropdown.appendChild(createSelectOption(seed["seed"],
-                        seed["path"]));
+                    modelsDropdown.appendChild(createSelectOption(morphology["morphology"] + "_" + seed["seed"], seed["path"]));
                 }
             }
         }
@@ -117,7 +118,8 @@ async function loadModel() {
         creepersWidthSlider.value,
         creepersHeightSlider.value,
         creepersSpacingSlider.value,
-        smoothingSlider.value);
+        smoothingSlider.value,
+        getCreepersType());
 }
 
 
@@ -278,7 +280,7 @@ initializeSlider("smoothing", 0.01, 20);
 
 
 function getCreepersType() {
-    return document.getElementById("creepersType").value == 'Rigid';
+    return document.getElementById("creepersType").value == 'Swingable';
 }
 
 // Creeper Type form
