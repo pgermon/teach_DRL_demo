@@ -191,9 +191,10 @@ followAgentButton.onclick = function () {
 
 let resizeCanvasSlider = document.getElementById("resizeCanvasSlider");
 resizeCanvasSlider.step = 0.01;
-resizeCanvasSlider.value = 1;
+resizeCanvasSlider.value = 0.8;
 resizeCanvasSlider.oninput = function () {
-    window.game.env._SET_RENDERING_VIEWPORT_SIZE(VIEWPORT_W * 2 * parseFloat(this.value), RENDERING_VIEWER_H, true);
+    //window.game.env._SET_RENDERING_VIEWPORT_SIZE(VIEWPORT_W * 2 * parseFloat(this.value), RENDERING_VIEWER_H, true);
+    window.game.env._SET_RENDERING_VIEWPORT_SIZE(window.innerWidth * parseFloat(this.value), RENDERING_VIEWER_H, true);
     window.game.env.set_zoom(parseFloat(this.value) * parseFloat(zoomSlider.value));
     resizeCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H);
 }
