@@ -5,11 +5,10 @@ body_type_mapping.set("bipedal", "classic_bipedal");
 body_type_mapping.set("chimpanzee", "climbing_profile_chimpanzee");
 
 function init(agent_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
-    let canvas_id = 'main_screen2';
 
     const supported_body_type = body_type_mapping.get(agent_body_type);
 
-    window.game = new ParkourGame(config, canvas_id, supported_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
+    window.game = new ParkourGame(supported_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
     window.game.env.set_zoom(parseFloat(zoomSlider.value) /* * parseFloat(resizeCanvasSlider.value)*/);
     window.game.env.set_scroll(hScrollSlider.value, vScrollSlider.value);
     window.game.env.render();

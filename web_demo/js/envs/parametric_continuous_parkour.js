@@ -28,7 +28,6 @@ const NB_FIRST_STEPS_HANG = 5
 
 class ParametricContinuousParkour {
 
-    //constructor(water_level, config/*, agent_body_type*/, lidars_type="down"){
     constructor(agent_body_type, input_CPPN_dim=3, terrain_cppn_scale=10,
                 ceiling_offset=200, ceiling_clip_offset=0, water_clip=20,
                 movable_creepers=false, walker_args){
