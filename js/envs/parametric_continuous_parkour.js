@@ -28,7 +28,6 @@ const NB_FIRST_STEPS_HANG = 5
 
 class ParametricContinuousParkour {
 
-    //constructor(water_level, config/*, agent_body_type*/, lidars_type="down"){
     constructor(agent_body_type, input_CPPN_dim=3, terrain_cppn_scale=10,
                 ceiling_offset=200, ceiling_clip_offset=0, water_clip=20,
                 movable_creepers=false, walker_args){
@@ -157,7 +156,6 @@ class ParametricContinuousParkour {
         this.world.SetContactListener(this.contact_listener);
         this.critical_contact = false;
         this.prev_shaping = null;
-        //this.scroll = [- 0.05 * RENDERING_VIEWER_W, 0];
         this.scroll = [0, 0];
         this.water_y = this.GROUND_LIMIT;
         this.nb_steps_outside_water = 0;
@@ -170,34 +168,11 @@ class ParametricContinuousParkour {
             this.lidar.push(new LidarCallback(this.agent_body.reference_head_object.GetFixtureList().GetFilterData().maskBits));
         }
 
-        let actions_to_play = Array.from({length: this.agent_body.motors.length}, () => 0);
-        //let actions_to_play = [];
+        let actions_to_play = Array.from({length: this.agent_body.get_action_size()}, () => 0);
 
         // If embodiment is a climber, make it start hanging on the ceiling using a few steps to let the Box2D solver handle positions.
         if(this.agent_body.body_type == BodyTypesEnum.CLIMBER){
-            // Init climber
-            let y_diff = 0;
-            for(let i = 0; i < this.agent_body.sensors.length; i++){
-               actions_to_play[actions_to_play.length - i - 1] = 1;
-               // Hang sensor
-                let sensor = this.agent_body.sensors[this.agent_body.sensors.length - i - 1];
-                let sensor_position = sensor.GetPosition();
-                if(y_diff == 0){
-                    y_diff = TERRAIN_HEIGHT + this.ceiling_offset - sensor_position.y;
-                }
-                sensor.SetTransform(new b2.Vec2(sensor_position.x, TERRAIN_HEIGHT + this.ceiling_offset),
-                                    sensor.GetAngle());
-            }
-
-            for(let body_part of this.agent_body.body_parts){
-                let body_part_pos = body_part.GetPosition();
-                body_part.SetTransform(new b2Vec2(body_part_pos.x, body_part_pos.y + y_diff),
-                                        body_part.GetAngle());
-            }
-
-            for(let i = 0; i < NB_FIRST_STEPS_HANG; i++){
-                this.step(actions_to_play);
-            }
+            this.init_climber_pos(actions_to_play);
         }
 
         let initial_state = this.step(actions_to_play)[0];
@@ -205,6 +180,34 @@ class ParametricContinuousParkour {
         this.nb_steps_under_water = 0;
         this.episodic_reward = 0;
         return initial_state;
+    }
+
+    init_climber_pos(actions_to_play){
+        // Init climber
+        let y_diff = 0;
+        for(let i = 0; i < this.agent_body.sensors.length; i++){
+            actions_to_play[actions_to_play.length - i - 1] = 1;
+            // Hang sensor
+            let sensor = this.agent_body.sensors[this.agent_body.sensors.length - i - 1];
+            let sensor_position = sensor.GetPosition();
+            let idx = Math.round(sensor_position.x / ((TERRAIN_LENGTH + this.TERRAIN_STARTPAD) * TERRAIN_STEP) * (TERRAIN_LENGTH + this.TERRAIN_STARTPAD));
+            if(y_diff == 0){
+                y_diff = this.terrain_ceiling_y[idx] - sensor_position.y;
+                //y_diff = TERRAIN_HEIGHT + this.ceiling_offset - sensor_position.y;
+            }
+            sensor.SetTransform(new b2.Vec2(sensor_position.x, this.terrain_ceiling_y[idx]),
+                sensor.GetAngle());
+        }
+
+        for(let body_part of this.agent_body.body_parts){
+            let body_part_pos = body_part.GetPosition();
+            body_part.SetTransform(new b2Vec2(body_part_pos.x, body_part_pos.y + y_diff),
+                body_part.GetAngle());
+        }
+
+        for(let i = 0; i < NB_FIRST_STEPS_HANG; i++){
+            this.step(actions_to_play);
+        }
     }
 
     step(action){
@@ -239,15 +242,7 @@ class ParametricContinuousParkour {
         let pos = head.GetPosition();
         let vel = head.GetLinearVelocity();
 
-        for(let i = 0; i < NB_LIDAR; i++){
-            this.lidar[i].fraction = 1.0;
-            this.lidar[i].p1 = pos;
-            this.lidar[i].p2 = new b2.Vec2(
-                pos.x + Math.sin(this.lidar_angle * i / NB_LIDAR + this.lidar_y_offset) * LIDAR_RANGE,
-                pos.y - Math.cos(this.lidar_angle * i / NB_LIDAR + this.lidar_y_offset) * LIDAR_RANGE
-            );
-            this.world.RayCast(this.lidar[i], this.lidar[i].p1, this.lidar[i].p2);
-        }
+        this.update_lidars(pos);
 
         let is_under_water = pos.y <= this.water_y;
         if(!is_agent_dead){
@@ -300,12 +295,12 @@ class ParametricContinuousParkour {
         state = state.concat(surface_detected)
 
         // Update scroll to stay centered on the agent position
-        if(window.follow_agent){
+        /*if(window.follow_agent){
             this.scroll = [
                 pos.x * this.scale * this.zoom - RENDERING_VIEWER_W/5,
                 pos.y * this.scale * this.zoom - RENDERING_VIEWER_H/3
             ];
-        }
+        }*/
 
         let shaping = 130 * pos.x / SCALE; // moving forward is a way to receive reward (normalized to get 300 on completion)
         // TODO: check if has attribute remove_reward_on_head_angle
@@ -337,6 +332,18 @@ class ParametricContinuousParkour {
 
         return [state, reward, done, {"success": this.episodic_reward > 230}];
         //return [[], 0, false, {"success": false}];
+    }
+
+    update_lidars(pos){
+        for(let i = 0; i < NB_LIDAR; i++){
+            this.lidar[i].fraction = 1.0;
+            this.lidar[i].p1 = pos;
+            this.lidar[i].p2 = new b2.Vec2(
+                pos.x + Math.sin(this.lidar_angle * i / NB_LIDAR + this.lidar_y_offset) * LIDAR_RANGE,
+                pos.y - Math.cos(this.lidar_angle * i / NB_LIDAR + this.lidar_y_offset) * LIDAR_RANGE
+            );
+            this.world.RayCast(this.lidar[i], this.lidar[i].p1, this.lidar[i].p2);
+        }
     }
 
     close(){
@@ -474,7 +481,7 @@ class ParametricContinuousParkour {
         this.terrain_ceiling_y = [];
         this.terrain_creepers = [];
         let x = 0;
-        let max_x = x + TERRAIN_LENGTH * TERRAIN_STEP + this.TERRAIN_STARTPAD * TERRAIN_STEP;
+        let max_x = x + (TERRAIN_LENGTH + this.TERRAIN_STARTPAD) * TERRAIN_STEP;
 
         // Generation of the terrain
         let i = 0;
@@ -715,19 +722,44 @@ class ParametricContinuousParkour {
         }
     }
 
-    _generate_agent(){
-        let init_x = TERRAIN_STEP * this.TERRAIN_STARTPAD / 2;
-        let init_y = TERRAIN_HEIGHT + this.agent_body.AGENT_CENTER_HEIGHT; // set y position according to the agent
+    _generate_agent(init_x=null, init_y=null, set_pos=false){
+
+        if(init_x == null){
+            init_x = TERRAIN_STEP * this.TERRAIN_STARTPAD / 2;
+        }
+
+        if(init_y == null){
+            init_y = TERRAIN_HEIGHT + this.agent_body.AGENT_CENTER_HEIGHT; // set y position according to the agent
+        }
 
         this.agent_body.draw(this.world, init_x, init_y, 0 /*Math.random() * 2 * INITIAL_RANDOM - INITIAL_RANDOM*/);
+
+        if(set_pos && this.agent_body.body_type == BodyTypesEnum.CLIMBER){
+            this.init_climber_pos(Array.from({length: this.agent_body.get_action_size()}, () => 0));
+        }
     }
 
 
-    set_agent_position(position){
-        this.agent_body.reference_head_object.m_xf.p.Assign(new b2.Vec2(position/100 * TERRAIN_LENGTH * TERRAIN_STEP/this.zoom, VIEWPORT_H/2));
+    set_agent_position(x) {
+        this.agent_body.destroy(this.world);
+        let init_x = x * (TERRAIN_LENGTH + this.TERRAIN_STARTPAD) * TERRAIN_STEP;
+        let init_y;
+        let idx = x < 1 ? Math.floor(x * (TERRAIN_LENGTH + this.TERRAIN_STARTPAD)) : TERRAIN_LENGTH + this.TERRAIN_STARTPAD - 1;
+
+        if (this.agent_body.body_type == BodyTypesEnum.CLIMBER) {
+            init_y = null;
+        } else if (this.agent_body.body_type == BodyTypesEnum.WALKER) {
+            init_y = this.terrain_ground_y[idx] + this.agent_body.AGENT_CENTER_HEIGHT;
+        }
+
+        this._generate_agent(init_x, init_y, true);
+
+        if (this.agent_body.body_type != BodyTypesEnum.CLIMBER) {
+            this.step(Array.from({length: this.agent_body.get_action_size()}, () => 0));
+        }
     }
 
-    set_scroll(h, v){
+    set_scroll(h=null, v=null){
         if(window.follow_agent){
             this.scroll = [
                 this.agent_body.reference_head_object.GetPosition().x * this.scale * this.zoom - RENDERING_VIEWER_W/5,

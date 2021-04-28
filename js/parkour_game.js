@@ -1,26 +1,23 @@
-// import * as tf from '@tensorflow/tfjs';
+class ParkourGame {
+    constructor(agent_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
 
-
-class ParkourHeadlessGame {
-    constructor(config, agent_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
-        this.config = config
+        this.draw_fps = 60;
         this.obs = [];
         this.initWorld(agent_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
+
+        this.nb_steps = 0;
+        this.running = false;
     }
 
     initWorld(agent_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
 
-        //let agent_body_type = "old_classic_bipedal";
-        //let lidars_type = "down";
-        //let agent_body_type = "climbing_profile_chimpanzee";
-        //let lidars_type = "up";
         this.env = new ParametricContinuousParkour(agent_body_type,
-                                                    3,
-                                                    10,
-                                                    200,
-                                                    25,
-                                                    20,
-                                                    creepers_type);
+            3,
+            10,
+            200,
+            25,
+            20,
+            creepers_type);
 
         this.env.set_environment(cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
 
@@ -33,19 +30,7 @@ class ParkourHeadlessGame {
 
         this.obs.push(this.env.reset());
 
-        this.nb_actions = this.env.agent_body.motors.length;
-        //this.stateSize = this.env.bodies.length * 10 + this.env.joints.length * 3
-    }
-
-}
-
-class ParkourGame extends ParkourHeadlessGame {
-    constructor(config, canvas_id, agent_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
-        config.canvas_id = canvas_id;
-        super(config, agent_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
-        this.nb_steps = 0;
-        this.done = false;
-        this.running = false;
+        this.nb_actions = this.env.agent_body.get_action_size();
     }
 
 
@@ -63,7 +48,7 @@ class ParkourGame extends ParkourHeadlessGame {
 
             this.runtime = setInterval(() => {
                 this.play(model);
-            }, 1000 / this.config.draw_fps);
+            }, 1000 / this.draw_fps);
             this.running = true;
             return "Pause"
         }
@@ -92,7 +77,6 @@ class ParkourGame extends ParkourHeadlessGame {
         let output = 'main/mul:0'
 
         let actions = model.execute(inputs, output).arraySync()[0];
-
 
         let ret = this.env.step(actions, 1);
         this.obs.push(ret[0]);
