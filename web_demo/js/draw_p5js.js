@@ -12,7 +12,7 @@ let JOINTS_COLORS = {
 };
 
 function setup() {
-    let canvas = createCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H);
+    window.canvas = createCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H);
     canvas.parent("canvas_container");
     canvas.style('display', 'block');
     canvas.style('margin-left', 'auto');
@@ -66,8 +66,10 @@ function draw() {
             }
             drawJoints(joints, parkour.scale);
 
-            joints = [...parkour.agent_body.sensors.map(s => s.GetUserData().has_joint ? s.GetUserData().joint : null)];
-            drawJoints(joints, parkour.scale);
+            if(parkour.agent_body.body_type == BodyTypesEnum.CLIMBER){
+                joints = [...parkour.agent_body.sensors.map(s => s.GetUserData().has_joint ? s.GetUserData().joint : null)];
+                drawJoints(joints, parkour.scale);
+            }
         }
 
         if(window.draw_sensors){
@@ -105,6 +107,11 @@ function drawJoints(joints, scale){
 }
 
 function drawAgent(parkour, scale){
+    let stroke_coef = 1;
+    if(parkour.agent_body.is_selected){
+        stroke_coef = 2;
+    }
+
     let polys = parkour.agent_body.get_elements_to_render();
     for(let poly of polys){
         let shape = poly.GetFixtureList().GetShape();
@@ -113,7 +120,7 @@ function drawAgent(parkour, scale){
             let world_pos = poly.GetWorldPoint(shape.m_vertices[i]);
             vertices.push([world_pos.x, world_pos.y]);
         }
-        strokeWeight(2/scale);
+        strokeWeight(stroke_coef * 2/scale);
         stroke(poly.color2);
         let color1 = poly.color1;
         if(poly == parkour.agent_body.reference_head_object){
@@ -172,6 +179,11 @@ function drawSkyClouds(parkour){
 }
 
 function drawParkour(parkour){
+    // Update scroll to stay centered on the agent position
+    if(window.follow_agent){
+        parkour.set_scroll();
+    }
+
     // Sky & clouds
     drawSkyClouds(parkour);
 
