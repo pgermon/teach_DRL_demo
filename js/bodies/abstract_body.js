@@ -87,13 +87,19 @@ class AbstractBody {
 
                 // check if the edge between v1 and v2 cross the mouse y-coordinate
                 if(mousePos.y >= Math.min(v1.y, v2.y) && mousePos.y <= Math.max(v1.y, v2.y)){
+                    let intersection_x;
 
                     // compute the equation of the line between v1 and v2
                     let a = (v2.y - v1.y) / (v2.x - v1.x);
                     let b = v1.y - a * v1.x;
 
                     // compute the x-coordinate of the intersection point
-                    let intersection_x = (mousePos.y - b) / a;
+                    if(Math.abs(a) == Infinity){
+                        intersection_x = v1.x;
+                    }
+                    else{
+                        intersection_x = (mousePos.y - b) / a;
+                    }
 
                     // increase the number of intersection only if the intersection point is to the rigth of the mouse x-coordinate
                     if(intersection_x >= mousePos.x) {
@@ -108,6 +114,12 @@ class AbstractBody {
             }
         }
         return false;
+    }
+
+    set_awake(bool){
+        for(let body of this.body_parts){
+            body.SetAwake(bool);
+        }
     }
 
     destroy(world){
