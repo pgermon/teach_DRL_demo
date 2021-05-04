@@ -9,8 +9,10 @@ function init(agent_body_type, cppn_input_vector, water_level, creepers_width, c
     const supported_body_type = body_type_mapping.get(agent_body_type);
 
     window.game = new ParkourGame(supported_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
+    nbAgents.innerText = window.game.env.agents.length + " agents";
+    window.agent_selected = null;
     window.game.env.set_zoom(parseFloat(zoomSlider.value) /* * parseFloat(resizeCanvasSlider.value)*/);
-    window.game.env.set_scroll(hScrollSlider.value, vScrollSlider.value);
+    window.game.env.set_scroll(window.agent_selected, hScrollSlider.value, vScrollSlider.value);
     window.game.env.render();
 }
 
@@ -87,9 +89,9 @@ async function testAgentModelSelector() {
 }
 
 let morphologyDropdown = document.getElementById("morphology");
+let modelsDropdown = document.getElementById("models");
 morphologyDropdown.oninput = function () {
-    init_default();
-    let modelsDropdown = document.getElementById("models");
+    //init_default();
     let length = modelsDropdown.options.length;
     for (let i = length - 1; i >= 0; i--) {
         modelsDropdown.options[i] = null;
@@ -116,6 +118,8 @@ async function renderAgentModelSelector() {
 }
 
 async function loadModel() {
+    window.multi_agents = true;
+    window.agent_selected = null;
     await testAgentModelSelector();
     //await renderAgentModelSelector();
     window.cppn_model = await tf.loadGraphModel('./js/CPPN/weights/same_ground_ceiling_cppn/tfjs_model/model.json');
@@ -130,12 +134,21 @@ window.addEventListener("load", loadModel, false);
 let runButton = document.getElementById("runButton");
 runButton.onclick = function () {
     //const policy = document.getElementById("models").value;
-    const policy = document.getElementById("models").value;
-    window.game.run(policy).then(text => this.innerText = text);
+    const policy = modelsDropdown.value;
+    window.game.run(policy).then(text => {
+        if(text == "Pause"){
+            this.className = "btn btn-warning";
+        }
+        else if(text == "Resume"){
+            this.className = "btn btn-success";
+        }
+        this.innerText = text
+    });
 }
 
 let resetButton = document.getElementById("resetButton");
 resetButton.onclick = function () {
+    runButton.className = "btn btn-success";
     runButton.innerText = "Start";
     const supported_body_type = body_type_mapping.get(morphologyDropdown.value);
     window.game.reset(
@@ -147,8 +160,10 @@ resetButton.onclick = function () {
         creepersSpacingSlider.value,
         smoothingSlider.value,
         getCreepersType());
+    nbAgents.innerText = window.game.env.agents.length + " agents";
+    window.agent_selected = null;
     window.game.env.set_zoom(parseFloat(zoomSlider.value)/* * parseFloat(resizeCanvasSlider.value)*/);
-    window.game.env.set_scroll(hScrollSlider.value, vScrollSlider.value);
+    window.game.env.set_scroll(window.agent_selected, hScrollSlider.value, vScrollSlider.value);
     window.game.env.render();
 }
 
@@ -156,6 +171,12 @@ let jointsButton = document.getElementById("jointsButton");
 window.draw_joints = false;
 jointsButton.onclick = function () {
     window.draw_joints = !window.draw_joints;
+    if(window.draw_joints){
+        this.className = "btn btn-primary";
+    }
+    else{
+        this.className = "btn btn-outline-primary";
+    }
     window.game.env.render();
 }
 
@@ -163,6 +184,12 @@ let lidarsButton = document.getElementById("lidarsButton");
 window.draw_lidars = true;
 lidarsButton.onclick = function () {
     window.draw_lidars = !window.draw_lidars;
+    if(window.draw_lidars){
+        this.className = "btn btn-primary";
+    }
+    else{
+        this.className = "btn btn-outline-primary";
+    }
     window.game.env.render();
 }
 
@@ -170,17 +197,45 @@ let sensorsButton = document.getElementById("sensorsButton");
 window.draw_sensors = false; // todo: fix the sensor rendering before enabling this
 sensorsButton.onclick = function () {
     window.draw_sensors = !window.draw_sensors;
+    if(window.draw_sensors){
+        this.className = "btn btn-primary";
+    }
+    else{
+        this.className = "btn btn-outline-primary";
+    }
     window.game.env.render();
 }
 
 let followAgentButton = document.getElementById("followAgentButton");
 followAgentButton.onclick = function () {
     window.follow_agent = !window.follow_agent;
-    if (window.follow_agent) {
-        window.game.env.set_scroll(0, 0);
+    if(window.follow_agent){
+        this.className = "btn btn-primary";
     }
+    else{
+        this.className = "btn btn-outline-primary";
+    }
+    //console.log(window.follow_agent);
+    //console.log(window.agent_selected);
+    //window.game.env.set_scroll(window.game.env.agents[0]);
     window.game.env.render();
 }
+
+let addAgentButton = document.getElementById("addAgentButton");
+let nbAgents = document.getElementById("nbAgents");
+addAgentButton.onclick = function () {
+    window.game.env.add_agent(body_type_mapping.get(morphologyDropdown.value), modelsDropdown.value);
+    window.game.env.render();
+    nbAgents.innerText = window.game.env.agents.length + " agents";
+}
+
+let deleteAgentButton = document.getElementById("deleteAgentButton");
+deleteAgentButton.onclick = function () {
+    window.game.env.delete_agent();
+    nbAgents.innerText = window.game.env.agents.length + " agents";
+    window.game.env.render();
+}
+
 
 /*let resizeCanvasSlider = document.getElementById("resizeCanvasSlider");
 resizeCanvasSlider.step = 0.01;
@@ -202,7 +257,8 @@ hScrollSlider.step = 0.1;
 hScrollSlider.oninput = function () {
     //hScrollValue.innerHTML = this.value;
     window.follow_agent = false;
-    window.game.env.set_scroll(this.value, vScrollSlider.value);
+    followAgentButton.className = "btn btn-outline-primary";
+    window.game.env.set_scroll(window.agent_selected, this.value, vScrollSlider.value);
     window.game.env.render();
 }
 let resetHScroll = document.getElementById("resetHScroll");
@@ -210,7 +266,8 @@ resetHScroll.onclick = function () {
     hScrollSlider.value = 0;
     //hScrollValue.innerHTML = "0";
     window.follow_agent = false;
-    window.game.env.set_scroll(0, vScrollSlider.value);
+    followAgentButton.className = "btn btn-outline-primary";
+    window.game.env.set_scroll(window.agent_selected, 0, vScrollSlider.value);
     window.game.env.render();
 }
 
@@ -222,7 +279,8 @@ vScrollSlider.step = 0.1;
 vScrollSlider.oninput = function () {
     //vScrollValue.innerHTML = this.value;
     window.follow_agent = false;
-    window.game.env.set_scroll(hScrollSlider.value, this.value);
+    followAgentButton.className = "btn btn-outline-primary";
+    window.game.env.set_scroll(window.agent_selected, hScrollSlider.value, this.value);
     window.game.env.render();
 }
 let resetVScroll = document.getElementById("resetVScroll");
@@ -230,7 +288,8 @@ resetVScroll.onclick = function () {
     vScrollSlider.value = 0;
     // vScrollValue.innerHTML = "0";
     window.follow_agent = false;
-    window.game.env.set_scroll(hScrollSlider.value, 0);
+    followAgentButton.className = "btn btn-outline-primary";
+    window.game.env.set_scroll(window.agent_selected, hScrollSlider.value, 0);
     window.game.env.render();
 }
 
@@ -243,7 +302,7 @@ zoomValue.innerHTML = "x" + zoomSlider.value; // Display the default slider valu
 zoomSlider.oninput = function () {
     zoomValue.innerHTML = "x" + this.value;
     window.game.env.set_zoom(parseFloat(this.value)/* * parseFloat(resizeCanvasSlider.value)*/);
-    window.game.env.set_scroll(hScrollSlider.value, vScrollSlider.value);
+    window.game.env.set_scroll(window.agent_selected, hScrollSlider.value, vScrollSlider.value);
     window.game.env.render();
 }
 let resetZoom = document.getElementById("resetZoom");
@@ -251,7 +310,7 @@ resetZoom.onclick = function () {
     zoomSlider.value = 1;
     zoomValue.innerHTML = "x1";
     window.game.env.set_zoom(1/* * parseFloat(resizeCanvasSlider.value)*/);
-    window.game.env.set_scroll(hScrollSlider.value, vScrollSlider.value);
+    window.game.env.set_scroll(window.agent_selected, hScrollSlider.value, vScrollSlider.value);
     window.game.env.render();
 }
 
@@ -308,8 +367,9 @@ function initializeSlider(id, step, value) {
 
 // Get the position of the mouse cursor in the environment scale
 function getMousePosToEnvScale(){
+    //let x = Math.max(0, Math.min(mouseX, window.canvas.width));
     let x = mouseX;
-    let y = mouseY;
+    let y = Math.max(0, Math.min(mouseY, window.canvas.height));
 
     x +=  window.game.env.scroll[0];
     y = -(y - window.game.env.scroll[1]);
@@ -328,27 +388,50 @@ function mousePressed(){
     if(mouseX >= 0 && mouseX <= window.canvas.width
         && mouseY >= 0 && mouseY <= window.canvas.height){
         let mousePos = getMousePosToEnvScale();
-
-        let is_agent_touched = window.game.env.agent_body.isMousePosInside(mousePos);
         //console.log(mousePos.x, mousePos.y)
-        //console.log(is_agent_touched);
-        if(is_agent_touched){
-            window.game.env.agent_body.is_selected = !window.game.env.agent_body.is_selected;
+
+        // MULTI AGENTS
+        if(window.multi_agents){
+            for(let agent of window.game.env.agents){
+
+                // Check if the agent is touched by the mouse
+                let is_agent_touched = agent.agent_body.isMousePosInside(mousePos);
+                //console.log(is_agent_touched);
+                // If the agent is touched and not selected yet, it is now selected and all other agents are deselected
+                if(!agent.is_selected && is_agent_touched){
+                    agent.is_selected = true;
+                    window.agent_selected = agent;
+                    for(let other_agent of window.game.env.agents){
+                        if(other_agent != agent){
+                            other_agent.is_selected = false;
+                        }
+                    }
+                    break;
+                }
+                // If the agent is not touched it is deselected
+                else if(!is_agent_touched){
+                    agent.is_selected = false;
+                }
+            }
+
+            let selected = false;
+            for(let agent of window.game.env.agents){
+                if(agent.is_selected){
+                    window.agent_selected = agent;
+                    selected = true;
+                    break;
+                }
+            }
+            if(!selected){
+                window.agent_selected = null;
+            }
         }
+
+        // ONE AGENT
         else{
-            window.game.env.agent_body.is_selected = false;
-        }
-        window.game.env.render();
-    }
-}
-
-function mouseDragged(){
-    if(mouseX >= 0 && mouseX <= window.canvas.width
-        && mouseY >= 0 && mouseY <= window.canvas.height){
-        let mousePos = getMousePosToEnvScale();
-
-        if(!window.game.env.agent_body.is_selected){
             let is_agent_touched = window.game.env.agent_body.isMousePosInside(mousePos);
+
+            //console.log(is_agent_touched);
             if(is_agent_touched){
                 window.game.env.agent_body.is_selected = !window.game.env.agent_body.is_selected;
             }
@@ -357,11 +440,107 @@ function mouseDragged(){
             }
         }
 
-        if(window.game.env.agent_body.is_selected){
-            let x = mousePos.x / ((TERRAIN_LENGTH + window.game.env.TERRAIN_STARTPAD) * TERRAIN_STEP);
-            x = Math.max(0.02, Math.min(0.98, x));
-            window.game.env.set_agent_position(x);
-            window.game.env.render();
+        window.game.env.render();
+
+    }
+
+    /*else{
+        for(let agent of window.game.env.agents){
+            agent.is_selected = false;
+        }
+        //window.agent_selected = null;
+    }*/
+
+
+}
+
+function mouseDragged(){
+
+    if(mouseX >= 0 && mouseX <= window.canvas.width
+        && mouseY >= 0 && mouseY <= window.canvas.height) {
+
+        // MULTI AGENTS
+        if (window.multi_agents) {
+            for (let agent of window.game.env.agents) {
+                /*if(!agent.is_selected){
+                    let is_agent_touched = agent.agent_body.isMousePosInside(mousePos);
+                    if(is_agent_touched){
+                        agent.is_selected = true;
+                        window.agent_selected = agent;
+                        for(let other_agent of window.game.env.agents){
+                            if(other_agent != agent) {
+                                other_agent.is_selected = false;
+                            }
+                        }
+                    }
+                }*/
+
+                if (agent.is_selected) {
+                    let mousePos = getMousePosToEnvScale();
+                    let x = mousePos.x / ((TERRAIN_LENGTH + window.game.env.TERRAIN_STARTPAD) * TERRAIN_STEP);
+                    x = Math.max(0.02, Math.min(0.98, x));
+                    window.game.env.set_agent_position(agent, x);
+                    window.game.env.render();
+                    window.is_dragging = true;
+                }
+            }
+        }
+
+        // ONE AGENT
+        else {
+            if (!window.game.env.agent_body.is_selected) {
+                let is_agent_touched = window.game.env.agent_body.isMousePosInside(mousePos);
+                if (is_agent_touched) {
+                    window.game.env.agent_body.is_selected = !window.game.env.agent_body.is_selected;
+                } else {
+                    window.game.env.agent_body.is_selected = false;
+                }
+            }
+
+            if (window.game.env.agent_body.is_selected) {
+                let x = mousePos.x / ((TERRAIN_LENGTH + window.game.env.TERRAIN_STARTPAD) * TERRAIN_STEP);
+                x = Math.max(0.02, Math.min(0.98, x));
+                window.game.env.set_agent_position(x);
+                window.game.env.render();
+            }
         }
     }
+
+    else if(window.is_dragging
+            && mouseY >= 0 && mouseY < window.canvas.height){
+        if (window.multi_agents) {
+
+            if(mouseX < 0){
+                window.dragging_side = "left";
+            }
+            else if(mouseX > window.canvas.width){
+                window.dragging_side = "right";
+            }
+
+            for (let agent of window.game.env.agents) {
+                if(agent.is_selected){
+                    console.log("dragging out of the canvas");
+
+                    window.game.env.set_scroll(null);
+
+                    let mousePos = getMousePosToEnvScale();
+                    let x = mousePos.x / ((TERRAIN_LENGTH + window.game.env.TERRAIN_STARTPAD) * TERRAIN_STEP);
+                    x = Math.max(0.02, Math.min(0.98, x));
+                    window.game.env.set_agent_position(agent, x);
+
+                    let h = agent.agent_body.reference_head_object.GetPosition().x / ((TERRAIN_LENGTH + window.game.env.TERRAIN_STARTPAD) * TERRAIN_STEP);
+                    hScrollSlider.value = h * 100;
+
+
+                    window.game.env.render();
+                }
+            }
+        }
+    }
+}
+
+function mouseReleased(){
+    window.is_dragging = false;
+    window.dragging_side = null;
+    console.log("mouse released");
 }
