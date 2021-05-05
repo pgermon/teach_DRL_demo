@@ -1,20 +1,22 @@
 class ParkourGame {
-    constructor(agent_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
+    constructor(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
 
         this.draw_fps = 60;
         this.obs = [];
         this.nb_agents = 0;
-        this.initWorld(agent_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
+        this.initWorld(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
 
         this.nb_steps = 0;
         this.running = false;
     }
 
-    initWorld(agent_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
+    initWorld(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
 
         if(window.multi_agents){
             this.env = new MAParametricContinuousParkour(
-                Array.from({length: this.nb_agents}, () => agent_body_type),
+                morphologies,
+                policies,
+                positions,
                 3,
                 10,
                 200,
@@ -61,7 +63,7 @@ class ParkourGame {
 
             if(multi_agents){
                 for(let agent of window.game.env.agents){
-                    agent.model = await tf.loadGraphModel(agent.policy + '/model.json');
+                    agent.model = await tf.loadGraphModel(agent.policy.path + '/model.json');
                 }
             }
 
@@ -75,10 +77,10 @@ class ParkourGame {
         }
     }
 
-    reset(agent_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type){
+    reset(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type){
         clearInterval(this.runtime);
         this.running = false;
-        this.initWorld(agent_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
+        this.initWorld(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
         this.env.render();
     }
 

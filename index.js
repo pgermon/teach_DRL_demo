@@ -1,14 +1,11 @@
 
 const body_type_mapping = new Map();
-
 body_type_mapping.set("bipedal", "classic_bipedal");
 body_type_mapping.set("chimpanzee", "climbing_profile_chimpanzee");
 
-function init(agent_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
+function init(cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type) {
 
-    const supported_body_type = body_type_mapping.get(agent_body_type);
-
-    window.game = new ParkourGame(supported_body_type, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
+    window.game = new ParkourGame([], [], [], cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
     nbAgents.innerText = window.game.env.agents.length + " agents";
     window.agent_selected = null;
     window.game.env.set_zoom(parseFloat(zoomSlider.value) /* * parseFloat(resizeCanvasSlider.value)*/);
@@ -17,13 +14,12 @@ function init(agent_body_type, cppn_input_vector, water_level, creepers_width, c
 }
 
 function init_default() {
-    init(morphologyDropdown.value,
-        [dim1Slider.value, dim2Slider.value, dim3Slider.value],
-        waterSlider.value,
-        creepersWidthSlider.value,
-        creepersHeightSlider.value,
-        creepersSpacingSlider.value,
-        smoothingSlider.value,
+    init([parseFloat(dim1Slider.value), parseFloat(dim2Slider.value), parseFloat(dim3Slider.value)],
+        parseFloat(waterSlider.value),
+        parseFloat(creepersWidthSlider.value),
+        parseFloat(creepersHeightSlider.value),
+        parseFloat(creepersSpacingSlider.value),
+        parseFloat(smoothingSlider.value),
         getCreepersType());
 }
 
@@ -91,7 +87,6 @@ async function testAgentModelSelector() {
 let morphologyDropdown = document.getElementById("morphology");
 let modelsDropdown = document.getElementById("models");
 morphologyDropdown.oninput = function () {
-    //init_default();
     let length = modelsDropdown.options.length;
     for (let i = length - 1; i >= 0; i--) {
         modelsDropdown.options[i] = null;
@@ -150,15 +145,20 @@ let resetButton = document.getElementById("resetButton");
 resetButton.onclick = function () {
     runButton.className = "btn btn-success";
     runButton.innerText = "Start";
-    const supported_body_type = body_type_mapping.get(morphologyDropdown.value);
+    let morphologies = [...window.game.env.agents.map(agent => agent.morphology)];
+    let policies = [...window.game.env.agents.map(agent => agent.policy)];
+    let positions = [...window.game.env.agents.map(agent => null)];
+
     window.game.reset(
-        supported_body_type,
-        [dim1Slider.value, dim2Slider.value, dim3Slider.value],
-        waterSlider.value,
-        creepersWidthSlider.value,
-        creepersHeightSlider.value,
-        creepersSpacingSlider.value,
-        smoothingSlider.value,
+        morphologies,
+        policies,
+        positions,
+        [parseFloat(dim1Slider.value), parseFloat(dim2Slider.value), parseFloat(dim3Slider.value)],
+        parseFloat(waterSlider.value),
+        parseFloat(creepersWidthSlider.value),
+        parseFloat(creepersHeightSlider.value),
+        parseFloat(creepersSpacingSlider.value),
+        parseFloat(smoothingSlider.value),
         getCreepersType());
     nbAgents.innerText = window.game.env.agents.length + " agents";
     window.agent_selected = null;
@@ -194,10 +194,23 @@ lidarsButton.onclick = function () {
 }
 
 let sensorsButton = document.getElementById("sensorsButton");
-window.draw_sensors = false; // todo: fix the sensor rendering before enabling this
+window.draw_sensors = false;
 sensorsButton.onclick = function () {
     window.draw_sensors = !window.draw_sensors;
     if(window.draw_sensors){
+        this.className = "btn btn-primary";
+    }
+    else{
+        this.className = "btn btn-outline-primary";
+    }
+    window.game.env.render();
+}
+
+let namesButton = document.getElementById("namesButton");
+window.draw_names = false;
+namesButton.onclick = function () {
+    window.draw_names = !window.draw_names;
+    if(window.draw_names){
         this.className = "btn btn-primary";
     }
     else{
@@ -224,7 +237,7 @@ followAgentButton.onclick = function () {
 let addAgentButton = document.getElementById("addAgentButton");
 let nbAgents = document.getElementById("nbAgents");
 addAgentButton.onclick = function () {
-    window.game.env.add_agent(body_type_mapping.get(morphologyDropdown.value), modelsDropdown.value);
+    window.game.env.add_agent(body_type_mapping.get(morphologyDropdown.value), {name: modelsDropdown.options[modelsDropdown.selectedIndex].text, path: modelsDropdown.value});
     window.game.env.render();
     nbAgents.innerText = window.game.env.agents.length + " agents";
 }
@@ -351,7 +364,7 @@ creepersType.onclick = function () {
     init_default();
 }
 
-
+// Initialize all sliders for parkour generation
 function initializeSlider(id, step, value) {
     const slider = document.getElementById(`${id}Slider`);
     slider.step = step;
@@ -361,14 +374,36 @@ function initializeSlider(id, step, value) {
     slider.oninput = function () {
         sliderValue.innerHTML = this.value;
         runButton.innerText = "Start";
-        init_default();
+
+        let morphologies = [...window.game.env.agents.map(agent => agent.morphology)];
+        let policies = [...window.game.env.agents.map(agent => agent.policy)];
+        let positions = [...window.game.env.agents.map(agent => agent.agent_body.reference_head_object.GetPosition())];
+
+        window.game.reset(
+            morphologies,
+            policies,
+            positions,
+            [parseFloat(dim1Slider.value), parseFloat(dim2Slider.value), parseFloat(dim3Slider.value)],
+            parseFloat(waterSlider.value),
+            parseFloat(creepersWidthSlider.value),
+            parseFloat(creepersHeightSlider.value),
+            parseFloat(creepersSpacingSlider.value),
+            parseFloat(smoothingSlider.value),
+            getCreepersType());
+        nbAgents.innerText = window.game.env.agents.length + " agents";
+        window.agent_selected = null;
+        window.game.env.set_zoom(parseFloat(zoomSlider.value));
+        window.game.env.set_scroll(window.agent_selected,  parseFloat(hScrollSlider.value),  parseFloat(vScrollSlider.value));
+        window.game.env.render();
+
+        //init_default();
     }
 }
 
 // Get the position of the mouse cursor in the environment scale
 function getMousePosToEnvScale(){
     //let x = Math.max(0, Math.min(mouseX, window.canvas.width));
-    let x = mouseX;
+    let x = Math.max(-window.canvas.width * 1/10, Math.min(mouseX, window.canvas.width * 11/10));
     let y = Math.max(0, Math.min(mouseY, window.canvas.height));
 
     x +=  window.game.env.scroll[0];
@@ -519,7 +554,7 @@ function mouseDragged(){
 
             for (let agent of window.game.env.agents) {
                 if(agent.is_selected){
-                    console.log("dragging out of the canvas");
+                    //console.log("dragging out of the canvas");
 
                     window.game.env.set_scroll(null);
 
@@ -527,10 +562,6 @@ function mouseDragged(){
                     let x = mousePos.x / ((TERRAIN_LENGTH + window.game.env.TERRAIN_STARTPAD) * TERRAIN_STEP);
                     x = Math.max(0.02, Math.min(0.98, x));
                     window.game.env.set_agent_position(agent, x);
-
-                    let h = agent.agent_body.reference_head_object.GetPosition().x / ((TERRAIN_LENGTH + window.game.env.TERRAIN_STARTPAD) * TERRAIN_STEP);
-                    hScrollSlider.value = h * 100;
-
 
                     window.game.env.render();
                 }
@@ -542,5 +573,5 @@ function mouseDragged(){
 function mouseReleased(){
     window.is_dragging = false;
     window.dragging_side = null;
-    console.log("mouse released");
+    //console.log("mouse released");
 }
