@@ -95,6 +95,15 @@ function draw() {
                 if(window.draw_sensors){
                     drawSensors(agent.agent_body.sensors, parkour.scale);
                 }
+
+                if(window.draw_names){
+                    let pos = agent.agent_body.reference_head_object.GetPosition();
+                    fill(0);
+                    noStroke()
+                    textSize(20/parkour.scale);
+                    //textAlign(CENTER);
+                    text(agent.policy.name, pos.x - agent.agent_body.AGENT_WIDTH/2, RENDERING_VIEWER_H - (pos.y + agent.agent_body.AGENT_HEIGHT/3));
+                }
             }
 
             if(window.draw_joints) {

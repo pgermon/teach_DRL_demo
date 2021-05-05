@@ -28,7 +28,7 @@ const NB_FIRST_STEPS_HANG = 5
 
 class MAParametricContinuousParkour {
 
-    constructor(agents_morphologies, input_CPPN_dim=3, terrain_cppn_scale=10,
+    constructor(morphologies, policies, positions, input_CPPN_dim=3, terrain_cppn_scale=10,
                 ceiling_offset=200, ceiling_clip_offset=0, water_clip=20,
                 movable_creepers=false, walker_args){
 
@@ -44,10 +44,12 @@ class MAParametricContinuousParkour {
 
         // Create agent
         this.agents = [];
+        console.assert(morphologies.length == policies.length && morphologies.length == positions.length);
         // TODO: body types enum + walker_args
-        for(let morphology of agents_morphologies){
-            this.create_agent(morphology);
+        for(let i = 0; i < morphologies.length; i++){
+            this.create_agent(morphologies[i], policies[i], positions[i]);
         }
+        this.agents_init_pos = positions;
 
         // Terrain and dynamics
         this.terrain_bodies = [];
@@ -82,37 +84,30 @@ class MAParametricContinuousParkour {
         // this.observation_space = // TODO
     }
 
-    create_agent(morphology, policy=null){
-        if(morphology == "classic_bipedal"){
-            this.agents.push(
-                {
-                    agent_body: new ClassicBipedalBody(SCALE, /*walker_args*/),
-                    id: this.agents.length,
-                    lidars_config: this.set_lidars_type("down"),
-                    is_selected: false,
-                    policy: policy
-                });
+    create_agent(morphology, policy, init_pos){
+
+        let agent = {
+            id: this.agents.length,
+            is_selected: false,
+            morphology: morphology,
+            policy: policy,
+            init_pos: init_pos
+        };
+
+        if(morphology == "classic_bipedal") {
+            agent.agent_body = new ClassicBipedalBody(SCALE, /*walker_args*/);
+            agent.lidars_config = this.set_lidars_type("down");
         }
-        else if(morphology == "climbing_profile_chimpanzee"){
-            this.agents.push(
-                {
-                    agent_body: new ClimbingProfileCHimpanzee(SCALE),
-                    id: this.agents.length,
-                    lidars_config: this.set_lidars_type("up"),
-                    is_selected: false,
-                    policy: policy
-                });
+        else if(morphology == "climbing_profile_chimpanzee") {
+            agent.agent_body = new ClimbingProfileCHimpanzee(SCALE);
+            agent.lidars_config = this.set_lidars_type("up");
         }
         else {
-            this.agents.push(
-                {
-                    agent_body: new OldClassicBipedalBody(SCALE),
-                    id: this.agents.length,
-                    lidars_config: this.set_lidars_type("down"),
-                    is_selected: false,
-                    policy: policy
-                });
+            agent.agent_body = new OldClassicBipedalBody(SCALE, /*walker_args*/);
+            agent.lidars_config = this.set_lidars_type("down");
         }
+
+        this.agents.push(agent);
     }
 
     // TODO
@@ -281,7 +276,9 @@ class MAParametricContinuousParkour {
         }
 
         // Calculate water physics
-        this.water_dynamics.calculate_forces(this.world.m_contactManager.m_contactListener.water_contact_detector.fixture_pairs);
+        if(this.world.m_contactManager.m_contactListener.water_contact_detector.fixture_pairs.indexOf(null) != -1){
+            this.water_dynamics.calculate_forces(this.world.m_contactManager.m_contactListener.water_contact_detector.fixture_pairs);
+        }
 
         let ret = [];
         for(let agent of this.agents) {
@@ -664,7 +661,7 @@ class MAParametricContinuousParkour {
             if(this.creepers_width != null && this.creepers_height != null){
                 if(space_from_precedent_creeper >= this.creepers_spacing){
 
-                    let creeper_height = Math.max(0.2, Math.random() * (this.creepers_height - 0.1) + 0.1);
+                    let creeper_height = Math.max(0.2, Math.random() * (0.1 - (- 0.1)) + this.creepers_height - 0.1);
                     let creeper_width = Math.max(0.2, this.creepers_width);
                     let creeper_step_size = Math.max(1, Math.floor(creeper_width / TERRAIN_STEP));
                     let creeper_y_init_pos = Math.max(this.terrain_ceiling_y[i],
@@ -758,7 +755,20 @@ class MAParametricContinuousParkour {
     _generate_agent(agent, init_x=null, init_y=null, set_pos=false){
 
         if(init_x == null){
-            init_x = TERRAIN_STEP * this.TERRAIN_STARTPAD / 2;
+            // If an init_pos is given for the agent (reset for terrain reshaping), init_y is computed accordingly for walkers
+            if(agent.init_pos != null){
+                init_x = agent.init_pos.x;
+
+                if (agent.agent_body.body_type == BodyTypesEnum.WALKER) {
+                    let idx = Math.round(init_x / ((TERRAIN_LENGTH + this.TERRAIN_STARTPAD) * TERRAIN_STEP) * (TERRAIN_LENGTH + this.TERRAIN_STARTPAD));
+                    init_y = this.terrain_ground_y[idx] + agent.agent_body.AGENT_CENTER_HEIGHT;
+                }
+            }
+
+            // If no init_pos is given (add agent), the agent is generated on the startpad
+            else{
+                init_x = TERRAIN_STEP * this.TERRAIN_STARTPAD / 2;
+            }
         }
 
         if(init_y == null){
@@ -766,13 +776,12 @@ class MAParametricContinuousParkour {
         }
 
         agent.agent_body.draw(this.world, init_x, init_y, 0 /*Math.random() * 2 * INITIAL_RANDOM - INITIAL_RANDOM*/);
+        let pos = agent.agent_body.reference_head_object.GetPosition();
         agent.actions = Array.from({length: agent.agent_body.get_action_size()}, () => 0);
 
         if(set_pos && agent.agent_body.body_type == BodyTypesEnum.CLIMBER){
             this.init_climber_pos(agent);
         }
-
-        //agent.agent_body.set_awake(false);
     }
 
 
@@ -784,7 +793,8 @@ class MAParametricContinuousParkour {
 
         if (agent.agent_body.body_type == BodyTypesEnum.CLIMBER) {
             init_y = null;
-        } else if (agent.agent_body.body_type == BodyTypesEnum.WALKER) {
+        }
+        else if (agent.agent_body.body_type == BodyTypesEnum.WALKER) {
             init_y = this.terrain_ground_y[idx] + agent.agent_body.AGENT_CENTER_HEIGHT;
         }
 
@@ -798,30 +808,24 @@ class MAParametricContinuousParkour {
     }
 
     set_scroll(agent=null, h=null, v=null){
-        if(window.follow_agent && window.agent_selected != null){
+        if(window.follow_agent && agent != null){
             let x = agent.agent_body.reference_head_object.GetPosition().x;
             let y = agent.agent_body.reference_head_object.GetPosition().y;
 
             this.scroll = [
                 x * this.scale * this.zoom - RENDERING_VIEWER_W/5,
-                y * this.scale * this.zoom - RENDERING_VIEWER_H/3
+                y * this.scale * this.zoom - RENDERING_VIEWER_H/2
             ];
-            hScrollSlider.value = x * 100 / ((TERRAIN_LENGTH + window.game.env.TERRAIN_STARTPAD) * TERRAIN_STEP);
-            vScrollSlider.value = y * 100 / (this.air_max_distance/2);
         }
-        else if(window.is_dragging){
-            let ratio = 1/5;
-            if(window.dragging_side == "left"){
-                ratio = 1/10;
-            }
-            else if(window.dragging_side == "right"){
-                ratio = 9/10;
-            }
 
-            this.scroll = [
-                window.agent_selected.agent_body.reference_head_object.GetPosition().x * this.scale * this.zoom - RENDERING_VIEWER_W * (ratio + 0.05),
-                parseFloat(vScrollSlider.value)/100 * this.air_max_distance/2 * this.scale * this.zoom
-            ];
+        else if(window.is_dragging){
+
+            if(window.dragging_side == "left"){
+                this.scroll[0] = window.agent_selected.agent_body.reference_head_object.GetPosition().x * this.scale * this.zoom - RENDERING_VIEWER_W * (0.1 + 0.05)
+            }
+            else if(window.dragging_side == "right" && !(parseFloat(hScrollSlider.value) >= 100)){
+                this.scroll[0] = window.agent_selected.agent_body.reference_head_object.GetPosition().x * this.scale * this.zoom - RENDERING_VIEWER_W * (0.85 + 0.05)
+            }
         }
         else{
             this.scroll = [
@@ -830,6 +834,14 @@ class MAParametricContinuousParkour {
                 //parseFloat(v)/100 * RENDERING_VIEWER_H
             ];
         }
+
+        this.scroll = [
+            Math.max(- 0.05 * RENDERING_VIEWER_W, Math.min(this.scroll[0], (TERRAIN_LENGTH + this.TERRAIN_STARTPAD) * TERRAIN_STEP * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9)),
+            Math.max(-0.5 * this.air_max_distance/2 * this.scale * this.zoom, Math.min(this.scroll[1], this.air_max_distance/2 * this.scale * this.zoom * 3/2))
+        ];
+
+        hScrollSlider.value = 100 * ((this.scroll[0] + 0.05 * RENDERING_VIEWER_W) / ((TERRAIN_LENGTH + this.TERRAIN_STARTPAD) * TERRAIN_STEP * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9));
+        vScrollSlider.value = 100 * this.scroll[1] / (this.air_max_distance/2 * this.scale * this.zoom);
     }
 
     set_zoom(zoom){
@@ -837,7 +849,7 @@ class MAParametricContinuousParkour {
     }
 
     add_agent(morphology, policy){
-        this.create_agent(morphology, policy);
+        this.create_agent(morphology, policy, null);
         this._generate_agent(this.agents[this.agents.length - 1]);
         this.init_agent(this.agents[this.agents.length - 1]);
         let step_rets = this.step();
