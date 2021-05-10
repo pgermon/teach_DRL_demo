@@ -1,5 +1,4 @@
 //region Constants
-
 const FPS = 50
 const SCALE  = 30 // affects how fast-paced the game is, forces should be adjusted as well
 const VIEWPORT_W = 600
@@ -32,8 +31,7 @@ class MAParametricContinuousParkour {
                 ceiling_offset=200, ceiling_clip_offset=0, water_clip=20,
                 movable_creepers=false, walker_args){
 
-        // Seed and init Box2D
-        //this.seed();
+        // Init Box2D
         this.scale = SCALE;
         this.zoom = 1;
         this.contact_listener = new ContactDetector(this);
@@ -112,7 +110,20 @@ class MAParametricContinuousParkour {
 
     // TODO
     seed(){
+        let seed = "";
+        for(let dim of this.CPPN_input_vector){
+            seed += dim;
+        }
+        seed += this.water_level;
+        seed += this.TERRAIN_CPPN_SCALE;
+        seed += this.creepers_width;
+        seed += this.creepers_height;
+        seed += this.creepers_spacing;
+        seed += this.movable_creepers;;
 
+        //console.log("seed = " + seed);
+        Math.seedrandom(seed);
+        //console.log(Math.random());
     }
 
     set_lidars_type(lidars_type){
@@ -160,6 +171,7 @@ class MAParametricContinuousParkour {
         this.set_terrain_cppn_scale(terrain_cppn_scale,
                         this.ceiling_offset * this.TERRAIN_CPPN_SCALE,
                                     this.ceiling_clip_offset * this.TERRAIN_CPPN_SCALE);
+        this.seed();
     }
 
     _destroy(){
