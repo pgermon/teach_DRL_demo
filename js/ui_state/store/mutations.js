@@ -112,8 +112,8 @@ export default {
             parkourConfig.smoothing,
             creepersConfig.type == "Swingable");
         window.agent_selected = null;
-        window.game.env.set_zoom(1);
-        window.game.env.set_scroll(window.agent_selected, 0.0, parseFloat(0));
+        window.game.env.set_zoom(parseFloat(zoomSlider.value));
+        window.game.env.set_scroll(window.agent_selected, parseFloat(hScrollSlider.value), parseFloat(vScrollSlider.value));
         window.game.env.render();
         return state;
     },
