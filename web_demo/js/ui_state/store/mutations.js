@@ -110,7 +110,9 @@ export default {
             creepersConfig.height,
             creepersConfig.spacing,
             parkourConfig.smoothing,
-            creepersConfig.type == "Swingable");
+            creepersConfig.type == "Swingable",
+            window.ground,
+            window.ceiling);
         window.agent_selected = null;
         window.game.env.set_zoom(parseFloat(zoomSlider.value));
         window.game.env.set_scroll(window.agent_selected, parseFloat(hScrollSlider.value), parseFloat(vScrollSlider.value));
@@ -141,6 +143,118 @@ export default {
     },
     addMorphology(state, payload) {
         state.morphologies.push(payload);
+        return state;
+    },
+    switchMode(state, payload) {
+        if(payload){
+            state.drawingModeState.drawing = true;
+            state.mode = 'drawing';
+            background("#E6F0FF");
+            drawing_canvas.clear();
+            window.ground = [];
+            window.ceiling = [];
+            window.terrain = {
+                ground: [],
+                ceiling: []
+            };
+        }
+        else{
+            state.mode = 'procedural_generation';
+            state.drawingModeState.drawing = false;
+            state.drawingModeState.drawing_ground = false;
+            state.drawingModeState.drawing_ceiling = false;
+            state.drawingModeState.erasing = false;
+        }
+        state.simulationState.status = 'init';
+        state.agents = [];
+        window.game.env.set_zoom(0.35);
+        window.game.env.set_scroll(null, 15, 0);
+        window.init_default();
+        return state;
+    },
+    drawGround(state, payload){
+        state.drawingModeState.drawing_ground = payload;
+        state.drawingModeState.drawing_ceiling = false;
+        state.drawingModeState.erasing = false;
+        return state;
+    },
+    drawCeiling(state, payload){
+        state.drawingModeState.drawing_ground = false;
+        state.drawingModeState.drawing_ceiling = payload;
+        state.drawingModeState.erasing = false;
+        return state;
+    },
+    erase(state, payload){
+        state.drawingModeState.drawing_ground = false;
+        state.drawingModeState.drawing_ceiling = false;
+        state.drawingModeState.erasing = payload;
+        return state;
+    },
+    clear(state, payload){
+        state.drawingModeState.drawing = true;
+        background("#E6F0FF");
+        drawing_canvas.clear();
+        window.ground = [];
+        window.ceiling = [];
+        window.terrain = {
+            ground: [],
+            ceiling: []
+        };
+        state.simulationState.status = 'init';
+        state.agents = [];
+        window.game.env.set_zoom(0.35);
+        window.game.env.set_scroll(null, 15, 0);
+        window.init_default();
+        return state;
+    },
+    generateTerrain(state, payload){
+        state.drawingModeState.drawing = payload;
+
+        window.game.env.set_zoom(0.35);
+        window.game.env.set_scroll(null, 15, 0);
+
+        // Generate the terrain from the shapes drawn
+        if(!state.drawingModeState.drawing) {
+
+            state.drawingModeState.drawing_ground = false;
+            state.drawingModeState.drawing_ceiling = false;
+            state.drawingModeState.erasing = false;
+
+            // Sort drawing values for ground and ceiling
+            window.terrain.ground.sort(function (a, b) {
+                return a.x - b.x;
+            });
+            for (let p of window.terrain.ground) {
+                window.ground.push({
+                    x: p.x / (window.game.env.scale * window.game.env.zoom),
+                    y: (RENDERING_VIEWER_H - p.y) / (window.game.env.scale * window.game.env.zoom)
+                })
+            }
+
+            window.terrain.ceiling.sort(function (a, b) {
+                return a.x - b.x;
+            });
+            for (let p of window.terrain.ceiling) {
+                window.ceiling.push({
+                    x: p.x / (window.game.env.scale * window.game.env.zoom),
+                    y: (RENDERING_VIEWER_H - p.y) / (window.game.env.scale * window.game.env.zoom)
+                })
+            }
+
+            state.simulationState.status = 'init';
+            state.agents = [];
+            window.init_default();
+        }
+
+        // Return to drawing
+        else {
+            window.ground = [];
+            window.ceiling = [];
+            state.simulationState.status = 'init';
+            state.agents = [];
+            window.init_default();
+            image(drawing_canvas, 0, 0);
+        }
         return state;
     }
 };

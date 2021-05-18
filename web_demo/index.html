@@ -37,7 +37,9 @@
     <script defer src="js/bodies/climbers/climbing_profile_chimpanzee.js"></script>
 
     <script defer src="js/CPPN/cppn.js"></script>
-    <script defer src="js/envs/multi_agents_parametric_continuous_parkour.js"></script>
+    <script defer src="js/envs/drawing_mapcp.js"></script>
+    <!--<script defer src="js/envs/multi_agents_parametric_continuous_parkour.js"></script>-->
+    <!--<script defer src="js/envs/multi_agents_parametric_continuous_parkour.js"></script>-->
     <!--<script defer src="js/envs/parametric_continuous_parkour.js"></script>-->
     <!--<script defer src="js/envs/parametric_continuous_flat_parkour.js"></script>-->
     <script defer src="./js/parkour_game.js"></script>
@@ -99,12 +101,15 @@
 
 
             <div class="row justify-content-md-center g-2 mt-1">
-                <div class="col col-md-auto">
-                    <button id="runButton" class="btn btn-success"> Start </button>
+                <div id="runButtons" class="row justify-content-md-center g-2 mt-1">
+                    <div class="col col-md-auto">
+                        <button id="runButton" class="btn btn-success"> Start </button>
+                    </div>
+                    <div class="col col-md-auto">
+                        <button id="resetButton" class="btn btn-danger"> Reset Simulation </button>
+                    </div>
                 </div>
-                <div class="col col-md-auto">
-                    <button id="resetButton" class="btn btn-danger"> Reset Simulation </button>
-                </div>
+
                 <div id="drawSelectors">
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" id="followAgentsSwitch">
@@ -125,6 +130,30 @@
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" id="drawNamesSwitch">
                         <label class="form-check-label" for="drawNamesSwitch">Draw names</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-md-center g-2 mt-1">
+                <div id="drawingMode" class="row justify-content-md-center g-2 mt-1">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="drawingModeSwitch">
+                        <label class="form-check-label" for="drawingModeSwitch">Drawing Mode</label>
+                    </div>
+                    <div class="col col-md-auto">
+                        <button id="drawGroundButton" class="btn btn-outline-primary disabled"> Draw ground </button>
+                    </div>
+                    <div class="col col-md-auto">
+                        <button id="drawCeilingButton" class="btn btn-outline-primary disabled"> Draw ceiling </button>
+                    </div>
+                    <div class="col col-md-auto">
+                        <button id="eraseButton" class="btn btn-outline-warning disabled"> Erase </button>
+                    </div>
+                    <div class="col col-md-auto">
+                        <button id="clearButton" class="btn btn-danger disabled"> Clear </button>
+                    </div>
+                    <div class="col col-md-auto">
+                        <button id="generateTerrainButton" class="btn btn-success disabled"> Generate terrain </button>
                     </div>
                 </div>
             </div>
