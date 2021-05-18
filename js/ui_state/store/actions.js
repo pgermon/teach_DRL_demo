@@ -29,6 +29,9 @@ export default {
             case 'drawNames':
                 context.commit('drawNames', payload.value);
                 break;
+            case 'drawingMode':
+                context.commit('switchMode', payload.value);
+                break;
         }
     },
     toggleRun(context, payload) {
@@ -83,5 +86,20 @@ export default {
     },
     addMorphology(context, payload) {
         context.commit('addMorphology', payload);
+    },
+    drawGround(context, payload) {
+        context.commit('drawGround', payload);
+    },
+    drawCeiling(context, payload) {
+        context.commit('drawCeiling', payload);
+    },
+    erase(context, payload) {
+        context.commit('erase', payload);
+    },
+    clear(context, payload) {
+        context.commit('clear', payload);
+    },
+    generateTerrain(context, payload){
+        context.commit('generateTerrain', payload);
     }
 };
