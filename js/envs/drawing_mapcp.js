@@ -637,7 +637,6 @@ class DrawingMAPCP {
             this.background_polys.push(poly_data);
         }
 
-        let space_from_precedent_creeper = this.creepers_spacing;
         for(let i = 0; i < this.terrain_ceiling.length - 1; i++){
             // Ceiling
             poly = [
@@ -675,66 +674,45 @@ class DrawingMAPCP {
                 vertices : poly,
             }
             this.background_polys.push(poly_data);
+        }
 
-            // Creepers
-            if(this.creepers_width != null && this.creepers_height != null){
-                if(space_from_precedent_creeper >= this.creepers_spacing){
+        // Creepers
+        if(this.creepers_width != null && this.creepers_height != null){
+            let creeper_width = Math.max(0.2, this.creepers_width);
+            let nb_creepers = Math.floor(this.terrain_ceiling[this.terrain_ceiling.length - 1].x / (this.creepers_spacing + creeper_width));
 
-                    let creeper_height = Math.max(0.2, Math.random() * (0.1 - (- 0.1)) + this.creepers_height - 0.1);
-                    let creeper_width = Math.max(0.2, this.creepers_width);
-                    let creeper_step_size = Math.max(1, Math.floor(creeper_width / TERRAIN_STEP));
-                    let creeper_y_init_pos = this.terrain_ceiling[i].y;
-                    //let creeper_y_init_pos = Math.max(this.terrain_ceiling[i].y,
-                    //    this.terrain_ceiling[Math.min(i + creeper_step_size, this.terrain_ceiling.length - 1)].y);
+            for(let i = 1; i < nb_creepers; i++){
+                let creeper_height = Math.max(0.2, Math.random() * (0.1 - (- 0.1)) + this.creepers_height - 0.1);
+                let creeper_x_init_pos = i * (this.creepers_spacing + creeper_width);
+                let creeper_y_init_pos = find_best_y(creeper_x_init_pos, this.terrain_ceiling);
 
-                    if(this.movable_creepers){ // Break creepers in multiple objects linked by joints
-                        let previous_creeper_part = t;
+                if(this.movable_creepers){ // Break creepers in multiple objects linked by joints
 
-                        // cut the creeper in unit parts
-                        for(let w = 0; w < Math.ceil(creeper_height); w++){
-                            let h;
-                            // last iteration: rest of the creeper
-                            if(w == Math.floor(creeper_height / CREEPER_UNIT)){
-                                h = Math.max(0.2, creeper_height % CREEPER_UNIT);
-                            }
-                            else{
-                                h = CREEPER_UNIT;
-                            }
+                    // Create a static base to which the creeper is attached
+                    this.fd_creeper.shape.SetAsBox(creeper_width/2, 0.2);
+                    body_def = new b2.BodyDef();
+                    body_def.type = b2.Body.b2_staticBody;
+                    body_def.position.Set(creeper_x_init_pos, creeper_y_init_pos - 0.1);
+                    t = this.world.CreateBody(body_def);
+                    t.CreateFixture(this.fd_creeper);
+                    t.SetUserData(new CustomUserData("creeper", CustomUserDataObjectTypes.SENSOR_GRIP_TERRAIN));
+                    let previous_creeper_part = t;
 
-                            this.fd_creeper.shape.SetAsBox(creeper_width/2, h/2);
-                            body_def = new b2.BodyDef();
-                            body_def.type = b2.Body.b2_dynamicBody;
-                            body_def.position.Set(this.terrain_ceiling[i].x + creeper_width/2, creeper_y_init_pos - (w * CREEPER_UNIT) - h/2);
-                            t = this.world.CreateBody(body_def);
-                            t.CreateFixture(this.fd_creeper);
-                            t.SetUserData(new CustomUserData("creeper", CustomUserDataObjectTypes.SENSOR_GRIP_TERRAIN));
-                            color = "#6F8060"; // [0.437, 0.504, 0.375];
-                            poly_data = {
-                                type : "creeper",
-                                color1 : color,
-                                color2 : color,
-                                body : t,
-                            }
-                            this.terrain_bodies.push(poly_data);
-
-                            let rjd_def = new b2.RevoluteJointDef();
-                            let anchor = new b2.Vec2(this.terrain_ceiling[i].x + creeper_width/2, creeper_y_init_pos - (w * CREEPER_UNIT));
-                            rjd_def.Initialize(previous_creeper_part, t, anchor);
-                            rjd_def.enableMotor = false;
-                            rjd_def.enableLimit = true;
-                            rjd_def.lowerAngle = -0.4 * Math.PI;
-                            rjd_def.upperAngle = 0.4 * Math.PI;
-                            let joint = this.world.CreateJoint(rjd_def);
-                            joint.SetUserData(new CustomMotorUserData("creeper", 6, false));
-                            this.creepers_joints.push(joint);
-                            previous_creeper_part = t;
+                    // Cut the creeper in unit parts
+                    for(let w = 0; w < Math.ceil(creeper_height); w++){
+                        let h;
+                        // last iteration: rest of the creeper
+                        if(w == Math.floor(creeper_height / CREEPER_UNIT)){
+                            h = Math.max(0.2, creeper_height % CREEPER_UNIT);
                         }
-                    }
-                    else{
-                        this.fd_creeper.shape.SetAsBox(creeper_width/2, creeper_height/2);
+                        else{
+                            h = CREEPER_UNIT;
+                        }
+
+                        this.fd_creeper.shape.SetAsBox(creeper_width/2, h/2);
                         body_def = new b2.BodyDef();
-                        body_def.type = b2.Body.b2_staticBody;
-                        body_def.position.Set(this.terrain_ceiling[i].x + creeper_width/2, creeper_y_init_pos - creeper_height/2);
+                        body_def.type = b2.Body.b2_dynamicBody;
+                        body_def.position.Set(creeper_x_init_pos, creeper_y_init_pos - (w * CREEPER_UNIT) - h/2);
                         t = this.world.CreateBody(body_def);
                         t.CreateFixture(this.fd_creeper);
                         t.SetUserData(new CustomUserData("creeper", CustomUserDataObjectTypes.SENSOR_GRIP_TERRAIN));
@@ -742,14 +720,39 @@ class DrawingMAPCP {
                         poly_data = {
                             type : "creeper",
                             color1 : color,
+                            color2 : color,
                             body : t,
                         }
                         this.terrain_bodies.push(poly_data);
+
+                        let rjd_def = new b2.RevoluteJointDef();
+                        let anchor = new b2.Vec2(creeper_x_init_pos, creeper_y_init_pos - (w * CREEPER_UNIT));
+                        rjd_def.Initialize(previous_creeper_part, t, anchor);
+                        rjd_def.enableMotor = false;
+                        rjd_def.enableLimit = true;
+                        rjd_def.lowerAngle = -0.4 * Math.PI;
+                        rjd_def.upperAngle = 0.4 * Math.PI;
+                        let joint = this.world.CreateJoint(rjd_def);
+                        joint.SetUserData(new CustomMotorUserData("creeper", 6, false));
+                        this.creepers_joints.push(joint);
+                        previous_creeper_part = t;
                     }
-                    space_from_precedent_creeper = 0;
                 }
                 else{
-                    space_from_precedent_creeper += this.terrain_ceiling[i].x - this.terrain_ceiling[i - 1].x;
+                    this.fd_creeper.shape.SetAsBox(creeper_width/2, creeper_height/2);
+                    body_def = new b2.BodyDef();
+                    body_def.type = b2.Body.b2_staticBody;
+                    body_def.position.Set(creeper_x_init_pos, creeper_y_init_pos - creeper_height/2);
+                    t = this.world.CreateBody(body_def);
+                    t.CreateFixture(this.fd_creeper);
+                    t.SetUserData(new CustomUserData("creeper", CustomUserDataObjectTypes.SENSOR_GRIP_TERRAIN));
+                    color = "#6F8060"; // [0.437, 0.504, 0.375];
+                    poly_data = {
+                        type : "creeper",
+                        color1 : color,
+                        body : t,
+                    }
+                    this.terrain_bodies.push(poly_data);
                 }
             }
         }

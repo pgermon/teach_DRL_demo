@@ -23,7 +23,7 @@ export default {
         width: 0.3,
         height: 3,
         spacing: 1,
-        type: 'Rigid'
+        type: 'Swingable' // 'Rigid'
     },
     drawingModeState: {
         drawing: false,
