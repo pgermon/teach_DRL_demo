@@ -10,8 +10,8 @@ function init(cppn_input_vector, water_level, creepers_width, creepers_height, c
     }
     window.game = new ParkourGame([], [], [], cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling);
     window.agent_selected = null;
-    window.game.env.set_zoom(parseFloat(zoomSlider.value) /* * parseFloat(resizeCanvasSlider.value)*/);
-    window.game.env.set_scroll(window.agent_selected, parseFloat(hScrollSlider.value), parseFloat(vScrollSlider.value));
+    window.game.env.set_zoom(0.35);
+    window.game.env.set_scroll(window.agent_selected, -62, 0);
     window.game.env.render();
 }
 
@@ -39,7 +39,7 @@ window.addEventListener("load", loadModel, false);
 /* SCROLL AND ZOOM */
 
 // Horizontal scroll slider
-let hScrollSlider = document.getElementById("hScrollSlider");
+/*let hScrollSlider = document.getElementById("hScrollSlider");
 hScrollSlider.step = 0.1;
 hScrollSlider.value = 15;
 hScrollSlider.oninput = function () {
@@ -69,249 +69,34 @@ resetVScroll.onclick = function () {
     window.cancelAgentFollow();
     window.game.env.set_scroll(window.agent_selected, parseFloat(hScrollSlider.value), 0);
     window.game.env.render();
-}
+}*/
 
 // Zoom slider
-let zoomSlider = document.getElementById("zoomSlider");
+/*let zoomSlider = document.getElementById("zoomSlider");
 zoomSlider.step = 0.01;
 zoomSlider.value = 0.35;
 let zoomValue = document.getElementById("zoomValue");
 zoomValue.innerHTML = "x" + zoomSlider.value; // Display the default slider value
 zoomSlider.oninput = function () {
     zoomValue.innerHTML = "x" + this.value;
-    window.game.env.set_zoom(parseFloat(this.value)/* * parseFloat(resizeCanvasSlider.value)*/);
-    window.game.env.set_scroll(window.agent_selected, parseFloat(hScrollSlider.value), parseFloat(vScrollSlider.value));
+    window.game.env.set_zoom(parseFloat(this.value));
+    //window.game.env.set_scroll(window.agent_selected, parseFloat(hScrollSlider.value), parseFloat(vScrollSlider.value));
     window.game.env.render();
 }
 let resetZoom = document.getElementById("resetZoom");
 resetZoom.onclick = function () {
     zoomSlider.value = 1;
     zoomValue.innerHTML = "x1";
-    window.game.env.set_zoom(1/* * parseFloat(resizeCanvasSlider.value)*/);
-    window.game.env.set_scroll(window.agent_selected, parseFloat(hScrollSlider.value), parseFloat(vScrollSlider.value));
+    window.game.env.set_zoom(1);
+    //window.game.env.set_scroll(window.agent_selected, parseFloat(hScrollSlider.value), parseFloat(vScrollSlider.value));
     window.game.env.render();
-}
-
-/* CPPN ENCODING */
+}*/
 
 function getCreepersType() {
     return document.getElementById("creepersType").value == 'Swingable';
 }
 
-
-
-
-/* DRAWING BUTTONS */
-/*
-window.drawing_mode = false;
-window.drawing = false;
-
-const drawingModeSwitch = document.querySelector("#drawingModeSwitch");
-drawingModeSwitch.addEventListener('input', () => {
-    background("#E6F0FF");
-    drawing_canvas.clear();
-    window.ground = [];
-    window.ceiling = [];
-    window.terrain = {
-        ground: [],
-        ceiling: []
-    };
-
-    runButton.className = "btn btn-success";
-    runButton.innerText = "Start";
-
-    if(drawingModeSwitch.checked){
-        window.drawing_mode = true;
-        window.drawing = true;
-
-        runButton.classList.add("disabled");
-        resetButton.classList.add("disabled");
-        addAgentButton.classList.add("disabled");
-        //deleteAgentButton.classList.add("disabled");
-
-        drawGroundButton.classList.remove("disabled");
-        drawCeilingButton.classList.remove("disabled");
-        eraseButton.classList.remove("disabled");
-        clearButton.classList.remove("disabled");
-        generateTerrainButton.classList.remove("disabled");
-    }
-    else{
-        window.drawing_mode = false;
-        window.drawing = false;
-        window.drawing_ground = false;
-
-        runButton.classList.remove("disabled");
-        resetButton.classList.remove("disabled");
-        addAgentButton.classList.remove("disabled");
-        //deleteAgentButton.classList.remove("disabled");
-
-        drawGroundButton.className = "btn btn-outline-primary";
-        drawGroundButton.classList.add("disabled");
-        window.drawing_ceiling = false;
-        drawCeilingButton.className = "btn btn-outline-primary";
-        drawCeilingButton.classList.add("disabled");
-        window.erasing = false;
-        eraseButton.className = "btn btn-outline-warning";
-        eraseButton.classList.add("disabled");
-        clearButton.classList.add("disabled");
-        generateTerrainButton.className = "btn btn-success";
-        generateTerrainButton.classList.add("disabled");
-        generateTerrainButton.innerText = "Generate terrain";
-    }
-
-    window.game.env.set_zoom(0.35);
-    window.game.env.set_scroll(null, 15, 0);
-    init_default();
-});
-
-
-
-let drawGroundButton = document.getElementById("drawGroundButton");
-window.drawing_ground = false;
-drawGroundButton.onclick = function () {
-    window.drawing_ground = !window.drawing_ground;
-    if(window.drawing_ground){
-        this.className = "btn btn-primary";
-    }
-    else{
-        this.className = "btn btn-outline-primary";
-    }
-    window.drawing_ceiling = false;
-    drawCeilingButton.className = "btn btn-outline-primary";
-    window.erasing = false;
-    eraseButton.className = "btn btn-outline-warning";
-}
-
-let drawCeilingButton = document.getElementById("drawCeilingButton");
-window.drawing_ceiling = false;
-drawCeilingButton.onclick = function () {
-    window.drawing_ceiling = !window.drawing_ceiling;
-    if(window.drawing_ceiling){
-        this.className = "btn btn-primary";
-    }
-    else{
-        this.className = "btn btn-outline-primary";
-    }
-    window.drawing_ground = false;
-    drawGroundButton.className = "btn btn-outline-primary";
-    window.erasing = false;
-    eraseButton.className = "btn btn-outline-warning";
-}
-
-let eraseButton = document.getElementById("eraseButton");
-window.erasing = false;
-window.erasing_radius = 15;
-eraseButton.onclick = function (){
-    window.erasing = !window.erasing;
-    if(window.erasing){
-        this.className = "btn btn-warning";
-    }
-    else{
-        this.className = "btn btn-outline-warning";
-    }
-    window.drawing_ground = false;
-    drawGroundButton.className = "btn btn-outline-primary";
-    window.drawing_ceiling = false;
-    drawCeilingButton.className = "btn btn-outline-primary";
-}
-
-let clearButton = document.getElementById("clearButton");
-clearButton.onclick = function () {
-    background("#E6F0FF");
-    drawing_canvas.clear();
-    window.ground = [];
-    window.ceiling = [];
-    window.terrain = {
-        ground: [],
-        ceiling: []
-    };
-
-    window.game.env.set_zoom(0.35);
-    window.game.env.set_scroll(null, 15, 0);
-
-    window.drawing = true;
-    generateTerrainButton.className = "btn btn-success";
-    generateTerrainButton.innerText = "Generate terrain";
-    drawGroundButton.classList.remove("disabled");
-    drawCeilingButton.classList.remove("disabled");
-    eraseButton.classList.remove("disabled");
-
-    runButton.classList.add("disabled");
-    resetButton.classList.add("disabled");
-    addAgentButton.classList.add("disabled");
-    //deleteAgentButton.classList.add("disabled");
-
-    init_default();
-}
-
-
-let generateTerrainButton = document.getElementById("generateTerrainButton");
-generateTerrainButton.onclick = function () {
-
-    window.game.env.set_zoom(0.35);
-    window.game.env.set_scroll(null, 15, 0);
-
-    // Generate the terrain from the shapes drawn
-    if(window.drawing){
-
-        // Sort drawing values for ground and ceiling
-        window.terrain.ground.sort(function (a, b){
-            return a.x - b.x;
-        });
-        for(let p of window.terrain.ground){
-            window.ground.push({x: p.x / (window.game.env.scale * window.game.env.zoom), y: (RENDERING_VIEWER_H - p.y) / (window.game.env.scale * window.game.env.zoom)})
-        }
-
-        window.terrain.ceiling.sort(function (a, b){
-            return a.x - b.x;
-        });
-        for(let p of window.terrain.ceiling){
-            window.ceiling.push({x: p.x / (window.game.env.scale * window.game.env.zoom), y: (RENDERING_VIEWER_H - p.y) / (window.game.env.scale * window.game.env.zoom)})
-        }
-
-        init_default();
-        window.drawing_ground = false;
-        drawGroundButton.className = "btn btn-outline-primary";
-        drawGroundButton.classList.add("disabled");
-        window.drawing_ceiling = false;
-        drawCeilingButton.className = "btn btn-outline-primary";
-        drawCeilingButton.classList.add("disabled");
-        window.erasing = false;
-        eraseButton.className = "btn btn-outline-warning";
-        eraseButton.classList.add("disabled");
-
-        runButton.classList.remove("disabled");
-        resetButton.classList.remove("disabled");
-        addAgentButton.classList.remove("disabled");
-        //deleteAgentButton.classList.remove("disabled");
-
-        this.className = "btn btn-primary";
-        this.innerText = "Return to draw";
-    }
-    else{
-        window.ground = [];
-        window.ceiling = [];
-        init_default();
-        image(drawing_canvas, 0, 0);
-        this.className = "btn btn-success";
-        this.innerText = "Generate terrain";
-        drawGroundButton.classList.remove("disabled");
-        drawCeilingButton.classList.remove("disabled");
-        eraseButton.classList.remove("disabled");
-
-        runButton.classList.add("disabled");
-        resetButton.classList.add("disabled");
-        addAgentButton.classList.add("disabled");
-        //deleteAgentButton.classList.add("disabled");
-    }
-
-    window.drawing = !window.drawing;
-}*/
-
-
-
-
-
+/* IN-CANVAS MOUSE INTERACTIONS */
 
 // Get the position of the mouse cursor in the environment scale
 function getMousePosToEnvScale(){
@@ -337,11 +122,11 @@ window.erasing_radius = 15;
 function mousePressed(){
     if(mouseX >= 0 && mouseX <= window.canvas.width
         && mouseY >= 0 && mouseY <= window.canvas.height){
-        if(window.is_drawing()){
-            window.prevMouseX = mouseX;
-            window.prevMouseY = mouseY;
-        }
-        else{
+
+        window.prevMouseX = mouseX;
+        window.prevMouseY = mouseY;
+
+        if(!window.is_drawing()){
             let mousePos = getMousePosToEnvScale();
 
             for(let agent of window.game.env.agents){
@@ -398,54 +183,61 @@ function mouseDragged(){
 
         // DRAWING
         if(window.is_drawing()) {
+            //cursor('web_demo/pencil-cursor.png');
+            //cursor(HAND);
             if(window.is_drawing_ground()){
                 drawing_canvas.push();
                 drawing_canvas.stroke('green');
                 drawing_canvas.strokeWeight(5);
-                drawing_canvas.line(mouseX, mouseY, window.prevMouseX, window.prevMouseY);
+                drawing_canvas.line(mouseX, mouseY - window.game.env.scroll[1], window.prevMouseX, window.prevMouseY - window.game.env.scroll[1]);
                 drawing_canvas.pop();
-                window.terrain.ground.push({x: mouseX, y: mouseY});
+                window.terrain.ground.push({x: mouseX, y: mouseY - window.game.env.scroll[1]});
             }
             else if(window.is_drawing_ceiling()){
                 drawing_canvas.push();
                 drawing_canvas.stroke('grey');
                 drawing_canvas.strokeWeight(5);
-                drawing_canvas.line(mouseX, mouseY, window.prevMouseX, window.prevMouseY);
+                drawing_canvas.line(mouseX, mouseY - window.game.env.scroll[1], window.prevMouseX, window.prevMouseY - window.game.env.scroll[1]);
                 drawing_canvas.pop();
-                window.terrain.ceiling.push({x: mouseX, y: mouseY});
+                window.terrain.ceiling.push({x: mouseX, y: mouseY - window.game.env.scroll[1]});
             }
             else if(window.is_erasing()){
                 erasing_canvas.clear();
                 erasing_canvas.noStroke();
                 erasing_canvas.fill(255);
-                erasing_canvas.circle(mouseX, mouseY, window.erasing_radius * 2);
+                erasing_canvas.circle(mouseX, mouseY - window.game.env.scroll[1], window.erasing_radius * 2);
                 if(window.terrain.ground.length > 0 || window.terrain.ceiling.length > 0){
 
                     // Remove the points that are within the circle radius from the ground and ceiling lists
                     window.terrain.ground = window.terrain.ground.filter(function(point, index, array){
-                        return Math.pow(point.x - mouseX, 2) + Math.pow(point.y - mouseY, 2) > Math.pow(window.erasing_radius, 2);
+                        return Math.pow(point.x - mouseX, 2) + Math.pow(point.y - (mouseY - window.game.env.scroll[1]), 2) > Math.pow(window.erasing_radius, 2);
                     });
                     window.terrain.ceiling = window.terrain.ceiling.filter(function(point, index, array){
-                        return Math.pow(point.x - mouseX, 2) + Math.pow(point.y - mouseY, 2) > Math.pow(window.erasing_radius, 2);
+                        return Math.pow(point.x - mouseX, 2) + Math.pow(point.y - (mouseY - window.game.env.scroll[1]), 2) > Math.pow(window.erasing_radius, 2);
                     });
 
                     drawing_canvas.erase();
-                    drawing_canvas.circle(mouseX, mouseY, window.erasing_radius * 2);
+                    drawing_canvas.circle(mouseX, mouseY - window.game.env.scroll[1], window.erasing_radius * 2);
                     drawing_canvas.noErase();
                 }
             }
+            // Dragging to move
+            else{
+                cursor(MOVE);
+                window.game.env.set_scroll(null, window.prevMouseX - mouseX, mouseY - prevMouseY);
+            }
 
             window.game.env.render();
-            image(drawing_canvas, 0, 0);
-            image(erasing_canvas, 0, 0);
-            window.prevMouseX = mouseX;
-            window.prevMouseY = mouseY;
+            image(drawing_canvas, 0, window.game.env.scroll[1]);
+            image(erasing_canvas, 0, window.game.env.scroll[1]);
         }
 
-        // DRAGGING AGENT
+        // DRAGGING
         else{
+            cursor(MOVE);
             for (let agent of window.game.env.agents) {
 
+                // Dragging an agent
                 if (agent.is_selected) {
                     let mousePos = getMousePosToEnvScale();
                     let x;
@@ -458,20 +250,29 @@ function mouseDragged(){
                     x = Math.max(0.02, Math.min(0.98, x));
                     window.game.env.set_agent_position(agent, x);
                     window.game.env.render();
-                    window.is_dragging = true;
+                    window.is_dragging_agent = true;
                 }
+            }
+
+            // Dragging to scroll
+            if(!window.is_dragging_agent){
+                if(window.follow_agent){
+                    window.cancelAgentFollow();
+                }
+                window.game.env.set_scroll(null, window.prevMouseX - mouseX, mouseY - prevMouseY);
+                window.game.env.render();
             }
         }
     }
 
-    // Mouse out of canvas + DRAWING
+    /*// Mouse out of canvas + DRAWING
     else if(window.is_drawing()){
         window.prevMouseX = mouseX;
         window.prevMouseY = mouseY;
-    }
+    }*/
 
     // Mouse horizontally out of canvas + dragging agent
-    else if(window.is_dragging
+    else if(window.is_dragging_agent
         && mouseY >= 0 && mouseY < window.canvas.height){
 
         if(mouseX < 0){
@@ -500,10 +301,14 @@ function mouseDragged(){
             }
         }
     }
+
+    window.prevMouseX = mouseX;
+    window.prevMouseY = mouseY;
 }
 
 function mouseReleased(){
-    window.is_dragging = false;
+    cursor();
+    window.is_dragging_agent = false;
     window.dragging_side = null;
 }
 
@@ -516,11 +321,11 @@ function mouseMoved(){
 
             erasing_canvas.noStroke();
             erasing_canvas.fill(255, 180);
-            erasing_canvas.circle(mouseX, mouseY, window.erasing_radius * 2);
+            erasing_canvas.circle(mouseX, mouseY - window.game.env.scroll[1], window.erasing_radius * 2);
 
             window.game.env.render();
-            image(drawing_canvas, 0, 0);
-            image(erasing_canvas, 0, 0);
+            image(drawing_canvas, 0, window.game.env.scroll[1]);
+            image(erasing_canvas, 0, window.game.env.scroll[1]);
         }
 
         else if(window.is_erasing() &&
@@ -530,7 +335,19 @@ function mouseMoved(){
         }
 
         //window.game.env.render();
-        image(drawing_canvas, 0, 0);
-        image(erasing_canvas, 0, 0);
+        image(drawing_canvas, 0, window.game.env.scroll[1]);
+        image(erasing_canvas, 0, window.game.env.scroll[1]);
+    }
+}
+
+function mouseWheel(event){
+    if(!window.is_drawing()
+        && mouseX >= 0 && mouseX <= window.canvas.width
+        && mouseY >= 0 && mouseY <= window.canvas.height) {
+
+        window.game.env.set_zoom(window.game.env.zoom - event.delta / 1000);
+        window.game.env.set_scroll(null, 0, 0);
+        window.game.env.render();
+        return false;
     }
 }

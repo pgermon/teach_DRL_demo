@@ -114,8 +114,8 @@ export default {
             window.ground,
             window.ceiling);
         window.agent_selected = null;
-        window.game.env.set_zoom(parseFloat(zoomSlider.value));
-        window.game.env.set_scroll(window.agent_selected, parseFloat(hScrollSlider.value), parseFloat(vScrollSlider.value));
+        window.game.env.set_zoom(window.zoom);
+        window.game.env.set_scroll(window.agent_selected, window.scroll[0], window.scroll[1]);
         window.game.env.render();
         return state;
     },
@@ -168,7 +168,7 @@ export default {
         state.simulationState.status = 'init';
         state.agents = [];
         window.game.env.set_zoom(0.35);
-        window.game.env.set_scroll(null, 15, 0);
+        window.game.env.set_scroll(null, -62, 0);
         window.init_default();
         return state;
     },
@@ -203,7 +203,7 @@ export default {
         state.simulationState.status = 'init';
         state.agents = [];
         window.game.env.set_zoom(0.35);
-        window.game.env.set_scroll(null, 15, 0);
+        window.game.env.set_scroll(null, -62, 0);
         window.init_default();
         return state;
     },
@@ -211,7 +211,7 @@ export default {
         state.drawingModeState.drawing = payload;
 
         window.game.env.set_zoom(0.35);
-        window.game.env.set_scroll(null, 15, 0);
+        window.game.env.set_scroll(null, -62, 0);
 
         // Generate the terrain from the shapes drawn
         if(!state.drawingModeState.drawing) {

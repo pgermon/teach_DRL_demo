@@ -20,8 +20,8 @@ function setup() {
     canvas.style('margin-left', 'auto');
     canvas.style('margin-right', 'auto');
 
-    drawing_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H);
-    erasing_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H);
+    drawing_canvas = createGraphics(RENDERING_VIEWER_W, 2 * RENDERING_VIEWER_H);
+    erasing_canvas = createGraphics(RENDERING_VIEWER_W, 2 * RENDERING_VIEWER_H);
 
     background("#e6e6ff");
     noLoop();
@@ -202,7 +202,7 @@ function drawSkyClouds(parkour){
 
     // Rescaling
     scale(parkour.scale);
-    scale(parkour.zoom);
+    scale(parkour.zoom * 3/4);
 
     // Translating so that the environment is always horizontally centered
     translate(0, (1 - parkour.scale * parkour.zoom) * VIEWPORT_H/(parkour.scale * parkour.zoom));
@@ -224,7 +224,7 @@ function drawParkour(parkour){
         if(parkour.agents.length > 0 && window.agent_selected == null){
             window.agent_selected = parkour.agents[0];
         }
-        parkour.set_scroll(window.agent_selected, hScrollSlider.value, vScrollSlider.value);
+        parkour.set_scroll(window.agent_selected, null, null);
     }
 
     // Sky & clouds
