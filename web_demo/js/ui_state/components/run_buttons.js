@@ -23,12 +23,14 @@ export default class RunButtons extends Component {
         else{
             if (status == 'running') {
                 runButton.className = "btn btn-warning";
+                //runButton.innerHTML = <i class="fas fa-play"></i>;
                 runButton.innerText = "Pause";
             } else if (status == 'paused') {
                 runButton.className = "btn btn-success";
                 runButton.innerText = "Resume";
             } else { // init
                 runButton.className = "btn btn-success";
+                //runButton.innerText = '<i class="fas fa-play"></i> Start';
                 runButton.innerText = "Start";
             }
             resetButton.className = "btn btn-danger";

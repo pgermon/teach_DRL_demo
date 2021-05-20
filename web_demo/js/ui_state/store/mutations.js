@@ -88,7 +88,7 @@ export default {
         if (payload.keepPositions) {
             positions = [...window.game.env.agents.map(agent => agent.agent_body.reference_head_object.GetPosition())];
         } else {
-            positions = state.agents.map(a => null);
+            positions = [...window.game.env.agents.map(agent => agent.init_pos)];
         }
 
         const parkourConfig = state.parkourConfig;
