@@ -220,10 +220,7 @@ function drawSkyClouds(parkour){
 
 function drawParkour(parkour){
     // Update scroll to stay centered on the agent position
-    if(window.follow_agent){
-        if(parkour.agents.length > 0 && window.agent_selected == null){
-            window.agent_selected = parkour.agents[0];
-        }
+    if(window.follow_agent && window.agent_selected != null){
         parkour.set_scroll(window.agent_selected, null, null);
     }
 

@@ -11,7 +11,7 @@ function init(cppn_input_vector, water_level, creepers_width, creepers_height, c
     window.game = new ParkourGame([], [], [], cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling);
     window.agent_selected = null;
     window.game.env.set_zoom(0.35);
-    window.game.env.set_scroll(window.agent_selected, -62, 0);
+    window.game.env.set_scroll(window.agent_selected, -0.05 * RENDERING_VIEWER_W, 0);
     window.game.env.render();
 }
 
@@ -32,65 +32,7 @@ async function loadModel() {
     window.cppn_model = await tf.loadGraphModel('./js/CPPN/weights/same_ground_ceiling_cppn/tfjs_model/model.json');
     init_default();
 }
-
-
 window.addEventListener("load", loadModel, false);
-
-/* SCROLL AND ZOOM */
-
-// Horizontal scroll slider
-/*let hScrollSlider = document.getElementById("hScrollSlider");
-hScrollSlider.step = 0.1;
-hScrollSlider.value = 15;
-hScrollSlider.oninput = function () {
-    window.cancelAgentFollow();
-    window.game.env.set_scroll(window.agent_selected, parseFloat(this.value), parseFloat(vScrollSlider.value));
-    window.game.env.render();
-}
-let resetHScroll = document.getElementById("resetHScroll");
-resetHScroll.onclick = function () {
-    hScrollSlider.value = 0;
-    window.cancelAgentFollow();
-    window.game.env.set_scroll(window.agent_selected, 0, parseFloat(vScrollSlider.value));
-    window.game.env.render();
-}
-
-// Vertical scroll slider
-let vScrollSlider = document.getElementById("vScrollSlider");
-vScrollSlider.step = 0.1;
-vScrollSlider.oninput = function () {
-    window.cancelAgentFollow();
-    window.game.env.set_scroll(window.agent_selected, parseFloat(hScrollSlider.value), parseFloat(this.value));
-    window.game.env.render();
-}
-let resetVScroll = document.getElementById("resetVScroll");
-resetVScroll.onclick = function () {
-    vScrollSlider.value = 0;
-    window.cancelAgentFollow();
-    window.game.env.set_scroll(window.agent_selected, parseFloat(hScrollSlider.value), 0);
-    window.game.env.render();
-}*/
-
-// Zoom slider
-/*let zoomSlider = document.getElementById("zoomSlider");
-zoomSlider.step = 0.01;
-zoomSlider.value = 0.35;
-let zoomValue = document.getElementById("zoomValue");
-zoomValue.innerHTML = "x" + zoomSlider.value; // Display the default slider value
-zoomSlider.oninput = function () {
-    zoomValue.innerHTML = "x" + this.value;
-    window.game.env.set_zoom(parseFloat(this.value));
-    //window.game.env.set_scroll(window.agent_selected, parseFloat(hScrollSlider.value), parseFloat(vScrollSlider.value));
-    window.game.env.render();
-}
-let resetZoom = document.getElementById("resetZoom");
-resetZoom.onclick = function () {
-    zoomSlider.value = 1;
-    zoomValue.innerHTML = "x1";
-    window.game.env.set_zoom(1);
-    //window.game.env.set_scroll(window.agent_selected, parseFloat(hScrollSlider.value), parseFloat(vScrollSlider.value));
-    window.game.env.render();
-}*/
 
 function getCreepersType() {
     return document.getElementById("creepersType").value == 'Swingable';

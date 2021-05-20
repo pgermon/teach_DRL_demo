@@ -37,12 +37,6 @@ export default {
         }
         return state;
     },
-    followAgents(state, payload) {
-        state.simulationState.followAgents = payload;
-        window.follow_agent = payload;
-        window.game.env.render();
-        return state;
-    },
     drawJoints(state, payload) {
         state.simulationState.drawJoints = payload;
         window.draw_joints = payload;
@@ -132,6 +126,20 @@ export default {
         window.game.env.render();
         return state;
     },
+    followAgent(state, payload) {
+        if(payload.value){
+            window.follow_agent = payload.value;
+            window.agent_selected = window.game.env.agents[payload.index];
+            state.simulationState.agentFollowed = window.agent_selected;
+        }
+        else {
+            window.follow_agent = false;
+            window.agent_selected = null;
+            state.simulationState.agentFollowed = null;
+        }
+        window.game.env.render();
+        return state;
+    },
     selectMorphology(state, payload) {
         state.currentMorphology = payload;
         state.currentSeedIdx = 0;
@@ -168,7 +176,7 @@ export default {
         state.simulationState.status = 'init';
         state.agents = [];
         window.game.env.set_zoom(0.35);
-        window.game.env.set_scroll(null, -62, 0);
+        window.game.env.set_scroll(null, -0.05 * RENDERING_VIEWER_W, 0);
         window.init_default();
         return state;
     },
@@ -203,7 +211,7 @@ export default {
         state.simulationState.status = 'init';
         state.agents = [];
         window.game.env.set_zoom(0.35);
-        window.game.env.set_scroll(null, -62, 0);
+        window.game.env.set_scroll(null, -0.05 * RENDERING_VIEWER_W, 0);
         window.init_default();
         return state;
     },
@@ -211,7 +219,7 @@ export default {
         state.drawingModeState.drawing = payload;
 
         window.game.env.set_zoom(0.35);
-        window.game.env.set_scroll(null, -62, 0);
+        window.game.env.set_scroll(null, -0.05 * RENDERING_VIEWER_W, 0);
 
         // Generate the terrain from the shapes drawn
         if(!state.drawingModeState.drawing) {
