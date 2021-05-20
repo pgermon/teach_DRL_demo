@@ -29,7 +29,7 @@ export default class AgentsList extends Component {
         this.element.querySelectorAll('button[name="savePositionButton"]').forEach((span, index) => {
             span.addEventListener('click', () => {
                 let agent = window.game.env.agents[index];
-                agent.init_pos = agent.agent_body.reference_head_object.GetPosition();
+                agent.init_pos = agent.agent_body.reference_head_object.GetPosition().Clone();
                 //store.dispatch('saveAgentPosition', {index: index, value: span.checked});
             });
         });
