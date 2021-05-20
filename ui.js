@@ -45,10 +45,6 @@ const runButtonsInstance = new RunButtons();
 runButtonsInstance.render();
 
 // Draw switches setup
-const followAgentsSwitch = document.querySelector("#followAgentsSwitch");
-followAgentsSwitch.addEventListener('input', () => {
-    store.dispatch('toggleSwitch', {name: 'followAgents', value: followAgentsSwitch.checked});
-});
 const drawJointsSwitch = document.querySelector("#drawJointsSwitch");
 drawJointsSwitch.addEventListener('input', () => {
     store.dispatch('toggleSwitch', {name: 'drawJoints', value: drawJointsSwitch.checked} );
@@ -196,7 +192,7 @@ fetch('./policies.json')
 
 // interaction with index.js
 window.cancelAgentFollow = () => {
-    store.dispatch('toggleSwitch', {name: 'followAgents', value: false});
+    store.dispatch('followAgent', {index: -1, value: false});
 }
 
 window.get_mode = function () {

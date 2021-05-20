@@ -883,7 +883,6 @@ class MAParametricContinuousParkour {
                 agent.id = this.agents.indexOf(agent);
             }
         }
-
     }
 
     //endregion

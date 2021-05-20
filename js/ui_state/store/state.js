@@ -6,7 +6,7 @@ export default {
     mode: 'procedural_generation', // 'drawing'
     simulationState: {
         status: 'init', // 'running', 'paused'
-        followAgents: false,
+        agentFollowed: null,
         drawJoints: false,
         drawLidars: true,
         drawSensors: false,
