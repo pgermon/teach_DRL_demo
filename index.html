@@ -47,6 +47,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
     <link rel="stylesheet" href="./demo.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     </style>
 </head>
 
@@ -69,16 +70,16 @@
                     <label class="form-check-label" for="drawingModeSwitch">Drawing Mode</label>
                 </div>
                 <div class="col col-md-auto">
-                    <button id="drawGroundButton" class="btn btn-outline-primary disabled"> Draw ground </button>
+                    <button id="drawGroundButton" class="btn btn-outline-success disabled"><i class="fas fa-pencil-alt"></i> Ground </button>
                 </div>
                 <div class="col col-md-auto">
-                    <button id="drawCeilingButton" class="btn btn-outline-primary disabled"> Draw ceiling </button>
+                    <button id="drawCeilingButton" class="btn btn-outline-secondary disabled"><i class="fas fa-pencil-alt"></i> Ceiling </button>
                 </div>
                 <div class="col col-md-auto">
-                    <button id="eraseButton" class="btn btn-outline-warning disabled"> Erase </button>
+                    <button id="eraseButton" class="btn btn-outline-warning disabled"><i class="fas fa-eraser"></i> Erase </button>
                 </div>
                 <div class="col col-md-auto">
-                    <button id="clearButton" class="btn btn-danger disabled"> Clear </button>
+                    <button id="clearButton" class="btn btn-danger disabled"><i class="fas fa-times"></i> Clear </button>
                 </div>
                 <div class="col col-md-auto">
                     <button id="generateTerrainButton" class="btn btn-success disabled"> Generate terrain </button>
@@ -87,47 +88,10 @@
         </div>
 
 
-        <!--<div class="row justify-content-md-center g-2 mt-1">
-            <div class="row justify-content-md-center g-2 mt-1">
-                <div class="col">
-                    <label for="hScrollSlider" class="form-label">Horizontal scroll</label>
-                    <input type="range" class="form-range" min="0" max="100" value="0" id="hScrollSlider">
-                    <button id="resetHScroll" class="btn btn-primary"> Reset </button>
-                </div>
-
-                <div class="col">
-                    <label for="vScrollSlider" class="form-label">Vertical scroll</label>
-                    <input type="range" class="form-range" min="-50" max="100" value="0" id="vScrollSlider">
-                    <button id="resetVScroll" class="btn btn-primary"> Reset </button>
-                </div>
-
-                <div class="col">
-                    <div class="row">
-                        <div class="col">
-                            <label for="zoomSlider" class="form-label">Zoom</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-10">
-                            <input type="range" class="form-range" min="0.3" max="1.5" value="1" id="zoomSlider">
-                        </div>
-                        <div class="col-1">
-                            <span id="zoomValue"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <button id="resetZoom" class="btn btn-primary"> Reset </button>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
-
-
             <div class="row justify-content-md-center g-2 mt-1">
                 <div id="runButtons" class="row justify-content-md-center g-2 mt-1">
                     <div class="col col-md-auto">
-                        <button id="runButton" class="btn btn-success"> Start </button>
+                        <button id="runButton" class="btn btn-success"><i class="fas fa-play"></i> Start </button>
                     </div>
                     <div class="col col-md-auto">
                         <button id="resetButton" class="btn btn-danger"> Reset Simulation </button>

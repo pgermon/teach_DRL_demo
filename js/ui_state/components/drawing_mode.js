@@ -20,8 +20,8 @@ export default class DrawingMode extends Component {
 
         if(store.state.mode == 'procedural_generation'){
 
-            drawGroundButton.className = "btn btn-outline-primary disabled";
-            drawCeilingButton.className = "btn btn-outline-primary disabled";
+            drawGroundButton.className = "btn btn-outline-success disabled";
+            drawCeilingButton.className = "btn btn-outline-secondary disabled";
             eraseButton.className = "btn btn-outline-warning disabled";
             clearButton.className = "btn btn-danger disabled";
             generateTerrainButton.className = "btn btn-success disabled";
@@ -34,15 +34,15 @@ export default class DrawingMode extends Component {
 
             if(state.drawing){
 
-                drawGroundButton.className = "btn btn-outline-primary";
-                drawCeilingButton.className = "btn btn-outline-primary";
+                drawGroundButton.className = "btn btn-outline-success";
+                drawCeilingButton.className = "btn btn-outline-secondary";
                 eraseButton.className = "btn btn-outline-warning";
 
                 if(state.drawing_ground){
-                    drawGroundButton.className = "btn btn-primary";
+                    drawGroundButton.className = "btn btn-success";
                 }
                 else if(state.drawing_ceiling){
-                    drawCeilingButton.className = "btn btn-primary";
+                    drawCeilingButton.className = "btn btn-secondary";
                 }
                 else if(state.erasing){
                     eraseButton.className = "btn btn-warning";
@@ -50,8 +50,8 @@ export default class DrawingMode extends Component {
                 generateTerrainButton.innerText = "Generate terrain";
             }
             else{
-                drawGroundButton.className = "btn btn-outline-primary disabled";
-                drawCeilingButton.className = "btn btn-outline-primary disabled";
+                drawGroundButton.className = "btn btn-outline-success disabled";
+                drawCeilingButton.className = "btn btn-outline-secondary disabled";
                 eraseButton.className = "btn btn-outline-warning disabled";
                 generateTerrainButton.innerText = "Return to draw";
             }
