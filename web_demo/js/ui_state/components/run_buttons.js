@@ -23,15 +23,20 @@ export default class RunButtons extends Component {
         else{
             if (status == 'running') {
                 runButton.className = "btn btn-warning";
-                //runButton.innerHTML = <i class="fas fa-play"></i>;
-                runButton.innerText = "Pause";
+                runButton.childNodes[0].classList.add("fa-pause");
+                runButton.childNodes[0].classList.remove("fa-play");
+                //runButton.innerText = "Pause";
             } else if (status == 'paused') {
                 runButton.className = "btn btn-success";
-                runButton.innerText = "Resume";
+                runButton.childNodes[0].classList.remove("fa-pause");
+                runButton.childNodes[0].classList.add("fa-play");
+                //runButton.innerText = "Resume";
+
             } else { // init
                 runButton.className = "btn btn-success";
-                //runButton.innerText = '<i class="fas fa-play"></i> Start';
-                runButton.innerText = "Start";
+                runButton.childNodes[0].classList.remove("fa-pause");
+                runButton.childNodes[0].classList.add("fa-play");
+                //runButton.innerText = "Start";
             }
             resetButton.className = "btn btn-danger";
             addAgentButton.className = "btn btn-warning";
