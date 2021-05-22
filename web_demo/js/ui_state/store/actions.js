@@ -78,6 +78,9 @@ export default {
     followAgent(context, payload) {
         context.commit('followAgent', payload);
     },
+    renameAgent(context, payload){
+        context.commit('renameAgent', payload);
+    },
     selectMorphology(context, payload) {
         context.commit('selectMorphology', payload);
     },
