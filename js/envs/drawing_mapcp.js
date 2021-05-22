@@ -91,6 +91,7 @@ class DrawingMAPCP {
 
         let agent = {
             id: this.agents.length,
+            name: policy.name,
             is_selected: false,
             morphology: morphology,
             policy: policy,

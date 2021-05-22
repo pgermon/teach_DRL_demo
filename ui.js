@@ -59,6 +59,7 @@ drawSensorsSwitch.addEventListener('input', () => {
     store.dispatch('toggleSwitch',  {name: 'drawSensors', value: drawSensorsSwitch.checked});
 });
 const drawNamesSwitch = document.querySelector("#drawNamesSwitch");
+window.draw_names = true;
 drawNamesSwitch.addEventListener('input', () => {
     store.dispatch('toggleSwitch', {name: 'drawNames', value: drawNamesSwitch.checked});
 });

@@ -10,7 +10,7 @@ export default {
         drawJoints: false,
         drawLidars: true,
         drawSensors: false,
-        drawNames: false
+        drawNames: true
     },
     parkourConfig: {
         dim1: 0,

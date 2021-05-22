@@ -140,6 +140,12 @@ export default {
         window.game.env.render();
         return state;
     },
+    renameAgent(state, payload) {
+        state.agents[payload.index].name = payload.value;
+        window.game.env.agents[payload.index].name = payload.value;
+        window.game.env.render();
+        return state;
+    },
     selectMorphology(state, payload) {
         state.currentMorphology = payload;
         state.currentSeedIdx = 0;
