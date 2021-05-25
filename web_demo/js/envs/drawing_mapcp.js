@@ -952,7 +952,7 @@ class DrawingMAPCP {
         let y = Math.max(y_ground + radius, Math.min(y_ceiling - radius, pos.y));
         asset.body.SetTransform(new b2.Vec2(pos.x, y),
                                 asset.body.GetAngle());
-        asset.body.SetLinearVelocity(new b2.Vec2(0, 0));
+        asset.body.SetLinearVelocity(new b2.Vec2(0, -0.1));
     }
 
     //endregion
