@@ -126,5 +126,15 @@ export default {
     },
     generateTerrain(context, payload){
         context.commit('generateTerrain', payload);
-    }
+    },
+    clickOutsideCanvas(context, payload){
+      context.commit('deselectDrawingTools', payload);
+    },
+    drawAsset(context, payload){
+        switch (payload.name){
+            case 'circle':
+                context.commit('drawCircle', payload.value);
+                break;
+        }
+    },
 };

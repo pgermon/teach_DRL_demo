@@ -185,6 +185,7 @@ class DrawingMAPCP {
         this.prev_shaping = null;
         this.scroll = [0, 0];
         this.water_y = this.GROUND_LIMIT;
+        this.assets_bodies = [];
 
         for(let agent of this.agents){
             agent.nb_steps_outside_water = 0;
@@ -471,6 +472,14 @@ class DrawingMAPCP {
         this.fd_creeper.shape.Set(vertices, 4);
         this.fd_creeper.density = 5.0;
         this.fd_creeper.isSensor = true;
+
+        // Circle fixture
+        this.fd_circle = new b2.FixtureDef();
+        this.fd_circle.shape = new b2.CircleShape();
+        this.fd_circle.density = 5.0;
+        this.fd_circle.friction = FRICTION;
+        this.fd_circle.filter.categoryBits = 0x1;
+        this.fd_circle.filter.maskBits = 0xFFFF;
 
     }
     //endregion
@@ -907,6 +916,43 @@ class DrawingMAPCP {
             }
         }
 
+    }
+
+    create_circle_asset(pos, radius){
+        let y_ground = find_best_y(pos.x, this.terrain_ground);
+        let y_ceiling = find_best_y(pos.x, this.terrain_ceiling);
+        let y = Math.max(y_ground + radius, Math.min(y_ceiling - radius, pos.y));
+
+        this.fd_circle.shape.m_radius = radius;
+        let body_def = new b2.BodyDef();
+        body_def.type = b2.Body.b2_dynamicBody;
+        body_def.position.Assign(new b2.Vec2(pos.x, y));
+        let t = this.world.CreateBody(body_def);
+        t.CreateFixture(this.fd_circle);
+        t.SetUserData(new CustomUserData("circle", CustomUserDataObjectTypes.TERRAIN));
+        let poly_data = {
+            type : "circle",
+            color1 : "#885C00", // [136, 92, 0];
+            color2 : "#5F3D0E", // [95, 61, 14];
+            body : t,
+            is_selected: false
+        }
+        this.assets_bodies.push(poly_data);
+    }
+
+    set_asset_position(asset, pos){
+        let y_ground = find_best_y(pos.x, this.terrain_ground);
+        let y_ceiling = find_best_y(pos.x, this.terrain_ceiling);
+
+        let shape = asset.body.GetFixtureList().GetShape();
+        let radius;
+        if(shape.m_type == b2.Shape.e_circle){
+            radius = shape.m_radius;
+        }
+        let y = Math.max(y_ground + radius, Math.min(y_ceiling - radius, pos.y));
+        asset.body.SetTransform(new b2.Vec2(pos.x, y),
+                                asset.body.GetAngle());
+        asset.body.SetLinearVelocity(new b2.Vec2(0, 0));
     }
 
     //endregion

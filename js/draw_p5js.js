@@ -13,6 +13,7 @@ let JOINTS_COLORS = {
 
 let drawing_canvas;
 let erasing_canvas;
+let assets_canvas;
 function setup() {
     window.canvas = createCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H);
     canvas.parent("canvas_container");
@@ -22,6 +23,7 @@ function setup() {
 
     drawing_canvas = createGraphics(RENDERING_VIEWER_W, 2 * RENDERING_VIEWER_H);
     erasing_canvas = createGraphics(RENDERING_VIEWER_W, 2 * RENDERING_VIEWER_H);
+    assets_canvas = createGraphics(RENDERING_VIEWER_W, 2 * RENDERING_VIEWER_H);
 
     background("#e6e6ff");
     noLoop();
@@ -259,7 +261,7 @@ function drawParkour(parkour){
         drawPolygon(poly.vertices, poly.color);
     }
 
-    // Draw all physical elements
+    // Draw all terrain elements
     for(let i = 0; i < parkour.terrain_bodies.length; i++) {
         let poly = parkour.terrain_bodies[i];
         let shape = poly.body.GetFixtureList().GetShape();
@@ -279,6 +281,21 @@ function drawParkour(parkour){
             vertices = [[v1.x, v1.y], [v2.x, v2.y]];
             strokeWeight(1/parkour.scale);
             drawLine(vertices, poly.color);
+        }
+    }
+
+    // Draw all assets
+    for(let asset of parkour.assets_bodies){
+        let shape = asset.body.GetFixtureList().GetShape();
+
+        let stroke_coef = asset.is_selected ? 2 : 1;
+
+        if(asset.type == "circle"){
+            let center = asset.body.GetWorldCenter();
+            strokeWeight(stroke_coef * 2/parkour.scale);
+            stroke(asset.color2);
+            fill(asset.color1);
+            circle(center.x, RENDERING_VIEWER_H - center.y, shape.m_radius * 2);
         }
     }
 }
