@@ -169,7 +169,7 @@ class DrawingMAPCP {
     _destroy(){
         this.world.SetContactListener(null);
         for(let t of this.terrain_bodies){
-            this.world.DestroyBody(t);
+            this.world.DestroyBody(t.body);
         }
         this.terrain_bodies = [];
         this.creepers_joints = [];
@@ -953,6 +953,19 @@ class DrawingMAPCP {
         asset.body.SetTransform(new b2.Vec2(pos.x, y),
                                 asset.body.GetAngle());
         asset.body.SetLinearVelocity(new b2.Vec2(0, -0.1));
+    }
+
+    delete_asset(asset){
+        if(this.assets_bodies.length > 0){
+            let index = this.assets_bodies.indexOf(asset);
+            if(index != -1){
+                this.assets_bodies.splice(index, 1);
+                let pos = asset.body.GetWorldCenter();
+                asset.body.SetTransform(new b2.Vec2(pos.x, pos.y + 1),
+                    asset.body.GetAngle());
+                this.world.DestroyBody(asset.body);
+            }
+        }
     }
 
     //endregion

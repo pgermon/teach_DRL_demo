@@ -328,7 +328,6 @@ function mouseMoved(){
         }
 
         window.game.env.render();
-        image(drawing_canvas, 0, window.game.env.scroll[1]);
         image(assets_canvas, 0, window.game.env.scroll[1]);
 
     }
@@ -372,3 +371,11 @@ function mouseWheel(event){
         }
     }
 }
+
+document.addEventListener('keydown', (event) => {
+    if(event.key == 'Delete'){
+        window.game.env.delete_asset(window.asset_selected);
+        window.asset_selected = null;
+        window.game.env.render();
+    }
+});
