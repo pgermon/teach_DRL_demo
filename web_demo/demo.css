@@ -19,10 +19,20 @@ hr{
     color: white;
 }
 
+btn-asset:hover{
+    background-color: #885C00;
+    color: white;
+}
+
 .btn-outline-asset{
     background-color: white;
     color: #885C00;
     border-color: #885C00;
+}
+
+.btn-outline-asset:hover{
+    background-color: #885C00;
+    color: white;
 }
 
 /*
