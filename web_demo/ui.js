@@ -167,9 +167,12 @@ const generateTerrainButton = document.querySelector('#generateTerrainButton');
 generateTerrainButton.addEventListener('click', () => {
     store.dispatch('generateTerrain', !store.state.drawingModeState.drawing);
 });
+const circleAssetButton = document.querySelector('#circleAssetButton');
+circleAssetButton.addEventListener('click', () => {
+    store.dispatch('drawAsset', {name: 'circle', value: !store.state.drawingModeState.assets.circle});
+});
 const drawingModeInstance = new DrawingMode();
 drawingModeInstance.render();
-
 
 // fetch morphologies
 fetch('./policies.json')
@@ -219,10 +222,18 @@ window.is_erasing = () => {
     return store.state.drawingModeState.erasing;
 }
 
+window.is_drawing_circle = () => {
+    return store.state.drawingModeState.assets.circle;
+}
+
 window.addDefaultAgent = () => {
     store.dispatch('addDefaultAgent', {});
 }
 
 window.markCppnInitialized = () => {
     store.dispatch('markCppnInitialized', {});
+}
+
+window.clickOutsideCanvas = () => {
+    store.dispatch('clickOutsideCanvas', {});
 }

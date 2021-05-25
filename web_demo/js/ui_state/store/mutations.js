@@ -184,6 +184,7 @@ export default {
             state.drawingModeState.drawing_ground = false;
             state.drawingModeState.drawing_ceiling = false;
             state.drawingModeState.erasing = false;
+            state.drawingModeState.assets.circle = false;
         }
         state.simulationState.status = 'init';
         window.game.env.set_zoom(0.35);
@@ -195,18 +196,21 @@ export default {
         state.drawingModeState.drawing_ground = payload;
         state.drawingModeState.drawing_ceiling = false;
         state.drawingModeState.erasing = false;
+        state.drawingModeState.assets.circle = false;
         return state;
     },
     drawCeiling(state, payload){
         state.drawingModeState.drawing_ground = false;
         state.drawingModeState.drawing_ceiling = payload;
         state.drawingModeState.erasing = false;
+        state.drawingModeState.assets.circle = false;
         return state;
     },
     erase(state, payload){
         state.drawingModeState.drawing_ground = false;
         state.drawingModeState.drawing_ceiling = false;
         state.drawingModeState.erasing = payload;
+        state.drawingModeState.assets.circle = false;
         return state;
     },
     clear(state, payload){
@@ -238,6 +242,7 @@ export default {
             state.drawingModeState.drawing_ground = false;
             state.drawingModeState.drawing_ceiling = false;
             state.drawingModeState.erasing = false;
+            state.drawingModeState.assets.circle = false;
 
             // Sort drawing values for ground and ceiling
             window.terrain.ground.sort(function (a, b) {
@@ -309,6 +314,20 @@ export default {
             window.init_default();
             image(drawing_canvas, 0, window.game.env.scroll[1]);
         }
+        return state;
+    },
+    deselectDrawingTools(state, payload){
+        state.drawingModeState.drawing_ground = false;
+        state.drawingModeState.drawing_ceiling = false;
+        state.drawingModeState.erasing = false;
+        state.drawingModeState.assets.circle = false;
+        return state;
+    },
+    drawCircle(state, payload){
+        state.drawingModeState.drawing_ground = false;
+        state.drawingModeState.drawing_ceiling = false;
+        state.drawingModeState.erasing = false;
+        state.drawingModeState.assets.circle = payload;
         return state;
     }
 };

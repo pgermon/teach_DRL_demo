@@ -17,6 +17,7 @@ function init(cppn_input_vector, water_level, creepers_width, creepers_height, c
     }
     window.game = new ParkourGame(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling);
     window.agent_selected = null;
+    window.asset_selected = null;
     window.game.env.set_zoom(0.35);
     window.game.env.set_scroll(window.agent_selected, -0.05 * RENDERING_VIEWER_W, 0);
     window.game.env.render();
@@ -75,9 +76,18 @@ function convertPosEnvToCanvas(x_pos, y_pos){
     return {x: x, y: y};
 }
 
-window.erasing_radius = 15;
+function isMousePosInsideBody(pos, body){
+    let shape = body.GetFixtureList().GetShape();
 
-// Select an agent in the canvas if the mouse is clicked over its body
+    if(shape.m_type == b2.Shape.e_circle){
+        let center = body.GetWorldCenter();
+        return Math.pow(center.x - pos.x, 2) + Math.pow(center.y - pos.y, 2) <= Math.pow(shape.m_radius, 2);
+    }
+}
+
+window.erasing_radius = 15;
+window.asset_size = 8;
+
 function mousePressed(){
     if(mouseX >= 0 && mouseX <= window.canvas.width
         && mouseY >= 0 && mouseY <= window.canvas.height){
@@ -85,9 +95,16 @@ function mousePressed(){
         window.prevMouseX = mouseX;
         window.prevMouseY = mouseY;
 
-        if(!window.is_drawing()){
+        if(window.is_drawing_circle()){
+            let mousePos = convertPosCanvasToEnv(mouseX, mouseY);
+            window.game.env.create_circle_asset(mousePos, window.asset_size * 2 / window.game.env.scale);
+            window.game.env.render();
+        }
+
+        else if(!window.is_drawing()){
             let mousePos = convertPosCanvasToEnv(mouseX, mouseY);
 
+            // Select an agent in the canvas if the mouse is clicked over its body
             for(let agent of window.game.env.agents){
 
                 // Check if the agent is touched by the mouse
@@ -110,20 +127,34 @@ function mousePressed(){
                 }
             }
 
-            let selected = false;
-            for(let agent of window.game.env.agents){
-                if(agent.is_selected){
-                    window.agent_selected = agent;
-                    selected = true;
+            // Select an asset in the canvas if the mouse is clicked over its body
+            for(let asset of window.game.env.assets_bodies){
+
+                // Check if the asset is touched by the mouse
+                let is_asset_touched = isMousePosInsideBody(mousePos, asset.body);
+
+                // If the asset is touched and not selected yet, it is now selected and all other assets are deselected
+                if(!asset.is_selected && is_asset_touched){
+                    asset.is_selected = true;
+                    window.asset_selected = asset;
+                    for(let other_asset of window.game.env.assets_bodies){
+                        if(other_asset != asset){
+                            other_asset.is_selected = false;
+                        }
+                    }
                     break;
                 }
-            }
-            if(!selected){
-                window.agent_selected = null;
+                // If the asset is not touched it is deselected
+                else if(!is_asset_touched){
+                    asset.is_selected = false;
+                }
             }
 
             window.game.env.render();
         }
+    }
+    else if(window.is_drawing() || window.is_drawing_circle()){
+        window.clickOutsideCanvas();
     }
 }
 
@@ -211,11 +242,26 @@ function mouseDragged(){
                     window.game.env.set_agent_position(agent, x);
                     window.game.env.render();
                     window.is_dragging_agent = true;
+                    break;
+                }
+            }
+
+            for(let asset of window.game.env.assets_bodies){
+                // Dragging an asset
+                if (asset.is_selected) {
+                    let mousePos = convertPosCanvasToEnv(mouseX, mouseY);
+                    let terrain_length = Math.max(window.game.env.terrain_ground[window.game.env.terrain_ground.length - 1].x,
+                        window.game.env.terrain_ceiling[window.game.env.terrain_ceiling.length - 1].x);
+                    mousePos.x = mousePos.x / terrain_length;
+                    mousePos.x = Math.max(0.02, Math.min(0.98, mousePos.x)) * terrain_length;
+                    window.game.env.set_asset_position(asset, mousePos);
+                    window.game.env.render();
+                    window.is_dragging_asset = true;
                 }
             }
 
             // Dragging to scroll
-            if(!window.is_dragging_agent){
+            if(!window.is_dragging_agent && !window.is_dragging_asset){
                 if(window.follow_agent){
                     window.cancelAgentFollow();
                 }
@@ -263,43 +309,66 @@ function mouseDragged(){
 function mouseReleased(){
     cursor();
     window.is_dragging_agent = false;
+    window.is_dragging_asset = false;
     window.dragging_side = null;
 }
 
 function mouseMoved(){
-    if(window.is_drawing()){
-        erasing_canvas.clear();
-        if(window.is_erasing() &&
-            mouseX >= 0 && mouseX <= window.canvas.width
+
+    erasing_canvas.clear();
+    assets_canvas.clear();
+
+    if(window.is_drawing_circle()){
+        if(mouseX >= 0 && mouseX <= window.canvas.width
             && mouseY >= 0 && mouseY <= window.canvas.height) {
 
-            erasing_canvas.noStroke();
-            erasing_canvas.fill(255, 180);
-            erasing_canvas.circle(mouseX, mouseY - window.game.env.scroll[1], window.erasing_radius * 2);
-
-            window.game.env.render();
-            image(drawing_canvas, 0, window.game.env.scroll[1]);
-            image(erasing_canvas, 0, window.game.env.scroll[1]);
+            assets_canvas.noStroke();
+            assets_canvas.fill(136, 92, 0, 180);
+            assets_canvas.circle(mouseX, mouseY - window.game.env.scroll[1], window.asset_size * 4 * window.game.env.zoom);
         }
 
-        else if(window.is_erasing()
-            && (mouseX < 0 || mouseX > window.canvas.width
-            || mouseY < 0 || mouseY > window.canvas.height)) {
-            window.game.env.render();
-            image(drawing_canvas, 0, window.game.env.scroll[1]);
-            image(erasing_canvas, 0, window.game.env.scroll[1]);
+        window.game.env.render();
+        image(drawing_canvas, 0, window.game.env.scroll[1]);
+        image(assets_canvas, 0, window.game.env.scroll[1]);
+
+    }
+    else if(window.is_drawing()) {
+
+        if (window.is_erasing()) {
+            if (mouseX >= 0 && mouseX <= window.canvas.width
+                && mouseY >= 0 && mouseY <= window.canvas.height) {
+
+                erasing_canvas.noStroke();
+                erasing_canvas.fill(255, 180);
+                erasing_canvas.circle(mouseX, mouseY - window.game.env.scroll[1], window.erasing_radius * 2);
+
+                window.game.env.render();
+                image(drawing_canvas, 0, window.game.env.scroll[1]);
+                image(erasing_canvas, 0, window.game.env.scroll[1]);
+            }
         }
     }
 }
 
 function mouseWheel(event){
-    if(!window.is_drawing()
-        && mouseX >= 0 && mouseX <= window.canvas.width
+    if(mouseX >= 0 && mouseX <= window.canvas.width
         && mouseY >= 0 && mouseY <= window.canvas.height) {
 
-        window.game.env.set_zoom(window.game.env.zoom - event.delta / 1000);
-        window.game.env.set_scroll(null, 0, 0);
-        window.game.env.render();
-        return false;
+        if(window.is_drawing_circle()){
+            window.asset_size = Math.max(3, Math.min(window.asset_size - event.delta / 100, 30));
+            return false;
+        }
+        else if (window.is_drawing()){
+            if(window.is_erasing()){
+                window.erasing_radius = Math.max(5, Math.min(window.erasing_radius - event.delta / 100, 30));
+            }
+            return false;
+        }
+        else {
+            window.game.env.set_zoom(window.game.env.zoom - event.delta / 1000);
+            window.game.env.set_scroll(null, 0, 0);
+            window.game.env.render();
+            return false;
+        }
     }
 }

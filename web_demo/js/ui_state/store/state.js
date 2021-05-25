@@ -14,7 +14,7 @@ export default {
     },
     parkourConfig: {
         dim1: 1.0,
-        dim2: 1.0,
+        dim2: 0.95,
         dim3: 0,
         smoothing: 20,
         waterLevel: 0
@@ -30,6 +30,9 @@ export default {
         drawing_ground: false,
         drawing_ceiling: false,
         erasing: false,
+        assets: {
+          circle: false,
+        },
     },
     defaultAgentAdded: false,
     cppnInitialized: false,
