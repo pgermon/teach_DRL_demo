@@ -274,9 +274,9 @@ export default {
                     drawing_canvas.strokeWeight(4);
                     drawing_canvas.line(
                         p_pos.x,
-                        p_pos.y,
+                        p_pos.y + SCROLL_MAX,
                         p2_pos.x,
-                        p2_pos.y
+                        p2_pos.y + SCROLL_MAX
                     )
 
                     window.terrain.ground.push({x: p.x, y: p.y});
@@ -298,9 +298,9 @@ export default {
                     drawing_canvas.strokeWeight(4);
                     drawing_canvas.line(
                         p_pos.x,
-                        p_pos.y,
+                        p_pos.y + SCROLL_MAX,
                         p2_pos.x,
-                        p2_pos.y
+                        p2_pos.y + SCROLL_MAX
                     )
 
                     window.terrain.ceiling.push({x: p.x, y: p.y});
@@ -312,7 +312,7 @@ export default {
             window.ground = [];
             window.ceiling = [];
             window.init_default();
-            image(drawing_canvas, 0, window.game.env.scroll[1]);
+            image(drawing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
         }
         return state;
     },

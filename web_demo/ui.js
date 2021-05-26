@@ -106,7 +106,6 @@ const terrainConfigInstance = new TerrainConfig();
 terrainConfigInstance.render();
 
 // Creepers setup
-
 const creepersWidthSlider = document.querySelector("#creepersWidthSlider");
 creepersWidthSlider.addEventListener('input', () => {
     store.dispatch('changeCreepersConfig', {
@@ -114,7 +113,6 @@ creepersWidthSlider.addEventListener('input', () => {
         value: parseFloat(creepersWidthSlider.value)
     });
 });
-
 const creepersHeightSlider = document.querySelector("#creepersHeightSlider");
 creepersHeightSlider.addEventListener('input', () => {
     store.dispatch('changeCreepersConfig', {
@@ -122,7 +120,6 @@ creepersHeightSlider.addEventListener('input', () => {
         value: parseFloat(creepersHeightSlider.value)
     });
 });
-
 const creepersSpacingSlider = document.querySelector("#creepersSpacingSlider");
 creepersSpacingSlider.addEventListener('input', () => {
     store.dispatch('changeCreepersConfig', {
@@ -130,7 +127,6 @@ creepersSpacingSlider.addEventListener('input', () => {
         value: parseFloat(creepersSpacingSlider.value)
     });
 });
-
 const creepersTypeSelect = document.querySelector("#creepersType");
 creepersTypeSelect.addEventListener('input', () => {
     store.dispatch('changeCreepersConfig', {
@@ -138,15 +134,18 @@ creepersTypeSelect.addEventListener('input', () => {
         value: creepersTypeSelect.value
     });
 });
-
 const creepersConfigInstance = new CreepersConfig();
 creepersConfigInstance.render()
 
-// Drawing mode setup
-const drawingModeSwitch = document.querySelector("#drawingModeSwitch");
-drawingModeSwitch.addEventListener('input', () => {
-    store.dispatch('toggleSwitch', {name: 'drawingMode', value: drawingModeSwitch.checked});
-});
+// Drawing Mode setup
+const parkourGenTab = document.querySelector('#parkour-gen-tab');
+parkourGenTab.addEventListener('click', () => {
+    store.dispatch('switchMode', false);
+})
+const drawingModeTab = document.querySelector('#draw-config-tab');
+drawingModeTab.addEventListener('click', () => {
+    store.dispatch('switchMode', true);
+})
 const drawGroundButton = document.querySelector('#drawGroundButton');
 drawGroundButton.addEventListener('click', () => {
     store.dispatch('drawGround', !store.state.drawingModeState.drawing_ground);

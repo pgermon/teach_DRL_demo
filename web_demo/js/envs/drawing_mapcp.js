@@ -23,6 +23,7 @@ const FRICTION = 2.5
 const WATER_DENSITY = 1.0
 const CREEPER_UNIT = 1;
 const NB_FIRST_STEPS_HANG = 5
+const SCROLL_MAX = 300;
 
 //endregion
 
@@ -871,7 +872,7 @@ class DrawingMAPCP {
 
         this.scroll = [
             Math.max(- 0.05 * RENDERING_VIEWER_W, Math.min(this.scroll[0], terrain_length * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9)),
-            Math.max(-300, Math.min(this.scroll[1], 300))
+            Math.max(-SCROLL_MAX, Math.min(this.scroll[1], SCROLL_MAX))
         ];
 
         window.scroll = this.scroll;
@@ -919,8 +920,14 @@ class DrawingMAPCP {
     }
 
     create_circle_asset(pos, radius){
-        let y_ground = find_best_y(pos.x, this.terrain_ground);
-        let y_ceiling = find_best_y(pos.x, this.terrain_ceiling);
+        let y_ground = find_best_y(pos.x, this.terrain_ground, radius);
+        if(y_ground == null){
+            y_ground = -Infinity;
+        }
+        let y_ceiling = find_best_y(pos.x, this.terrain_ceiling, radius);
+        if(y_ceiling == null){
+            y_ceiling = Infinity;
+        }
         let y = Math.max(y_ground + radius, Math.min(y_ceiling - radius, pos.y));
 
         this.fd_circle.shape.m_radius = radius;
@@ -941,13 +948,19 @@ class DrawingMAPCP {
     }
 
     set_asset_position(asset, pos){
-        let y_ground = find_best_y(pos.x, this.terrain_ground);
-        let y_ceiling = find_best_y(pos.x, this.terrain_ceiling);
-
         let shape = asset.body.GetFixtureList().GetShape();
         let radius;
         if(shape.m_type == b2.Shape.e_circle){
             radius = shape.m_radius;
+        }
+
+        let y_ground = find_best_y(pos.x, this.terrain_ground, radius);
+        if(y_ground == null){
+            y_ground = -Infinity;
+        }
+        let y_ceiling = find_best_y(pos.x, this.terrain_ceiling, radius);
+        if(y_ceiling == null){
+            y_ceiling = Infinity;
         }
         let y = Math.max(y_ground + radius, Math.min(y_ceiling - radius, pos.y));
         asset.body.SetTransform(new b2.Vec2(pos.x, y),
@@ -972,11 +985,12 @@ class DrawingMAPCP {
 }
 
 // Find the best y value corresponding to x according to the points in array
-function find_best_y(x, array){
+function find_best_y(x, array, max_dist=null){
     // find the closest point to x in array according to the x-coordinate
     let p1 = array.reduce(function(prev, curr) {
         return (Math.abs(curr.x - x) < Math.abs(prev.x - x) ? curr : prev);
     });
+
     // get the index of p1
     let i1 = array.indexOf(p1);
     let p2;
@@ -1007,6 +1021,9 @@ function find_best_y(x, array){
         let a = (p2.y - p1.y) / (p2.x - p1.x);
         let b = p1.y - a * p1.x;
         y = a * x + b;
+    }
+    else if(max_dist != null && Math.abs(x - p1.x) > max_dist){
+            y = null;
     }
     return y;
 }

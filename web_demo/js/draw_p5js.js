@@ -21,9 +21,9 @@ function setup() {
     canvas.style('margin-left', 'auto');
     canvas.style('margin-right', 'auto');
 
-    drawing_canvas = createGraphics(RENDERING_VIEWER_W, 2 * RENDERING_VIEWER_H);
-    erasing_canvas = createGraphics(RENDERING_VIEWER_W, 2 * RENDERING_VIEWER_H);
-    assets_canvas = createGraphics(RENDERING_VIEWER_W, 2 * RENDERING_VIEWER_H);
+    drawing_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
+    erasing_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
+    assets_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
 
     background("#e6e6ff");
     noLoop();

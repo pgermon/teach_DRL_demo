@@ -179,7 +179,7 @@ function mouseDragged(){
                 drawing_canvas.push();
                 drawing_canvas.stroke("#66994D");
                 drawing_canvas.strokeWeight(4);
-                drawing_canvas.line(mouseX, mouseY - window.game.env.scroll[1], window.prevMouseX, window.prevMouseY - window.game.env.scroll[1]);
+                drawing_canvas.line(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.prevMouseX, window.prevMouseY + SCROLL_MAX - window.game.env.scroll[1]);
                 drawing_canvas.pop();
                 window.terrain.ground.push(convertPosCanvasToEnv(mouseX, mouseY));
             }
@@ -187,7 +187,7 @@ function mouseDragged(){
                 drawing_canvas.push();
                 drawing_canvas.stroke("#808080");
                 drawing_canvas.strokeWeight(4);
-                drawing_canvas.line(mouseX, mouseY - window.game.env.scroll[1], window.prevMouseX, window.prevMouseY - window.game.env.scroll[1]);
+                drawing_canvas.line(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.prevMouseX, window.prevMouseY + SCROLL_MAX - window.game.env.scroll[1]);
                 drawing_canvas.pop();
                 window.terrain.ceiling.push(convertPosCanvasToEnv(mouseX, mouseY));
             }
@@ -195,7 +195,7 @@ function mouseDragged(){
                 erasing_canvas.clear();
                 erasing_canvas.noStroke();
                 erasing_canvas.fill(255);
-                erasing_canvas.circle(mouseX, mouseY - window.game.env.scroll[1], window.erasing_radius * 2);
+                erasing_canvas.circle(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.erasing_radius * 2);
                 if(window.terrain.ground.length > 0 || window.terrain.ceiling.length > 0){
                     let mousePos = convertPosCanvasToEnv(mouseX, mouseY);
 
@@ -208,7 +208,7 @@ function mouseDragged(){
                     });
 
                     drawing_canvas.erase();
-                    drawing_canvas.circle(mouseX, mouseY - window.game.env.scroll[1], window.erasing_radius * 2);
+                    drawing_canvas.circle(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.erasing_radius * 2);
                     drawing_canvas.noErase();
                 }
             }
@@ -219,8 +219,8 @@ function mouseDragged(){
             }
 
             window.game.env.render();
-            image(drawing_canvas, 0, window.game.env.scroll[1]);
-            image(erasing_canvas, 0, window.game.env.scroll[1]);
+            image(drawing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
+            image(erasing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
         }
 
         // DRAGGING
@@ -324,11 +324,11 @@ function mouseMoved(){
 
             assets_canvas.noStroke();
             assets_canvas.fill(136, 92, 0, 180);
-            assets_canvas.circle(mouseX, mouseY - window.game.env.scroll[1], window.asset_size * 4 * window.game.env.zoom);
+            assets_canvas.circle(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.asset_size * 4 * window.game.env.zoom);
         }
 
         window.game.env.render();
-        image(assets_canvas, 0, window.game.env.scroll[1]);
+        image(assets_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
 
     }
     else if(window.is_drawing()) {
@@ -339,12 +339,12 @@ function mouseMoved(){
 
                 erasing_canvas.noStroke();
                 erasing_canvas.fill(255, 180);
-                erasing_canvas.circle(mouseX, mouseY - window.game.env.scroll[1], window.erasing_radius * 2);
-
-                window.game.env.render();
-                image(drawing_canvas, 0, window.game.env.scroll[1]);
-                image(erasing_canvas, 0, window.game.env.scroll[1]);
+                erasing_canvas.circle(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.erasing_radius * 2);
             }
+
+            window.game.env.render();
+            image(drawing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
+            image(erasing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
         }
     }
 }
