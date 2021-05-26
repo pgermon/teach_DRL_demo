@@ -819,11 +819,11 @@ class DrawingMAPCP {
                     init_y = find_best_y(init_x, this.terrain_ground) + agent.agent_body.AGENT_CENTER_HEIGHT;
                 }
                 else if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
-                    let y_ground = find_best_y(init_x, this.terrain_ground);
+                    let y_ground = find_best_y(init_x, this.terrain_ground, agent.agent_body.AGENT_WIDTH);
                     if(y_ground == null){
                         y_ground = -Infinity;
                     }
-                    let y_ceiling = find_best_y(init_x, this.terrain_ceiling);
+                    let y_ceiling = find_best_y(init_x, this.terrain_ceiling, agent.agent_body.AGENT_WIDTH);
                     if(y_ceiling == null){
                         y_ceiling = Infinity;
                     }
@@ -864,11 +864,11 @@ class DrawingMAPCP {
             init_y = find_best_y(init_x, this.terrain_ground) + agent.agent_body.AGENT_CENTER_HEIGHT;
         }
         else if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
-            let y_ground = find_best_y(init_x, this.terrain_ground);
+            let y_ground = find_best_y(init_x, this.terrain_ground, agent.agent_body.AGENT_WIDTH);
             if(y_ground == null){
                 y_ground = -Infinity;
             }
-            let y_ceiling = find_best_y(init_x, this.terrain_ceiling);
+            let y_ceiling = find_best_y(init_x, this.terrain_ceiling, agent.agent_body.AGENT_WIDTH);
             if(y_ceiling == null){
                 y_ceiling = Infinity;
             }
