@@ -107,8 +107,13 @@ function draw() {
                     fill(0);
                     noStroke()
                     textSize(25/ parkour.scale);
-                    //textAlign(CENTER);
-                    text(agent.name, pos.x - agent.agent_body.AGENT_WIDTH/2, RENDERING_VIEWER_H - (pos.y + agent.agent_body.AGENT_HEIGHT/3));
+                    let x_pos = pos.x - agent.agent_body.AGENT_WIDTH/2
+                    let y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/3;
+                    if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
+                        x_pos = pos.x - agent.agent_body.AGENT_WIDTH;
+                        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT * 2;
+                    }
+                    text(agent.name, x_pos, RENDERING_VIEWER_H - y_pos);
                 }
             }
 

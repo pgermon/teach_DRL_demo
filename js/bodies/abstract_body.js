@@ -116,12 +116,6 @@ class AbstractBody {
         return false;
     }
 
-    set_awake(bool){
-        for(let body of this.body_parts){
-            body.SetAwake(bool);
-        }
-    }
-
     destroy(world){
         for(let body of this.body_parts){
             world.DestroyBody(body);

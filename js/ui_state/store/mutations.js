@@ -71,11 +71,11 @@ export default {
     },
     startSimulation(state, payload) {
         state.simulationState.status = 'running';
-        const policy = state.morphologies
+        /*const policy = state.morphologies
             .filter(m => m.morphology == state.currentMorphology)
             .flatMap(morphology => morphology.seeds)
-            .find(seed => seed.idx == state.currentSeedIdx).path;
-        window.game.run(policy);
+            .find(seed => seed.idx == state.currentSeedIdx).path;*/
+        window.game.run();
         return state;
     },
     pauseSimulation(state, payload) {
