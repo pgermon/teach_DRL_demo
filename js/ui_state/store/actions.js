@@ -48,9 +48,6 @@ export default {
             case 'drawNames':
                 context.commit('drawNames', payload.value);
                 break;
-            case 'drawingMode':
-                context.commit('switchMode', payload.value);
-                break;
         }
     },
     toggleRun(context, payload) {
@@ -111,6 +108,9 @@ export default {
     },
     addMorphology(context, payload) {
         context.commit('addMorphology', payload);
+    },
+    switchMode(context, payload) {
+        context.commit('switchMode', payload);
     },
     drawGround(context, payload) {
         context.commit('drawGround', payload);

@@ -9,15 +9,13 @@ export default class DrawingMode extends Component {
         });
     }
     render() {
-        this.element.querySelector('#drawingModeSwitch').checked = store.state.mode == 'drawing';
-
         const state = store.state.drawingModeState;
         let drawGroundButton = this.element.querySelector('#drawGroundButton');
         let drawCeilingButton = this.element.querySelector('#drawCeilingButton');
         let eraseButton = this.element.querySelector('#eraseButton');
         let clearButton = this.element.querySelector('#clearButton');
         let generateTerrainButton = this.element.querySelector('#generateTerrainButton');
-        let circleAssetButton = this.element.querySelector('#circleAssetButton');
+        //let circleAssetButton = this.element.querySelector('#circleAssetButton');
 
         if(store.state.mode == 'procedural_generation'){
 
@@ -27,10 +25,10 @@ export default class DrawingMode extends Component {
             clearButton.className = "btn btn-danger disabled";
             generateTerrainButton.className = "btn btn-success disabled";
             generateTerrainButton.innerText = "Generate terrain";
-            circleAssetButton.className = "btn btn-outline-asset";
+            /*circleAssetButton.className = "btn btn-outline-asset";
             if(state.assets.circle){
                 circleAssetButton.className = "btn btn-asset";
-            }
+            }*/
         }
         else if(store.state.mode == 'drawing'){
 
@@ -63,12 +61,12 @@ export default class DrawingMode extends Component {
                 eraseButton.className = "btn btn-outline-warning disabled";
 
                 generateTerrainButton.className = "btn btn-primary";
-                generateTerrainButton.innerText = "Return to draw";
+                generateTerrainButton.innerText = "Draw";
 
-                circleAssetButton.className = "btn btn-outline-asset";
+                /*circleAssetButton.className = "btn btn-outline-asset";
                 if(state.assets.circle){
                     circleAssetButton.className = "btn btn-asset";
-                }
+                }*/
 
             }
         }
