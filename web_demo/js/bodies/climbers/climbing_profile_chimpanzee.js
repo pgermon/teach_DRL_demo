@@ -88,7 +88,7 @@ class ClimbingProfileCHimpanzee extends ClimberAbstractBody {
         rjd.enableMotor = false;
         rjd.enableLimit = true;
         rjd.lowerAngle = -0.1 * Math.PI;
-        rjd.lowerAngle = 0.1 * Math.PI;
+        rjd.upperAngle = 0.1 * Math.PI;
         let joint_motor = world.CreateJoint(rjd);
         joint_motor.SetUserData(new CustomMotorUserData("neck", 0, false));
         this.neck_joint = joint_motor;
@@ -156,7 +156,7 @@ class ClimbingProfileCHimpanzee extends ClimberAbstractBody {
             lower.SetUserData(new CustomBodyUserData(true, true, "lower_leg"));
             this.body_parts.push(lower);
 
-            // Revolute joint between body and lower leg
+            // Revolute joint between upper and lower leg
             rjd = new b2.RevoluteJointDef();
             rjd.Initialize(upper, lower, new b2.Vec2(init_x, init_y - this.LEG_H - this.LEG_DOWN));
             rjd.enableMotor = true;
@@ -164,7 +164,7 @@ class ClimbingProfileCHimpanzee extends ClimberAbstractBody {
             rjd.maxMotorTorque = this.MOTORS_TORQUE;
             rjd.motorSpeed = 1;
             rjd.lowerAngle = -0.75 * Math.PI;
-            rjd.lowerAngle = -0.1;
+            rjd.upperAngle = -0.1;
             joint_motor = world.CreateJoint(rjd);
             joint_motor.SetUserData(new CustomMotorUserData("knee",
                                                             SPEED_KNEE,

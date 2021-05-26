@@ -40,7 +40,12 @@ class ParkourGame {
 
             // Load the policy for each agent
             for(let agent of window.game.env.agents){
-                agent.model = await tf.loadGraphModel(agent.policy.path + '/model.json');
+                if(agent.policy.path != null){
+                    agent.model = await tf.loadGraphModel(agent.policy.path + '/model.json');
+                }
+                else{
+                    agent.model = null;
+                }
             }
 
             this.runtime = setInterval(() => {
@@ -66,15 +71,25 @@ class ParkourGame {
         for(let agent of window.game.env.agents){
             let state = this.obs[this.obs.length - 1][agent.id];
 
-            let envState = tf.tensor(state,[1, state.length]);
+            if(agent.model != null){
+                let envState = tf.tensor(state,[1, state.length]);
 
-            let inputs = {
-                "Placeholder_1:0": envState
-            };
+                let inputs = {
+                    "Placeholder_1:0": envState
+                };
 
-            let output = 'main/mul:0'
+                let output = 'main/mul:0'
 
-            agent.actions = agent.model.execute(inputs, output).arraySync()[0];
+                agent.actions = agent.model.execute(inputs, output).arraySync()[0];
+            }
+            else if(agent.policy.name == "random"){
+                agent.actions = Array.from({length: agent.agent_body.get_action_size()}, () => Math.random() * 2 - 1);
+            }
+            else{
+                agent.actions = Array.from({length: agent.agent_body.get_action_size()}, () => 0);
+            }
+
+
         }
         let step_rets = this.env.step();
         this.obs.push([...step_rets.map(e => e[0])]);

@@ -46,7 +46,7 @@ class DrawingMAPCP {
         // Create agent
         this.agents = [];
         console.assert(morphologies.length == policies.length && morphologies.length == positions.length);
-        // TODO: body types enum + walker_args
+
         for(let i = 0; i < morphologies.length; i++){
             this.create_agent(morphologies[i], policies[i], positions[i]);
         }
@@ -107,6 +107,10 @@ class DrawingMAPCP {
             agent.agent_body = new ClimbingProfileCHimpanzee(SCALE);
             agent.lidars_config = this.set_lidars_type("up");
         }
+        else if(morphology == "fish"){
+            agent.agent_body = new FishBody(SCALE, 80, WATER_DENSITY, 600);
+            agent.lidars_config = this.set_lidars_type("full");
+        }
         else {
             agent.agent_body = new OldClassicBipedalBody(SCALE, /*walker_args*/);
             agent.lidars_config = this.set_lidars_type("down");
@@ -115,9 +119,21 @@ class DrawingMAPCP {
         this.agents.push(agent);
     }
 
-    // TODO
     seed(){
+        let seed = "";
+        for(let dim of this.CPPN_input_vector){
+            seed += dim;
+        }
+        seed += this.water_level;
+        seed += this.TERRAIN_CPPN_SCALE;
+        seed += this.creepers_width;
+        seed += this.creepers_height;
+        seed += this.creepers_spacing;
+        seed += this.movable_creepers;;
 
+        //console.log("seed = " + seed);
+        Math.seedrandom(seed);
+        //console.log(Math.random());
     }
 
     set_lidars_type(lidars_type){
@@ -165,6 +181,7 @@ class DrawingMAPCP {
         this.set_terrain_cppn_scale(terrain_cppn_scale,
                         this.ceiling_offset * this.TERRAIN_CPPN_SCALE,
                                     this.ceiling_clip_offset * this.TERRAIN_CPPN_SCALE);
+        this.seed();
     }
 
     _destroy(){
@@ -255,17 +272,27 @@ class DrawingMAPCP {
     }
 
     step(){
-        // TODO: Only works for non-swimmer morphologies
         // Check if agents are dead
         for(let agent of this.agents){
-            if((agent.nb_steps_under_water > agent.agent_body.nb_steps_can_survive_under_water)
-                /*|| (agent.nb_steps_outside_water > agent.agent_body.nb_steps_can_survive_outside_water)*/){
-                agent.is_dead = true;
-                agent.actions = Array.from({length: agent.agent_body.get_action_size()}, () => 0);
+            if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
+                if(agent.nb_steps_outside_water > agent.agent_body.nb_steps_can_survive_outside_water){
+                    agent.is_dead = true;
+                    agent.actions = Array.from({length: agent.agent_body.get_action_size()}, () => 0);
+                }
+                else{
+                    agent.is_dead = false;
+                }
             }
             else{
-                agent.is_dead = false;
+                if(agent.nb_steps_under_water > agent.agent_body.nb_steps_can_survive_under_water){
+                    agent.is_dead = true;
+                    agent.actions = Array.from({length: agent.agent_body.get_action_size()}, () => 0);
+                }
+                else{
+                    agent.is_dead = false;
+                }
             }
+
             agent.agent_body.activate_motors(agent.actions);
 
             // Prepare climbing dynamics according to the actions (i.e. ready sensor to grasp or release sensor grip by destroying joint)
@@ -284,9 +311,14 @@ class DrawingMAPCP {
         }
 
         // Calculate water physics
-        if(this.world.m_contactManager.m_contactListener.water_contact_detector.fixture_pairs.indexOf(null) != -1){
+        this.world.m_contactManager.m_contactListener.water_contact_detector.fixture_pairs = this.world.m_contactManager.m_contactListener.water_contact_detector.fixture_pairs.filter(function(fp, index, array){
+
+            return fp[0].GetShape() != null && fp[1].GetShape() != null;
+        });
+        //let fixture_pairs_shapes = [...this.world.m_contactManager.m_contactListener.water_contact_detector.fixture_pairs.flatMap(fp => [fp[0].GetShape(), fp[1].GetShape()])];
+        //if(fixture_pairs_shapes.indexOf(null) == -1){
             this.water_dynamics.calculate_forces(this.world.m_contactManager.m_contactListener.water_contact_detector.fixture_pairs);
-        }
+        //}
 
         let ret = [];
         for(let agent of this.agents) {
@@ -320,7 +352,7 @@ class DrawingMAPCP {
             // add leg-related state
             state = state.concat(agent.agent_body.get_motors_state());
 
-            // add sensor-related state
+            // add sensor-related state for climbers
             if(agent.agent_body.body_type == BodyTypesEnum.CLIMBER){
                 state = state.concat(agent.agent_body.get_sensors_state());
             }
@@ -343,14 +375,6 @@ class DrawingMAPCP {
                 }
             }
             state = state.concat(surface_detected)
-
-            // Update scroll to stay centered on the agent position
-            /*if(window.follow_agent){
-                this.scroll = [
-                    pos.x * this.scale * this.zoom - RENDERING_VIEWER_W/5,
-                    pos.y * this.scale * this.zoom - RENDERING_VIEWER_H/3
-                ];
-            }*/
 
             let shaping = 130 * pos.x / SCALE; // moving forward is a way to receive reward (normalized to get 300 on completion)
             // TODO: check if has attribute remove_reward_on_head_angle
@@ -794,6 +818,17 @@ class DrawingMAPCP {
                     // Compute the best y value in terrain_ground corresponding to init_x
                     init_y = find_best_y(init_x, this.terrain_ground) + agent.agent_body.AGENT_CENTER_HEIGHT;
                 }
+                else if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
+                    let y_ground = find_best_y(init_x, this.terrain_ground);
+                    if(y_ground == null){
+                        y_ground = -Infinity;
+                    }
+                    let y_ceiling = find_best_y(init_x, this.terrain_ceiling);
+                    if(y_ceiling == null){
+                        y_ceiling = Infinity;
+                    }
+                    init_y = Math.max(y_ground + 4 * agent.agent_body.AGENT_CENTER_HEIGHT, Math.min(y_ceiling - 4 * agent.agent_body.AGENT_CENTER_HEIGHT, agent.init_pos.y));
+                }
             }
 
             // If no init_pos is given (add agent), the agent is generated on the startpad
@@ -804,6 +839,9 @@ class DrawingMAPCP {
 
         if(init_y == null){
             init_y = TERRAIN_HEIGHT + agent.agent_body.AGENT_CENTER_HEIGHT; // set y position according to the agent
+            if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
+                init_y = TERRAIN_HEIGHT + 4 * agent.agent_body.AGENT_CENTER_HEIGHT;
+            }
         }
 
         agent.agent_body.draw(this.world, init_x, init_y, 0 /*Math.random() * 2 * INITIAL_RANDOM - INITIAL_RANDOM*/);
@@ -815,20 +853,26 @@ class DrawingMAPCP {
     }
 
 
-    set_agent_position(agent, x) {
+    set_agent_position(agent, init_x, init_y) {
         agent.agent_body.destroy(this.world);
 
-        let init_x;
-        let init_y;
-
         if (agent.agent_body.body_type == BodyTypesEnum.CLIMBER) {
-            init_x = x * this.terrain_ceiling[this.terrain_ceiling.length  - 1].x;
             init_y = null;
         }
         else if (agent.agent_body.body_type == BodyTypesEnum.WALKER) {
-            init_x = x * this.terrain_ground[this.terrain_ground.length  - 1].x;
             // Compute the best y value in terrain_ground corresponding to init_x
             init_y = find_best_y(init_x, this.terrain_ground) + agent.agent_body.AGENT_CENTER_HEIGHT;
+        }
+        else if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
+            let y_ground = find_best_y(init_x, this.terrain_ground);
+            if(y_ground == null){
+                y_ground = -Infinity;
+            }
+            let y_ceiling = find_best_y(init_x, this.terrain_ceiling);
+            if(y_ceiling == null){
+                y_ceiling = Infinity;
+            }
+            init_y = Math.max(y_ground + 4 * agent.agent_body.AGENT_CENTER_HEIGHT, Math.min(y_ceiling - 4 * agent.agent_body.AGENT_CENTER_HEIGHT, init_y));
         }
 
         this._generate_agent(agent, init_x, init_y, true);

@@ -1,8 +1,3 @@
-
-const body_type_mapping = new Map();
-body_type_mapping.set("bipedal", "classic_bipedal");
-body_type_mapping.set("chimpanzee", "climbing_profile_chimpanzee");
-
 function init(cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling) {
 
     let morphologies = [];
@@ -231,15 +226,19 @@ function mouseDragged(){
                 // Dragging an agent
                 if (agent.is_selected) {
                     let mousePos = convertPosCanvasToEnv(mouseX, mouseY);
-                    let x;
+                    let terrain_length;
                     if (agent.agent_body.body_type == BodyTypesEnum.CLIMBER) {
-                        x = mousePos.x / window.game.env.terrain_ceiling[window.game.env.terrain_ceiling.length - 1].x;
+                        terrain_length = window.game.env.terrain_ceiling[window.game.env.terrain_ceiling.length - 1].x;
                     } else if (agent.agent_body.body_type == BodyTypesEnum.WALKER) {
-                        x = mousePos.x / window.game.env.terrain_ground[window.game.env.terrain_ground.length - 1].x;
+                        terrain_length = window.game.env.terrain_ground[window.game.env.terrain_ground.length - 1].x;
                     }
-
-                    x = Math.max(0.02, Math.min(0.98, x));
-                    window.game.env.set_agent_position(agent, x);
+                    else if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
+                        terrain_length = Math.max(window.game.env.terrain_ground[window.game.env.terrain_ground.length - 1].x,
+                                                    window.game.env.terrain_ceiling[window.game.env.terrain_ceiling.length - 1].x);
+                    }
+                    let x = mousePos.x / terrain_length;
+                    x = Math.max(0.02, Math.min(0.98, x)) * terrain_length;
+                    window.game.env.set_agent_position(agent, x, mousePos.y);
                     window.game.env.render();
                     window.is_dragging_agent = true;
                     break;
@@ -251,7 +250,7 @@ function mouseDragged(){
                 if (asset.is_selected) {
                     let mousePos = convertPosCanvasToEnv(mouseX, mouseY);
                     let terrain_length = Math.max(window.game.env.terrain_ground[window.game.env.terrain_ground.length - 1].x,
-                        window.game.env.terrain_ceiling[window.game.env.terrain_ceiling.length - 1].x);
+                                                    window.game.env.terrain_ceiling[window.game.env.terrain_ceiling.length - 1].x);
                     mousePos.x = mousePos.x / terrain_length;
                     mousePos.x = Math.max(0.02, Math.min(0.98, mousePos.x)) * terrain_length;
                     window.game.env.set_asset_position(asset, mousePos);
@@ -288,15 +287,20 @@ function mouseDragged(){
                 window.game.env.set_scroll(null);
 
                 let mousePos = convertPosCanvasToEnv(mouseX, mouseY);
-                let x;
+                let terrain_length;
                 if (agent.agent_body.body_type == BodyTypesEnum.CLIMBER) {
-                    x = mousePos.x / window.game.env.terrain_ceiling[window.game.env.terrain_ceiling.length - 1].x;
-                } else if (agent.agent_body.body_type == BodyTypesEnum.WALKER) {
-                    x = mousePos.x / window.game.env.terrain_ground[window.game.env.terrain_ground.length - 1].x;
+                    terrain_length = window.game.env.terrain_ceiling[window.game.env.terrain_ceiling.length - 1].x;
                 }
-
-                x = Math.max(0.02, Math.min(0.98, x));
-                window.game.env.set_agent_position(agent, x);
+                else if (agent.agent_body.body_type == BodyTypesEnum.WALKER) {
+                    terrain_length = window.game.env.terrain_ground[window.game.env.terrain_ground.length - 1].x;
+                }
+                else if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
+                    terrain_length = Math.max(window.game.env.terrain_ground[window.game.env.terrain_ground.length - 1].x,
+                                                window.game.env.terrain_ceiling[window.game.env.terrain_ceiling.length - 1].x);
+                }
+                let x = mousePos.x / terrain_length;
+                x = Math.max(0.02, Math.min(0.98, x)) * terrain_length;
+                window.game.env.set_agent_position(agent, x, mousePos.y);
                 window.game.env.render();
             }
         }

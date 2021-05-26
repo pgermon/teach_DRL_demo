@@ -1,6 +1,7 @@
 const bodyTypeMapping = new Map();
 bodyTypeMapping.set("bipedal", "classic_bipedal");
 bodyTypeMapping.set("chimpanzee", "climbing_profile_chimpanzee");
+bodyTypeMapping.set("fish", "fish");
 
 
 export default {
@@ -12,7 +13,7 @@ export default {
 
         if (state.cppnInitialized && state.morphologies.length != 0 && !state.defaultAgentAdded) {
             context.commit('disableDefaultAgent', payload);
-            const morphology = body_type_mapping.get(context.state.currentMorphology);
+            const morphology = bodyTypeMapping.get(context.state.currentMorphology);
             const currentSeed = context.state.morphologies
                 .filter(m => m.morphology == context.state.currentMorphology)
                 .flatMap(morphology => morphology.seeds)
@@ -78,7 +79,7 @@ export default {
             context.commit('pauseSimulation', {});
         }
 
-        const morphology = body_type_mapping.get(context.state.currentMorphology);
+        const morphology = bodyTypeMapping.get(context.state.currentMorphology);
         const currentSeed = context.state.morphologies
             .filter(m => m.morphology == context.state.currentMorphology)
             .flatMap(morphology => morphology.seeds)
