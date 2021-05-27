@@ -210,7 +210,7 @@ function mouseDragged(){
             // Dragging to move
             else{
                 cursor(MOVE);
-                window.game.env.set_scroll(null, window.prevMouseX - mouseX, mouseY - prevMouseY);
+                window.game.env.set_scroll(null, this.scroll[0] + window.prevMouseX - mouseX, this.scroll[1] + mouseY - prevMouseY);
             }
 
             window.game.env.render();
@@ -264,7 +264,7 @@ function mouseDragged(){
                 if(window.follow_agent){
                     window.cancelAgentFollow();
                 }
-                window.game.env.set_scroll(null, window.prevMouseX - mouseX, mouseY - prevMouseY);
+                window.game.env.set_scroll(null, this.scroll[0] + window.prevMouseX - mouseX, this.scroll[1] + mouseY - prevMouseY);
                 window.game.env.render();
             }
         }
@@ -369,7 +369,7 @@ function mouseWheel(event){
         }
         else {
             window.game.env.set_zoom(window.game.env.zoom - event.delta / 1000);
-            window.game.env.set_scroll(null, 0, 0);
+            window.game.env.set_scroll(null, this.scroll[0], this.scroll[1]);
             window.game.env.render();
             return false;
         }

@@ -67,7 +67,6 @@ function color_agent_head(agent, c1, c2){
 }
 
 function draw() {
-    //background("#e6e6ff");
     background("#E6F0FF");
     if(window.game != null){
         let parkour = window.game.env;
@@ -103,10 +102,16 @@ function draw() {
                     fill(0);
                     noStroke()
                     textSize(25/ parkour.scale);
-                    let x_pos = pos.x - agent.agent_body.AGENT_WIDTH/2
-                    let y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/3;
-                    if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
-                        x_pos = pos.x - agent.agent_body.AGENT_WIDTH;
+                    textAlign(CENTER);
+                    let x_pos = pos.x;
+                    let y_pos;
+                    if(agent.agent_body.body_type == BodyTypesEnum.WALKER){
+                        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/3;
+                    }
+                    else if(agent.agent_body.body_type == BodyTypesEnum.CLIMBER){
+                        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/2;
+                    }
+                    else if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
                         y_pos = pos.y + agent.agent_body.AGENT_HEIGHT * 2;
                     }
                     text(agent.name, x_pos, RENDERING_VIEWER_H - y_pos);
