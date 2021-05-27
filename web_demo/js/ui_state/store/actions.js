@@ -43,9 +43,6 @@ export default {
             case 'drawLidars':
                 context.commit('drawLidars', payload.value);
                 break;
-            case 'drawSensors':
-                context.commit('drawSensors', payload.value);
-                break;
             case 'drawNames':
                 context.commit('drawNames', payload.value);
                 break;
@@ -57,11 +54,9 @@ export default {
             case 'init':
                 context.commit('startSimulation', {});
                 // read the draw switches state;
-                context.commit('followAgents', context.state.simulationState.followAgents);
-                context.commit('drawJoints', context.state.simulationState.drawJoints);
-                context.commit('drawLidars', context.state.simulationState.drawLidars);
-                context.commit('drawSensors', context.state.simulationState.drawSensors);
-                context.commit('drawNames', context.state.simulationState.drawNames);
+                context.commit('drawJoints', context.state.advancedOptionsState.drawJoints);
+                context.commit('drawLidars', context.state.advancedOptionsState.drawLidars);
+                context.commit('drawNames', context.state.advancedOptionsState.drawNames);
                 break;
             case 'running':
                 context.commit('pauseSimulation', {});

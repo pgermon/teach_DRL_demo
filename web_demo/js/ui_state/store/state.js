@@ -7,10 +7,6 @@ export default {
     simulationState: {
         status: 'init', // 'running', 'paused'
         agentFollowed: null,
-        drawJoints: false,
-        drawLidars: true,
-        drawSensors: false,
-        drawNames: true
     },
     parkourConfig: {
         dim1: 1.0,
@@ -30,8 +26,13 @@ export default {
         drawing_ground: false,
         drawing_ceiling: false,
         erasing: false,
+    },
+    advancedOptionsState: {
+        drawJoints: false,
+        drawLidars: true,
+        drawNames: true,
         assets: {
-          circle: false,
+            circle: false,
         },
     },
     defaultAgentAdded: false,

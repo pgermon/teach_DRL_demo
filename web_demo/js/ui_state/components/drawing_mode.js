@@ -15,7 +15,6 @@ export default class DrawingMode extends Component {
         let eraseButton = this.element.querySelector('#eraseButton');
         let clearButton = this.element.querySelector('#clearButton');
         let generateTerrainButton = this.element.querySelector('#generateTerrainButton');
-        //let circleAssetButton = this.element.querySelector('#circleAssetButton');
 
         if(store.state.mode == 'procedural_generation'){
 
@@ -25,10 +24,6 @@ export default class DrawingMode extends Component {
             clearButton.className = "btn btn-danger disabled";
             generateTerrainButton.className = "btn btn-success disabled";
             generateTerrainButton.innerText = "Generate terrain";
-            /*circleAssetButton.className = "btn btn-outline-asset";
-            if(state.assets.circle){
-                circleAssetButton.className = "btn btn-asset";
-            }*/
         }
         else if(store.state.mode == 'drawing'){
 
@@ -52,8 +47,6 @@ export default class DrawingMode extends Component {
 
                 generateTerrainButton.className = "btn btn-success";
                 generateTerrainButton.innerText = "Generate terrain";
-
-                circleAssetButton.className = "btn btn-outline-asset disabled";
             }
             else{
                 drawGroundButton.className = "btn btn-outline-success disabled";
@@ -62,12 +55,6 @@ export default class DrawingMode extends Component {
 
                 generateTerrainButton.className = "btn btn-primary";
                 generateTerrainButton.innerText = "Draw";
-
-                /*circleAssetButton.className = "btn btn-outline-asset";
-                if(state.assets.circle){
-                    circleAssetButton.className = "btn btn-asset";
-                }*/
-
             }
         }
     }

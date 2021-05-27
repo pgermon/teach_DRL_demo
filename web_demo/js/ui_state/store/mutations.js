@@ -45,30 +45,6 @@ export default {
         }
         return state;
     },
-    drawJoints(state, payload) {
-        state.simulationState.drawJoints = payload;
-        window.draw_joints = payload;
-        window.game.env.render();
-        return state;
-    },
-    drawLidars(state, payload) {
-        state.simulationState.drawLidars = payload;
-        window.draw_lidars = payload;
-        window.game.env.render();
-        return state;
-    },
-    drawSensors(state, payload) {
-        state.simulationState.drawSensors = payload;
-        window.draw_sensors = payload;
-        window.game.env.render();
-        return state;
-    },
-    drawNames(state, payload) {
-        state.simulationState.drawNames = payload;
-        window.draw_names = payload;
-        window.game.env.render();
-        return state;
-    },
     startSimulation(state, payload) {
         state.simulationState.status = 'running';
         /*const policy = state.morphologies
@@ -171,7 +147,7 @@ export default {
         if(payload){
             state.mode = 'drawing';
             state.drawingModeState.drawing = false;
-            background("#E6F0FF");
+            //background("#E6F0FF");
             drawing_canvas.clear();
             window.terrain = {
                 ground: [],
@@ -184,33 +160,33 @@ export default {
             state.drawingModeState.drawing_ground = false;
             state.drawingModeState.drawing_ceiling = false;
             state.drawingModeState.erasing = false;
-            state.drawingModeState.assets.circle = false;
+            state.advancedOptionsState.assets.circle = false;
         }
-        state.simulationState.status = 'init';
-        window.game.env.set_zoom(0.35);
-        window.game.env.set_scroll(null, -0.05 * RENDERING_VIEWER_W, 0);
-        window.init_default();
+        ///state.simulationState.status = 'init';
+        //window.game.env.set_zoom(0.35);
+        //window.game.env.set_scroll(null, -0.05 * RENDERING_VIEWER_W, 0);
+        //window.init_default();
         return state;
     },
     drawGround(state, payload){
         state.drawingModeState.drawing_ground = payload;
         state.drawingModeState.drawing_ceiling = false;
         state.drawingModeState.erasing = false;
-        state.drawingModeState.assets.circle = false;
+        state.advancedOptionsState.assets.circle = false;
         return state;
     },
     drawCeiling(state, payload){
         state.drawingModeState.drawing_ground = false;
         state.drawingModeState.drawing_ceiling = payload;
         state.drawingModeState.erasing = false;
-        state.drawingModeState.assets.circle = false;
+        state.advancedOptionsState.assets.circle = false;
         return state;
     },
     erase(state, payload){
         state.drawingModeState.drawing_ground = false;
         state.drawingModeState.drawing_ceiling = false;
         state.drawingModeState.erasing = payload;
-        state.drawingModeState.assets.circle = false;
+        state.advancedOptionsState.assets.circle = false;
         return state;
     },
     clear(state, payload){
@@ -242,7 +218,7 @@ export default {
             state.drawingModeState.drawing_ground = false;
             state.drawingModeState.drawing_ceiling = false;
             state.drawingModeState.erasing = false;
-            state.drawingModeState.assets.circle = false;
+            state.advancedOptionsState.assets.circle = false;
 
             // Sort drawing values for ground and ceiling
             window.terrain.ground.sort(function (a, b) {
@@ -274,9 +250,9 @@ export default {
                     drawing_canvas.strokeWeight(4);
                     drawing_canvas.line(
                         p_pos.x,
-                        p_pos.y + SCROLL_MAX,
+                        p_pos.y + SCROLL_MAX - window.game.env.scroll[1],
                         p2_pos.x,
-                        p2_pos.y + SCROLL_MAX
+                        p2_pos.y + SCROLL_MAX - window.game.env.scroll[1]
                     )
 
                     window.terrain.ground.push({x: p.x, y: p.y});
@@ -298,9 +274,9 @@ export default {
                     drawing_canvas.strokeWeight(4);
                     drawing_canvas.line(
                         p_pos.x,
-                        p_pos.y + SCROLL_MAX,
+                        p_pos.y + SCROLL_MAX - window.game.env.scroll[1],
                         p2_pos.x,
-                        p2_pos.y + SCROLL_MAX
+                        p2_pos.y + SCROLL_MAX - window.game.env.scroll[1]
                     )
 
                     window.terrain.ceiling.push({x: p.x, y: p.y});
@@ -320,14 +296,29 @@ export default {
         state.drawingModeState.drawing_ground = false;
         state.drawingModeState.drawing_ceiling = false;
         state.drawingModeState.erasing = false;
-        state.drawingModeState.assets.circle = false;
+        state.advancedOptionsState.assets.circle = false;
+        return state;
+    },
+    drawJoints(state, payload) {
+        state.advancedOptionsState.drawJoints = payload;
+        window.draw_joints = payload;
+        window.game.env.render();
+        return state;
+    },
+    drawLidars(state, payload) {
+        state.advancedOptionsState.drawLidars = payload;
+        window.draw_lidars = payload;
+        window.game.env.render();
+        return state;
+    },
+    drawNames(state, payload) {
+        state.advancedOptionsState.drawNames = payload;
+        window.draw_names = payload;
+        window.game.env.render();
         return state;
     },
     drawCircle(state, payload){
-        state.drawingModeState.drawing_ground = false;
-        state.drawingModeState.drawing_ceiling = false;
-        state.drawingModeState.erasing = false;
-        state.drawingModeState.assets.circle = payload;
+        state.advancedOptionsState.assets.circle = payload;
         return state;
     }
 };

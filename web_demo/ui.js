@@ -3,10 +3,11 @@ import MorphologySelect from './js/ui_state/components/morphology.js';
 import ModelSelect from './js/ui_state/components/model_select.js';
 import AgentsList from './js/ui_state/components/agents_list.js';
 import RunButtons from './js/ui_state/components/run_buttons.js';
-import DrawSwitches from './js/ui_state/components/draw.js';
+import DrawSwitches from './js/ui_state/components/advanced_options.js';
 import TerrainConfig from './js/ui_state/components/terrain_config.js';
 import CreepersConfig from './js/ui_state/components/creepers_config.js';
 import DrawingMode from "./js/ui_state/components/drawing_mode.js";
+import AdvancedOptions from "./js/ui_state/components/advanced_options.js";
 
 // Morphology selector setup
 const morphologySelectElement = document.querySelector('#morphology');
@@ -43,28 +44,6 @@ resetButton.addEventListener('click', () => {
 });
 const runButtonsInstance = new RunButtons();
 runButtonsInstance.render();
-
-// Draw switches setup
-const drawJointsSwitch = document.querySelector("#drawJointsSwitch");
-drawJointsSwitch.addEventListener('input', () => {
-    store.dispatch('toggleSwitch', {name: 'drawJoints', value: drawJointsSwitch.checked} );
-});
-const drawLidarsSwitch = document.querySelector("#drawLidarsSwitch");
-window.draw_lidars = true;
-drawLidarsSwitch.addEventListener('input', () => {
-    store.dispatch('toggleSwitch', {name: 'drawLidars', value: drawLidarsSwitch.checked});
-});
-const drawSensorsSwitch = document.querySelector("#drawSensorsSwitch");
-drawSensorsSwitch.addEventListener('input', () => {
-    store.dispatch('toggleSwitch',  {name: 'drawSensors', value: drawSensorsSwitch.checked});
-});
-const drawNamesSwitch = document.querySelector("#drawNamesSwitch");
-window.draw_names = true;
-drawNamesSwitch.addEventListener('input', () => {
-    store.dispatch('toggleSwitch', {name: 'drawNames', value: drawNamesSwitch.checked});
-});
-const drawSwitchesInstance = new DrawSwitches();
-drawSwitchesInstance.render();
 
 // Terrain sliders setup
 const dim1SliderElement = document.querySelector("#dim1Slider")
@@ -166,12 +145,30 @@ const generateTerrainButton = document.querySelector('#generateTerrainButton');
 generateTerrainButton.addEventListener('click', () => {
     store.dispatch('generateTerrain', !store.state.drawingModeState.drawing);
 });
-const circleAssetButton = document.querySelector('#circleAssetButton');
-circleAssetButton.addEventListener('click', () => {
-    store.dispatch('drawAsset', {name: 'circle', value: !store.state.drawingModeState.assets.circle});
-});
 const drawingModeInstance = new DrawingMode();
 drawingModeInstance.render();
+
+// Advanced Options setup
+const drawJointsSwitch = document.querySelector("#drawJointsSwitch");
+drawJointsSwitch.addEventListener('input', () => {
+    store.dispatch('toggleSwitch', {name: 'drawJoints', value: drawJointsSwitch.checked} );
+});
+const drawLidarsSwitch = document.querySelector("#drawLidarsSwitch");
+window.draw_lidars = true;
+drawLidarsSwitch.addEventListener('input', () => {
+    store.dispatch('toggleSwitch', {name: 'drawLidars', value: drawLidarsSwitch.checked});
+});
+const drawNamesSwitch = document.querySelector("#drawNamesSwitch");
+window.draw_names = true;
+drawNamesSwitch.addEventListener('input', () => {
+    store.dispatch('toggleSwitch', {name: 'drawNames', value: drawNamesSwitch.checked});
+});
+const circleAssetButton = document.querySelector('#circleAssetButton');
+circleAssetButton.addEventListener('click', () => {
+    store.dispatch('drawAsset', {name: 'circle', value: !store.state.advancedOptionsState.assets.circle});
+});
+const advancedOptionsInstance = new AdvancedOptions();
+advancedOptionsInstance.render();
 
 // fetch morphologies
 fetch('./policies.json')
@@ -222,7 +219,7 @@ window.is_erasing = () => {
 }
 
 window.is_drawing_circle = () => {
-    return store.state.drawingModeState.assets.circle;
+    return store.state.advancedOptionsState.assets.circle;
 }
 
 window.addDefaultAgent = () => {
