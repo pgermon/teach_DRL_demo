@@ -106,6 +106,9 @@ export default {
         context.commit('addMorphology', payload);
     },
     switchMode(context, payload) {
+        if(context.state.drawingModeState.drawing){
+            context.commit('generateTerrain', false);
+        }
         context.commit('switchMode', payload);
     },
     drawGround(context, payload) {

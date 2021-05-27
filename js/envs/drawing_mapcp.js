@@ -899,19 +899,16 @@ class DrawingMAPCP {
             if(window.dragging_side == "left"){
                 this.scroll[0] = window.agent_selected.agent_body.reference_head_object.GetPosition().x * this.scale * this.zoom - RENDERING_VIEWER_W * (0.1 + 0.05)
             }
-            else if(window.dragging_side == "right" /*&& !(parseFloat(hScrollSlider.value) >= 100)*/){
+            else if(window.dragging_side == "right"){
                 this.scroll[0] = window.agent_selected.agent_body.reference_head_object.GetPosition().x * this.scale * this.zoom - RENDERING_VIEWER_W * (0.85 + 0.05)
             }
         }
         else{
             /*this.scroll = [
-                parseFloat(h)/100 * (terrain_length * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9) - RENDERING_VIEWER_W * 0.05,
-                parseFloat(v)/100 * this.air_max_distance/2 * this.scale * this.zoom
-            ];*/
-            this.scroll = [
                 this.scroll[0] + h,
                 this.scroll[1] + v
-            ];
+            ];*/
+            this.scroll = [h, v];
         }
 
         this.scroll = [
@@ -920,9 +917,6 @@ class DrawingMAPCP {
         ];
 
         window.scroll = this.scroll;
-
-        //hScrollSlider.value = 100 * ((this.scroll[0] + 0.05 * RENDERING_VIEWER_W) / (terrain_length * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9));
-        //vScrollSlider.value = 100 * this.scroll[1] / (this.air_max_distance/2 * this.scale * this.zoom);
     }
 
     drag_scroll(h, v){
@@ -935,8 +929,6 @@ class DrawingMAPCP {
 
     set_zoom(zoom){
         this.zoom = Math.max(0.3, Math.min(parseFloat(zoom), 1.5));
-        //zoomSlider.value = this.zoom;
-        //zoomValue.innerText = this.zoom;
         window.zoom = this.zoom;
     }
 

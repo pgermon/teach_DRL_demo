@@ -166,6 +166,7 @@ export default {
         //window.game.env.set_zoom(0.35);
         //window.game.env.set_scroll(null, -0.05 * RENDERING_VIEWER_W, 0);
         //window.init_default();
+        //window.game.env.render();
         return state;
     },
     drawGround(state, payload){
@@ -210,7 +211,7 @@ export default {
         state.simulationState.status = 'init';
 
         window.game.env.set_zoom(0.35);
-        //window.game.env.set_scroll(null, -0.05 * RENDERING_VIEWER_W, 0);
+        window.game.env.set_scroll(null, -0.05 * RENDERING_VIEWER_W, 0);
 
         // Generate the terrain from the shapes drawn
         if(!state.drawingModeState.drawing) {

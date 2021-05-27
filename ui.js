@@ -116,7 +116,15 @@ creepersTypeSelect.addEventListener('input', () => {
 const creepersConfigInstance = new CreepersConfig();
 creepersConfigInstance.render()
 
-// Drawing Mode setup
+// Tabs setup
+const gettingStartedTab = document.querySelector('#getting-started-tab');
+gettingStartedTab.addEventListener('click', () => {
+    store.dispatch('switchMode', false);
+})
+const agentSelectionTab = document.querySelector('#agent-selection-tab');
+agentSelectionTab.addEventListener('click', () => {
+    store.dispatch('switchMode', false);
+})
 const parkourGenTab = document.querySelector('#parkour-gen-tab');
 parkourGenTab.addEventListener('click', () => {
     store.dispatch('switchMode', false);
@@ -125,6 +133,12 @@ const drawingModeTab = document.querySelector('#draw-config-tab');
 drawingModeTab.addEventListener('click', () => {
     store.dispatch('switchMode', true);
 })
+const advancedOptionsTab = document.querySelector('#advanced-options-tab');
+advancedOptionsTab.addEventListener('click', () => {
+    store.dispatch('switchMode', false);
+})
+
+// Drawing Mode setup
 const drawGroundButton = document.querySelector('#drawGroundButton');
 drawGroundButton.addEventListener('click', () => {
     store.dispatch('drawGround', !store.state.drawingModeState.drawing_ground);
