@@ -98,10 +98,6 @@ function draw() {
                     }
                 }
 
-                if(window.draw_sensors){
-                    drawSensors(agent.agent_body.sensors, parkour.scale);
-                }
-
                 if(window.draw_names){
                     let pos = agent.agent_body.reference_head_object.GetPosition();
                     fill(0);
