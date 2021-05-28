@@ -85,12 +85,6 @@ export default {
         }
     },
     resetSimulation(context, payload) {
-        window.align_terrain = {
-            align: false,
-            ceiling_offset: window.game.env.ceiling_offset,
-            ground_offset: window.ground[0].y,
-            smoothing: window.game.env.TERRAIN_CPPN_SCALE
-        };
         context.commit('resetSimulation', {keepPositions: false});
     },
     addAgent(context, payload) {

@@ -5,8 +5,7 @@ const SCALE  = 30 // affects how fast-paced the game is, forces should be adjust
 const VIEWPORT_W = 600
 const VIEWPORT_H = 400
 
-//let RENDERING_VIEWER_W = 2 * VIEWPORT_W
-let RENDERING_VIEWER_W = 0.8 * window.innerWidth;
+let RENDERING_VIEWER_W = 0.6 * window.innerWidth;
 let RENDERING_VIEWER_H = VIEWPORT_H
 
 const NB_LIDAR = 10
@@ -24,6 +23,7 @@ const WATER_DENSITY = 1.0
 const CREEPER_UNIT = 1;
 const NB_FIRST_STEPS_HANG = 5
 const SCROLL_MAX = 300;
+DRAWING_ZOOM = 0.35;
 
 //endregion
 
@@ -36,7 +36,7 @@ class DrawingMAPCP {
         // Seed and init Box2D
         //this.seed();
         this.scale = SCALE;
-        this.zoom = 0.35;
+        this.zoom = DRAWING_ZOOM;
         this.contact_listener = new ContactDetector(this);
         let gravity = new b2.Vec2(0, -10);
         this.world = new b2.World(gravity);
@@ -943,7 +943,7 @@ class DrawingMAPCP {
     }
 
     set_zoom(zoom){
-        this.zoom = Math.max(0.3, Math.min(parseFloat(zoom), 1.5));
+        this.zoom = Math.max(0.2, Math.min(parseFloat(zoom), 1.5));
         window.zoom = this.zoom;
     }
 
