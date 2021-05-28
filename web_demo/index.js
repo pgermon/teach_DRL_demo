@@ -1,4 +1,4 @@
-function init(cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling) {
+function init(cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling, align) {
 
     let morphologies = [];
     let policies = [];
@@ -10,7 +10,7 @@ function init(cppn_input_vector, water_level, creepers_width, creepers_height, c
         policies = [...window.game.env.agents.map(a => a.policy)];
         positions = [...window.game.env.agents.map(agent => agent.agent_body.reference_head_object.GetPosition())];
     }
-    window.game = new ParkourGame(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling);
+    window.game = new ParkourGame(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling, align);
     window.agent_selected = null;
     window.asset_selected = null;
     window.game.env.set_zoom(0.35);
@@ -27,7 +27,8 @@ function init_default() {
         parseFloat(smoothingSlider.value),
         getCreepersType(),
         window.ground,
-        window.ceiling);
+        window.ceiling,
+        window.align_terrain);
 }
 
 async function loadModel() {
@@ -156,6 +157,12 @@ function mousePressed(){
 
 window.ground = [];
 window.ceiling = [];
+window.align_terrain = {
+    align: true,
+    ceiling_offset: null,
+    ground_offset: null,
+    smoothing: null
+};
 window.terrain = {
     ground: [],
     ceiling: []

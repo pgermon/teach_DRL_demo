@@ -8,7 +8,6 @@ export default {
         return state;
     },
     updateCreepersConfig(state, payload) {
-        console.log(payload);
         switch (payload.name) {
             case 'width':
                 state.creepersConfig.width = payload.value;
@@ -47,10 +46,6 @@ export default {
     },
     startSimulation(state, payload) {
         state.simulationState.status = 'running';
-        /*const policy = state.morphologies
-            .filter(m => m.morphology == state.currentMorphology)
-            .flatMap(morphology => morphology.seeds)
-            .find(seed => seed.idx == state.currentSeedIdx).path;*/
         window.game.run();
         return state;
     },
@@ -90,7 +85,8 @@ export default {
             parkourConfig.smoothing,
             creepersConfig.type == "Swingable",
             window.ground,
-            window.ceiling);
+            window.ceiling,
+            window.align_terrain);
         window.agent_selected = null;
         window.game.env.set_zoom(window.zoom);
         window.game.env.set_scroll(window.agent_selected, window.scroll[0], window.scroll[1]);
@@ -104,7 +100,6 @@ export default {
         return state;
     },
     deleteAgent(state, payload) {
-        console.log("deleting agent", payload);
         state.agents.splice(payload.index, 1);
         window.game.env.delete_agent(payload.index);
         window.game.env.render();
@@ -141,32 +136,6 @@ export default {
     },
     addMorphology(state, payload) {
         state.morphologies.push(payload);
-        return state;
-    },
-    switchMode(state, payload) {
-        if(payload){
-            state.mode = 'drawing';
-            state.drawingModeState.drawing = false;
-            //background("#E6F0FF");
-            drawing_canvas.clear();
-            window.terrain = {
-                ground: [],
-                ceiling: []
-            };
-        }
-        else{
-            state.mode = 'procedural_generation';
-            state.drawingModeState.drawing = false;
-            state.drawingModeState.drawing_ground = false;
-            state.drawingModeState.drawing_ceiling = false;
-            state.drawingModeState.erasing = false;
-            state.advancedOptionsState.assets.circle = false;
-        }
-        ///state.simulationState.status = 'init';
-        //window.game.env.set_zoom(0.35);
-        //window.game.env.set_scroll(null, -0.05 * RENDERING_VIEWER_W, 0);
-        //window.init_default();
-        //window.game.env.render();
         return state;
     },
     drawGround(state, payload){
@@ -232,6 +201,12 @@ export default {
             });
             window.ceiling = [...window.terrain.ceiling];
 
+            window.align_terrain = {
+                align: false,
+                ceiling_offset: window.ceiling.length > 0 ? window.game.env.ceiling_offset - window.ceiling[0].y : null,
+                ground_offset: window.ground.length > 0 ? window.ground[0].y : null,
+                smoothing: window.game.env.TERRAIN_CPPN_SCALE
+            };
             window.init_default();
         }
 

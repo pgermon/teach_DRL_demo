@@ -16,7 +16,7 @@ export default class DrawingMode extends Component {
         let clearButton = this.element.querySelector('#clearButton');
         let generateTerrainButton = this.element.querySelector('#generateTerrainButton');
 
-        if(store.state.mode == 'procedural_generation'){
+        /*if(store.state.mode == 'procedural_generation'){
 
             drawGroundButton.className = "btn btn-outline-success disabled";
             drawCeilingButton.className = "btn btn-outline-secondary disabled";
@@ -25,9 +25,9 @@ export default class DrawingMode extends Component {
             generateTerrainButton.className = "btn btn-success disabled";
             generateTerrainButton.innerText = "Generate terrain";
         }
-        else if(store.state.mode == 'drawing'){
+        else if(store.state.mode == 'drawing'){*/
 
-            clearButton.className = "btn btn-danger";
+            //clearButton.className = "btn btn-danger";
 
             if(state.drawing){
 
@@ -57,5 +57,5 @@ export default class DrawingMode extends Component {
                 generateTerrainButton.innerText = "Draw";
             }
         }
-    }
+    //}
 };

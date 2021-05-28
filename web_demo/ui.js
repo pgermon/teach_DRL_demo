@@ -119,23 +119,23 @@ creepersConfigInstance.render()
 // Tabs setup
 const gettingStartedTab = document.querySelector('#getting-started-tab');
 gettingStartedTab.addEventListener('click', () => {
-    store.dispatch('switchMode', false);
+    store.dispatch('switchTab', false);
 })
 const agentSelectionTab = document.querySelector('#agent-selection-tab');
 agentSelectionTab.addEventListener('click', () => {
-    store.dispatch('switchMode', false);
+    store.dispatch('switchTab', false);
 })
 const parkourGenTab = document.querySelector('#parkour-gen-tab');
 parkourGenTab.addEventListener('click', () => {
-    store.dispatch('switchMode', false);
+    store.dispatch('switchTab', false);
 })
 const drawingModeTab = document.querySelector('#draw-config-tab');
 drawingModeTab.addEventListener('click', () => {
-    store.dispatch('switchMode', true);
+    store.dispatch('switchTab', true); // true for drawing mode tab, else false
 })
 const advancedOptionsTab = document.querySelector('#advanced-options-tab');
 advancedOptionsTab.addEventListener('click', () => {
-    store.dispatch('switchMode', false);
+    store.dispatch('switchTab', false);
 })
 
 // Drawing Mode setup
@@ -210,10 +210,6 @@ fetch('./policies.json')
 // interaction with index.js
 window.cancelAgentFollow = () => {
     store.dispatch('followAgent', {index: -1, value: false});
-}
-
-window.get_mode = function () {
-    return store.state.mode;
 }
 
 window.is_drawing = function() {

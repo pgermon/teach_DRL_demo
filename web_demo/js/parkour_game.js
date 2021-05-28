@@ -1,26 +1,27 @@
 class ParkourGame {
-    constructor(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling) {
+    constructor(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling, align_terrain) {
 
         this.draw_fps = 60;
         this.obs = [];
-        this.initWorld(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling);
+        this.initWorld(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling, align_terrain);
         this.running = false;
     }
 
-    initWorld(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling) {
+    initWorld(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling, align_terrain) {
 
         this.env = new DrawingMAPCP(
             morphologies,
             policies,
             positions,
             3,
-            10,
+            smoothing,
             200,
             90,
             20,
             creepers_type,
             ground,
-            ceiling);
+            ceiling,
+            align_terrain);
 
         this.env.set_environment(cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
         this.obs.push(this.env.reset());
@@ -56,10 +57,10 @@ class ParkourGame {
         }
     }
 
-    reset(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling){
+    reset(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling, align_terrain){
         clearInterval(this.runtime);
         this.running = false;
-        this.initWorld(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling);
+        this.initWorld(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling, align_terrain);
         this.env.render();
     }
 

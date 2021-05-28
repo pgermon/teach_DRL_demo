@@ -29,11 +29,29 @@ export default {
     },
     changeCreepersConfig(context, payload) {
         context.commit('updateCreepersConfig', payload);
-        context.commit('resetSimulation', { keepPositions: true});
+        context.commit('resetSimulation', {keepPositions: true});
     },
     changeCppnCongfig(context, payload) {
         context.commit('updateCppnConfig', payload);
-        context.commit('resetSimulation', { keepPositions: true});
+        if(['dim1', 'dim2', 'dim3'].indexOf(payload.name) != -1){
+            window.ground = [];
+            window.ceiling = [];
+            window.align_terrain = {
+                align: true,
+                ceiling_offset: null,
+                ground_offset: null,
+                smoothing: window.game.env.TERRAIN_CPPN_SCALE
+            };
+        }
+        else{
+            window.align_terrain = {
+                align: true,
+                ceiling_offset: window.align_terrain.ceiling_offset,
+                ground_offset: window.align_terrain.ground_offset,
+                smoothing: window.game.env.TERRAIN_CPPN_SCALE
+            };
+        }
+        context.commit('resetSimulation', {keepPositions: true});
     },
     toggleSwitch(context, payload) {
         switch (payload.name) {
@@ -67,6 +85,12 @@ export default {
         }
     },
     resetSimulation(context, payload) {
+        window.align_terrain = {
+            align: false,
+            ceiling_offset: window.game.env.ceiling_offset,
+            ground_offset: window.ground[0].y,
+            smoothing: window.game.env.TERRAIN_CPPN_SCALE
+        };
         context.commit('resetSimulation', {keepPositions: false});
     },
     addAgent(context, payload) {
@@ -105,11 +129,19 @@ export default {
     addMorphology(context, payload) {
         context.commit('addMorphology', payload);
     },
-    switchMode(context, payload) {
-        if(context.state.drawingModeState.drawing){
+    switchTab(context, payload) {
+        // If a tab other than "Draw Yourself!" is selected during the drawing is activated, the terrain is generated
+        if(!payload && context.state.drawingModeState.drawing){
             context.commit('generateTerrain', false);
         }
-        context.commit('switchMode', payload);
+        // If the "Draw Yourself!" tab is selected during the drawing is not activated, the drawings are cleared
+        else if(payload && !context.state.drawingModeState.drawing){
+            drawing_canvas.clear();
+            window.terrain = {
+                ground: [],
+                ceiling: []
+            };
+        }
     },
     drawGround(context, payload) {
         context.commit('drawGround', payload);

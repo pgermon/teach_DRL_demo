@@ -31,7 +31,7 @@ class DrawingMAPCP {
 
     constructor(morphologies, policies, positions, input_CPPN_dim=3, terrain_cppn_scale=10,
                 ceiling_offset=200, ceiling_clip_offset=0, water_clip=20,
-                movable_creepers=false, ground, ceiling){
+                movable_creepers=false, ground, ceiling, align_terrain){
 
         // Seed and init Box2D
         //this.seed();
@@ -77,15 +77,7 @@ class DrawingMAPCP {
 
         this.ground = ground;
         this.ceiling = ceiling;
-
-        // Set info / action spaces
-        //this._generate_agent(); // To get state / action sizes
-        //let agent_action_size = this.agent_body.get_action_size();
-        //this.action_space =
-
-        //let agent_state_size = this.agent_body.get_state_size();
-        // let high = // TODO
-        // this.observation_space = // TODO
+        this.align_terrain = align_terrain;
     }
 
     create_agent(morphology, policy, init_pos){
@@ -315,10 +307,8 @@ class DrawingMAPCP {
 
             return fp[0].GetShape() != null && fp[1].GetShape() != null;
         });
-        //let fixture_pairs_shapes = [...this.world.m_contactManager.m_contactListener.water_contact_detector.fixture_pairs.flatMap(fp => [fp[0].GetShape(), fp[1].GetShape()])];
-        //if(fixture_pairs_shapes.indexOf(null) == -1){
-            this.water_dynamics.calculate_forces(this.world.m_contactManager.m_contactListener.water_contact_detector.fixture_pairs);
-        //}
+        this.water_dynamics.calculate_forces(this.world.m_contactManager.m_contactListener.water_contact_detector.fixture_pairs);
+
 
         let ret = [];
         for(let agent of this.agents) {
@@ -542,22 +532,48 @@ class DrawingMAPCP {
         }
 
         /* DRAWING GENERATION */
-        if(window.get_mode() == 'drawing'){
+        if(window.is_drawing() || ground.length > 0 || ceiling.length > 0){
+
             // Create ground terrain
             if(ground.length > 0){
-                let ground_x_offset = 0//this.TERRAIN_STARTPAD * TERRAIN_STEP - ground[0].x;
-                let ground_y_offset = 0//TERRAIN_HEIGHT - ground[0].y;
+                let ground_y_offset = 0;
+                if(this.align_terrain.align && this.align_terrain.smoothing != null){
+
+                    ground = [...ground.map(p => {
+                        return {x: p.x, y: p.y / (this.TERRAIN_CPPN_SCALE / this.align_terrain.smoothing)};
+                    })];
+
+                    if(this.align_terrain.ground_offset == null){
+                        ground_y_offset = TERRAIN_HEIGHT - ground[0].y;
+                    }
+                    else{
+                        ground_y_offset = this.align_terrain.ground_offset - ground[0].y;
+                    }
+
+                }
                 for(let p of ground){
-                    this.terrain_ground.push({x: p.x + ground_x_offset, y: p.y + ground_y_offset});
+                    this.terrain_ground.push({x: p.x, y: p.y + ground_y_offset});
                 }
             }
 
             // Create ceiling terrain
             if(ceiling.length > 0) {
-                let ceiling_x_offset = 0//this.TERRAIN_STARTPAD * TERRAIN_STEP - ceiling[0].x;
-                let ceiling_y_offset = 0//TERRAIN_HEIGHT + this.ceiling_offset - ceiling[0].y;
+                let ceiling_y_offset = 0
+                if(this.align_terrain.align){
+
+                    ceiling = [...ceiling.map(p => {
+                        return {x: p.x, y: p.y / (this.TERRAIN_CPPN_SCALE / this.align_terrain.smoothing)};
+                    })];
+
+                    if(this.align_terrain.ceiling_offset == null){
+                        ceiling_y_offset = TERRAIN_HEIGHT + this.ceiling_offset - ceiling[0].y;
+                    }
+                    else{
+                        ceiling_y_offset = (this.ceiling_offset - ceiling[0].y) - this.align_terrain.ceiling_offset;
+                    }
+                }
                 for(let p of ceiling){
-                    this.terrain_ceiling.push({x: p.x + ceiling_x_offset, y: p.y + ceiling_y_offset}); //TODO: clip ceiling height according to ground?
+                    this.terrain_ceiling.push({x: p.x, y: p.y + ceiling_y_offset}); //TODO: clip ceiling height according to ground?
                 }
             }
         }
@@ -626,7 +642,6 @@ class DrawingMAPCP {
             vertices: water_poly,
             body : t
         };
-        //this.terrain_bodies.push(water_poly);
 
         for(let i = 0; i < this.terrain_ground.length - 1; i++){
             // Ground

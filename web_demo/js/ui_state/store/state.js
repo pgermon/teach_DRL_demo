@@ -3,7 +3,6 @@ export default {
     currentMorphology: "bipedal",
     currentSeedIdx: "0",
     agents: [],
-    mode: 'procedural_generation', // 'drawing'
     simulationState: {
         status: 'init', // 'running', 'paused'
         agentFollowed: null,
