@@ -53,7 +53,10 @@ function color_agent_head(agent, c1, c2){
      * Color agent's head depending on its 'dying' state.
      */
     let ratio = 0;
-    if(agent.agent_body.nb_steps_can_survive_under_water){
+    if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
+        ratio = agent.nb_steps_outside_water / agent.agent_body.nb_steps_can_survive_outside_water;
+    }
+    else {
         ratio = agent.nb_steps_under_water / agent.agent_body.nb_steps_can_survive_under_water;
     }
 
