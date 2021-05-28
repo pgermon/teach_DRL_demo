@@ -13,7 +13,7 @@ function init(cppn_input_vector, water_level, creepers_width, creepers_height, c
     window.game = new ParkourGame(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling, align);
     window.agent_selected = null;
     window.asset_selected = null;
-    window.game.env.set_zoom(0.35);
+    window.game.env.set_zoom(DRAWING_ZOOM);
     window.game.env.set_scroll(window.agent_selected, -0.05 * RENDERING_VIEWER_W, 0);
     window.game.env.render();
 }

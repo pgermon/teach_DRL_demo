@@ -73,6 +73,13 @@ export default {
         const parkourConfig = state.parkourConfig;
         const creepersConfig = state.creepersConfig;
 
+        window.align_terrain = {
+            align: true,
+            ceiling_offset: window.align_terrain.ceiling_offset,
+            ground_offset: window.align_terrain.ground_offset,
+            smoothing: window.game.env.TERRAIN_CPPN_SCALE
+        };
+
         window.game.reset(
             morphologies,
             policies,
@@ -170,7 +177,7 @@ export default {
             ceiling: []
         };
         state.simulationState.status = 'init';
-        window.game.env.set_zoom(0.35);
+        window.game.env.set_zoom(DRAWING_ZOOM);
         window.game.env.set_scroll(null, -0.05 * RENDERING_VIEWER_W, 0);
         window.init_default();
         return state;
@@ -179,7 +186,7 @@ export default {
         state.drawingModeState.drawing = payload;
         state.simulationState.status = 'init';
 
-        window.game.env.set_zoom(0.35);
+        window.game.env.set_zoom(DRAWING_ZOOM);
         window.game.env.set_scroll(null, -0.05 * RENDERING_VIEWER_W, 0);
 
         // Generate the terrain from the shapes drawn
