@@ -3,6 +3,11 @@ bodyTypeMapping.set("bipedal", "classic_bipedal");
 bodyTypeMapping.set("chimpanzee", "climbing_profile_chimpanzee");
 bodyTypeMapping.set("fish", "fish");
 
+const seed_names = {
+    bipedal: ['Joe', 'Alice', 'Bob', 'Susan'],
+    chimpanzee: ['Tarzan', 'Kong', 'Caesar', 'Rafiki'],
+    fish: ['Nemo', 'Dory', 'Oscar', 'Bubbles']
+};
 
 export default {
     markCppnInitialized(context, payload) {
@@ -18,7 +23,8 @@ export default {
                 .filter(m => m.morphology == context.state.currentMorphology)
                 .flatMap(morphology => morphology.seeds)
                 .find(seed => seed.idx == context.state.currentSeedIdx);
-            const name = context.state.currentMorphology + "_" + currentSeed.seed;
+            //const name = context.state.currentMorphology + "_" + currentSeed.seed;
+            const name = seed_names[context.state.currentMorphology][context.state.currentSeedIdx];
             const path = currentSeed.path;
             context.commit('addAgent', {
                 morphology: morphology,
@@ -97,7 +103,8 @@ export default {
             .filter(m => m.morphology == context.state.currentMorphology)
             .flatMap(morphology => morphology.seeds)
             .find(seed => seed.idx == context.state.currentSeedIdx);
-        const name = context.state.currentMorphology + "_" + currentSeed.seed;
+        //const name = context.state.currentMorphology + "_" + currentSeed.seed;
+        const name = seed_names[context.state.currentMorphology][context.state.currentSeedIdx];
         const path = currentSeed.path;
         context.commit('addAgent', {
             morphology: morphology,
