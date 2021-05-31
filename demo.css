@@ -35,6 +35,11 @@ btn-asset:hover{
     color: white;
 }
 
+#agentsList{
+    height: 100%;
+    overflow: scroll;
+}
+
 /*
 .slider {
     -webkit-appearance: none;

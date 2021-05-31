@@ -15,10 +15,9 @@ export default class AgentsList extends Component {
                 </div>                  
                 <div class="form-check form-switch">
                         <input name="followSwitch" class="form-check-input" type="checkbox">
-                        <label class="form-check-label" for="followSwitch">Follow</label>
+                        <label class="form-check-label" for="followSwitch"> Follow </label>
                 </div>
-              
-                <label class="btn-group-label" for="positionButtonsGroup">Position:</label>
+                <label class="btn-group-label" for="positionButtonsGroup"> Position: </label>
                 <div name="positionButtonsGroup" class="btn-group" role="group">
                     <button name="savePositionButton" type="button" class="btn btn-primary btn-sm"><i class="far fa-save"></i></button>
                     <button name="resetPositionButton" type="button" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i></button> 

@@ -1,29 +1,29 @@
 //region Constants
 
-const FPS = 50
-const SCALE  = 30 // affects how fast-paced the game is, forces should be adjusted as well
-const VIEWPORT_W = 600
-const VIEWPORT_H = 400
+const FPS = 50;
+const SCALE  = 30; // affects how fast-paced the game is, forces should be adjusted as well
+const VIEWPORT_W = 600;
+const VIEWPORT_H = 400;
 
-let RENDERING_VIEWER_W = 0.6 * window.innerWidth;
+let RENDERING_VIEWER_W = VIEWPORT_W;
 let RENDERING_VIEWER_H = VIEWPORT_H
 
-const NB_LIDAR = 10
-const LIDAR_RANGE = 160/SCALE
+const NB_LIDAR = 10;
+const LIDAR_RANGE = 160/SCALE;
 
-const INITIAL_RANDOM = 5
+const INITIAL_RANDOM = 5;
 
-const TERRAIN_STEP   = 14/SCALE
-const TERRAIN_LENGTH = 200     // in steps
-const TERRAIN_HEIGHT = VIEWPORT_H/SCALE/4
+const TERRAIN_STEP   = 14/SCALE;
+const TERRAIN_LENGTH = 200;     // in steps
+const TERRAIN_HEIGHT = VIEWPORT_H/SCALE/4;
 const TERRAIN_END = 5;
-const INITIAL_TERRAIN_STARTPAD = 20 // in steps
-const FRICTION = 2.5
-const WATER_DENSITY = 1.0
+const INITIAL_TERRAIN_STARTPAD = 20; // in steps
+const FRICTION = 2.5;
+const WATER_DENSITY = 1.0;
 const CREEPER_UNIT = 1;
-const NB_FIRST_STEPS_HANG = 5
+const NB_FIRST_STEPS_HANG = 5;
 const SCROLL_MAX = 300;
-DRAWING_ZOOM = 0.35;
+let INIT_ZOOM = 0.27;
 
 //endregion
 
@@ -36,7 +36,7 @@ class DrawingMAPCP {
         // Seed and init Box2D
         //this.seed();
         this.scale = SCALE;
-        this.zoom = DRAWING_ZOOM;
+        this.zoom = INIT_ZOOM;
         this.contact_listener = new ContactDetector(this);
         let gravity = new b2.Vec2(0, -10);
         this.world = new b2.World(gravity);
