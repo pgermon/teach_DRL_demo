@@ -17,25 +17,29 @@ export default class AgentsList extends Component {
     }
     render() {
         this.element.innerHTML = store.state.agents.map(agent => {
-            return `<li class="list-group-item d-flex justify-content-between align-items-center">
+            return `<li class="list-group-item d-flex justify-content-between align-items-center px-0 py-1">
                     <img src=${thumbnails_path + bodyTypeMapping.get(agent.morphology) + "_thumbnail.png"} 
                              alt=${agent.morphology + "_thumbnail"}
-                             width="8%">
-                <div class="form-group">
-                    <input name="agentNameArea" type="text" class="form-control" placeholder=${agent.name}>
-                </div>                  
-                <div class="form-check form-switch">
+                             width="8%"
+                             class="mx-1">
+                    <div class="form-group">
+                        <input name="agentNameArea" type="text" class="form-control w-75 mx-1" placeholder=${agent.name}>
+                    </div>         
+                    <label class="form-check-label" for="followSwitch">Follow</label>         
+                    <div class="form-check form-switch mx-1">
                         <input name="followSwitch" class="form-check-input" type="checkbox">
-                        <label class="form-check-label" for="followSwitch"> Follow </label>
-                </div>
-                <label class="btn-group-label" for="positionButtonsGroup"> Position: </label>
-                <div name="positionButtonsGroup" class="btn-group" role="group">
-                    <button name="savePositionButton" type="button" class="btn btn-primary btn-sm"><i class="far fa-save"></i></button>
-                    <button name="resetPositionButton" type="button" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i></button> 
-                </div>
-                
-                <button name="deleteButton" type="button" class="btn btn-danger btn-sm"><span class="fa fa-trash"></span></button>
-            </li>`;
+                    </div>
+                    <!--<label class="btn-group-label mx-1" for="positionButtonsGroup">Position</label>-->
+                    <div name="positionButtonsGroup" class="btn-group" role="group">
+                        <button name="savePositionButton" type="button" class="btn btn-primary btn-sm" 
+                        data-toggle="tooltip" data-placement="top" title="Save the agent's position">
+                            <i class="far fa-save"></i>
+                        </button>
+                        <button name="resetPositionButton" type="button" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i></button> 
+                    </div>
+                    
+                    <button name="deleteButton" type="button" class="btn btn-danger btn-sm mx-1"><span class="fa fa-trash"></span></button>
+                </li>`;
         }).join('');
 
         this.element.querySelectorAll('button[name="deleteButton"]').forEach((span, index) => {
@@ -50,6 +54,14 @@ export default class AgentsList extends Component {
                 agent.init_pos = agent.agent_body.reference_head_object.GetPosition().Clone();
             });
         });
+
+        /*this.element.querySelectorAll('[data-toggle="tooltip"]').forEach((span, index) => {
+            span.addEventListener('mouseover', () => {
+                span.tooltip();
+            });
+        })*/
+
+        //$('[data-toggle="tooltip"]').tooltip();
 
         this.element.querySelectorAll('button[name="resetPositionButton"]').forEach((span, index) => {
             span.addEventListener('click', () => {
