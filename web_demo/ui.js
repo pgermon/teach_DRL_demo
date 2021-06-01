@@ -121,10 +121,10 @@ const gettingStartedTab = document.querySelector('#getting-started-tab');
 gettingStartedTab.addEventListener('click', () => {
     store.dispatch('switchTab', false);
 })
-const agentSelectionTab = document.querySelector('#agent-selection-tab');
+/*const agentSelectionTab = document.querySelector('#agent-selection-tab');
 agentSelectionTab.addEventListener('click', () => {
     store.dispatch('switchTab', false);
-})
+})*/
 const parkourGenTab = document.querySelector('#parkour-gen-tab');
 parkourGenTab.addEventListener('click', () => {
     store.dispatch('switchTab', false);

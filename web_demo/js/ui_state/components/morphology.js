@@ -26,17 +26,18 @@ export default class MorphologySelect extends Component {
         let agents_div = this.element.querySelector('#agentsSelection');
 
         agents_div.innerHTML = store.state.morphologies.map(m => {
+            //return `<div class="row justify-content-between">
             return `<div class="col col-4">
                         <img name="morphology_thumbnail" src=${thumbnails_path + m.morphology + "_thumbnail.png"} 
                              alt=${m.morphology + "_thumbnail"}
-                             width="25%">
+                             width="50%">
                         <br>
                        <label for="morphology_thumbnail">${m.morphology}</label>
                        
                         <br>
                         <label for="select_button">Choose an agent to add:</label>
                         <!--<div name="select_button" class="row justify-content-md-left mt-1">-->
-                        <div name="select_button" class="input-group mt-1 w-50">                          
+                        <div name="select_button" class="input-group mt-1 w-auto">                          
                             <select name="models" class="form-select"></select>
                             <div class="input-group-append">
                                 <button name="addAgentButton" class="btn btn-warning"><i class="fas fa-plus"></i></button>
