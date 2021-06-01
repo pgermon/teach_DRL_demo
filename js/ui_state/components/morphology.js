@@ -35,12 +35,11 @@ export default class MorphologySelect extends Component {
                        
                         <br>
                         <label for="select_button">Choose an agent to add:</label>
-                        <div name="select_button" class="row justify-content-md-left mt-1">
-                            <div class="col-4">
-                                <select name="models" class="form-select w-auto"></select>
-                            </div>
-                            <div class="col-4">
-                                <button name="addAgentButton" class="btn btn-warning w-auto"><i class="fas fa-plus"></i> Add agent </button>
+                        <!--<div name="select_button" class="row justify-content-md-left mt-1">-->
+                        <div name="select_button" class="input-group mt-1 w-50">                          
+                            <select name="models" class="form-select"></select>
+                            <div class="input-group-append">
+                                <button name="addAgentButton" class="btn btn-warning"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
                     </div>`
