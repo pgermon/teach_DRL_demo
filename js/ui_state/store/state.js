@@ -1,7 +1,8 @@
 export default {
     morphologies: [],
-    currentMorphology: "bipedal",
-    currentSeedIdx: "0",
+    //currentMorphology: "bipedal",
+    //currentSeedIdx: "0",
+    currentSeedsIdx: {},
     agents: [],
     simulationState: {
         status: 'init', // 'running', 'paused'
@@ -11,12 +12,12 @@ export default {
         dim1: 1.0,
         dim2: 0.95,
         dim3: 0,
-        smoothing: 20,
+        smoothing: 25,
         waterLevel: 0
     },
     creepersConfig: {
         width: 0.3,
-        height: 3,
+        height: 2.5,
         spacing: 1,
         type: 'Swingable' // 'Rigid'
     },

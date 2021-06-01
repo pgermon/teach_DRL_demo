@@ -1,5 +1,13 @@
 import Component from '../lib/component.js';
 import store from '../store/index.js';
+
+const thumbnails_path = "images/agents_thumbnails/";
+
+const bodyTypeMapping = new Map();
+bodyTypeMapping.set("classic_bipedal", "bipedal");
+bodyTypeMapping.set("climbing_profile_chimpanzee", "chimpanzee");
+bodyTypeMapping.set("fish", "fish");
+
 export default class AgentsList extends Component {
     constructor() {
         super({
@@ -10,6 +18,9 @@ export default class AgentsList extends Component {
     render() {
         this.element.innerHTML = store.state.agents.map(agent => {
             return `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    <img src=${thumbnails_path + bodyTypeMapping.get(agent.morphology) + "_thumbnail.png"} 
+                             alt=${agent.morphology + "_thumbnail"}
+                             width="8%">
                 <div class="form-group">
                     <input name="agentNameArea" type="text" class="form-control" placeholder=${agent.name}>
                 </div>                  
