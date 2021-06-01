@@ -35,8 +35,8 @@ btn-asset:hover{
     color: white;
 }
 
-#agentsList{
-    height: 100%;
+#agents_list_container{
+    height: 400px;
     overflow: scroll;
 }
 

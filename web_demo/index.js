@@ -384,10 +384,13 @@ function mouseWheel(event){
     }
 }
 
-document.addEventListener('keydown', (event) => {
-    if(event.key == 'Delete'){
-        window.game.env.delete_asset(window.asset_selected);
-        window.asset_selected = null;
-        window.game.env.render();
+function keyPressed(){
+    if(keyCode == DELETE){
+        if(window.asset_selected != null){
+            window.game.env.delete_asset(window.asset_selected);
+            window.asset_selected = null;
+            window.game.env.render();
+            return false;
+        }
     }
-});
+}

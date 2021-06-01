@@ -18,19 +18,32 @@ export default {
 
         if (state.cppnInitialized && state.morphologies.length != 0 && !state.defaultAgentAdded) {
             context.commit('disableDefaultAgent', payload);
-            const morphology = bodyTypeMapping.get(context.state.currentMorphology);
-            const currentSeed = context.state.morphologies
-                .filter(m => m.morphology == context.state.currentMorphology)
-                .flatMap(morphology => morphology.seeds)
-                .find(seed => seed.idx == context.state.currentSeedIdx);
-            //const name = context.state.currentMorphology + "_" + currentSeed.seed;
-            const name = seed_names[context.state.currentMorphology][context.state.currentSeedIdx];
-            const path = currentSeed.path;
+
+            let morphology, name, path;
+            /*if(payload == {}){
+                const morphology = bodyTypeMapping.get(context.state.currentMorphology);
+                const currentSeed = context.state.morphologies
+                    .filter(m => m.morphology == context.state.currentMorphology)
+                    .flatMap(morphology => morphology.seeds)
+                    .find(seed => seed.idx == context.state.currentSeedIdx);
+                //const name = context.state.currentMorphology + "_" + currentSeed.seed;
+                const name = seed_names[context.state.currentMorphology][context.state.currentSeedIdx];
+                const path = currentSeed.path;
+
+            }
+            else{*/
+                morphology = payload;
+                name = seed_names[morphology][context.state.currentSeedsIdx[morphology]];
+                path = state.morphologies.filter(m => m.morphology == morphology)
+                    .flatMap(morphology => morphology.seeds)[0].path;
+            //}
+
             context.commit('addAgent', {
-                morphology: morphology,
+                morphology: bodyTypeMapping.get(morphology),
                 name: name,
                 path: path,
             });
+
         }
     },
     changeCreepersConfig(context, payload) {
@@ -98,19 +111,30 @@ export default {
             context.commit('pauseSimulation', {});
         }
 
-        const morphology = bodyTypeMapping.get(context.state.currentMorphology);
-        const currentSeed = context.state.morphologies
-            .filter(m => m.morphology == context.state.currentMorphology)
-            .flatMap(morphology => morphology.seeds)
-            .find(seed => seed.idx == context.state.currentSeedIdx);
-        //const name = context.state.currentMorphology + "_" + currentSeed.seed;
-        const name = seed_names[context.state.currentMorphology][context.state.currentSeedIdx];
-        const path = currentSeed.path;
+        let morphology, name, path;
+
+        /*if(payload == {}){
+            morphology = bodyTypeMapping.get(context.state.currentMorphology);
+            const currentSeed = context.state.morphologies
+                .filter(m => m.morphology == context.state.currentMorphology)
+                .flatMap(morphology => morphology.seeds)
+                .find(seed => seed.idx == context.state.currentSeedIdx);
+            //const name = context.state.currentMorphology + "_" + currentSeed.seed;
+            name = seed_names[context.state.currentMorphology][context.state.currentSeedIdx];
+            path = currentSeed.path;
+        }
+        else{*/
+            morphology = payload.morphology;
+            name = payload.name;
+            path = payload.path;
+        //}
+
         context.commit('addAgent', {
             morphology: morphology,
             name: name,
             path: path,
         });
+
     },
     deleteAgent(context, payload) {
         context.commit('deleteAgent', payload);

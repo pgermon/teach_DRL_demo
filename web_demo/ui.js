@@ -10,26 +10,26 @@ import DrawingMode from "./js/ui_state/components/drawing_mode.js";
 import AdvancedOptions from "./js/ui_state/components/advanced_options.js";
 
 // Morphology selector setup
-const morphologySelectElement = document.querySelector('#morphology');
+/*const morphologySelectElement = document.querySelector('#morphology');
 morphologySelectElement.addEventListener('input', evt => {
     store.dispatch('selectMorphology', morphologySelectElement.value);
-});
+});*/
 const morphologySelectInstance = new MorphologySelect();
 morphologySelectInstance.render();
 
 // model selector setup
-const modelSelectElement = document.querySelector('#models');
+/*const modelSelectElement = document.querySelector('#models');
 modelSelectElement.addEventListener('input', evt => {
     store.dispatch('selectSeedIdx', modelSelectElement.selectedIndex);
 });
 const modelSelectInstance = new ModelSelect();
-modelSelectInstance.render();
+modelSelectInstance.render();*/
 
 // Add/delete agent setup
-const addAgentBtn = document.querySelector("#addAgentButton");
+/*const addAgentBtn = document.querySelector("#addAgentButton");
 addAgentBtn.addEventListener('click', evt => {
     store.dispatch('addAgent', {});
-});
+});*/
 const agentListInstance = new AgentsList();
 agentListInstance.render();
 
@@ -233,7 +233,7 @@ window.is_drawing_circle = () => {
 }
 
 window.addDefaultAgent = () => {
-    store.dispatch('addDefaultAgent', {});
+    store.dispatch('addDefaultAgent', 'bipedal'); // 'bipedal', 'chimpanzee', 'fish
 }
 
 window.markCppnInitialized = () => {

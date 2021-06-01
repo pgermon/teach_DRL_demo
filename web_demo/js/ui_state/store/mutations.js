@@ -132,17 +132,19 @@ export default {
         window.game.env.render();
         return state;
     },
-    selectMorphology(state, payload) {
+    /*selectMorphology(state, payload) {
         state.currentMorphology = payload;
         state.currentSeedIdx = 0;
         return state;
-    },
+    },*/
     selectSeedIdx(state, payload) {
-        state.currentSeedIdx = payload;
+        //state.currentSeedIdx = payload.index;
+        state.currentSeedsIdx[payload.morphology] = payload.index;
         return state;
     },
     addMorphology(state, payload) {
         state.morphologies.push(payload);
+        state.currentSeedsIdx[payload.morphology] = 0;
         return state;
     },
     drawGround(state, payload){

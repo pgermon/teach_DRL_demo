@@ -63,7 +63,8 @@
             <div class="col col-md-auto">-->
                 <div id="canvas_container"></div>
             </div>
-            <div id="agents_list_container" class="col col-4">
+            <div id="agents_list_container" class="col col-4 border border-dark rounded">
+                <h1 class="has-text-centered my-2"> List of agents </h1>
                 <ol class="list-group" id="agentsList"></ol>
             </div>
         </div>
@@ -119,6 +120,7 @@
                     <br>
                     <p>Enjoy!</p>
                 </div>
+
                 <div class="tab-pane" id="agent-sel-config" role="tabpanel" aria-labelledby="agent-selection-tab">
                     <!-- select the morphology -->
                     <div id="agentsSelection" class="row justify-content-md-center g-2 mt-1">
@@ -127,7 +129,7 @@
 
                     <br>
 
-                    <div id="selectors" class="row justify-content-md-center g-2 mt-1">
+                    <!--<div id="selectors" class="row justify-content-md-center g-2 mt-1">
                         <div class="col col-4">
                             <div class="row">
                                 <label for="morphology">Choose an agent morphology:</label>
@@ -141,7 +143,7 @@
                                 <button id="addAgentButton" class="btn btn-warning"> Add agent </button>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="tab-pane" id="parkour-gen-config" role="tabpanel" aria-labelledby="parkour-gen-tab">
                     <!-- parkour generation -->
