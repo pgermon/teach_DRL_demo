@@ -145,7 +145,7 @@ class FishBody extends SwimmerAbstractBody {
         rjd.lowerAngle = -0.15 * Math.PI;
         rjd.upperAngle = 0.15 * Math.PI;
         joint_motor = world.CreateJoint(rjd);
-        joint_motor.SetUserData(new CustomMotorUserData("body_p1_p2", SPEED, true, 0.0, body_p2));
+        joint_motor.SetUserData(new CustomMotorUserData("hip", SPEED, true, 0.0, body_p2));
         this.motors.push(joint_motor);
 
         // BODY_P3 - TAIL
@@ -183,7 +183,7 @@ class FishBody extends SwimmerAbstractBody {
         rjd.lowerAngle = -0.3 * Math.PI;
         rjd.upperAngle = 0.3 * Math.PI;
         joint_motor = world.CreateJoint(rjd);
-        joint_motor.SetUserData(new CustomMotorUserData("body_p2_p3", SPEED, true, 0.0, body_p3));
+        joint_motor.SetUserData(new CustomMotorUserData("knee", SPEED, true, 0.0, body_p3));
         this.motors.push(joint_motor);
 
         // FINS
@@ -231,7 +231,7 @@ class FishBody extends SwimmerAbstractBody {
             rjd.lowerAngle = -0.3 * Math.PI;
             rjd.upperAngle = 0.2 * Math.PI;
             joint_motor = world.CreateJoint(rjd);
-            joint_motor.SetUserData(new CustomMotorUserData("body_fin", SPEED, true, 0.0, fin));
+            joint_motor.SetUserData(new CustomMotorUserData("shoulder", SPEED, true, 0.0, fin));
             this.motors.push(joint_motor);
         }
     }
