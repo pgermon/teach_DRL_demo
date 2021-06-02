@@ -133,6 +133,7 @@ export default {
                 ground: [],
                 ceiling: []
             };
+            context.commit('generateTerrain', true);
         }
     },
     drawGround(context, payload) {

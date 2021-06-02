@@ -29,16 +29,22 @@ export default class AgentsList extends Component {
                     <div class="form-check form-switch mx-1">
                         <input name="followSwitch" class="form-check-input" type="checkbox">
                     </div>
-                    <!--<label class="btn-group-label mx-1" for="positionButtonsGroup">Position</label>-->
+
                     <div name="positionButtonsGroup" class="btn-group" role="group">
                         <button name="savePositionButton" type="button" class="btn btn-primary btn-sm" 
                         data-toggle="tooltip" data-placement="top" title="Save the agent's position">
                             <i class="far fa-save"></i>
                         </button>
-                        <button name="resetPositionButton" type="button" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i></button> 
+                        <button name="resetPositionButton" type="button" class="btn btn-primary btn-sm"
+                        data-toggle="tooltip" data-placement="top" title="Reset the agent's position">
+                            <i class="fas fa-undo-alt"></i>
+                        </button> 
                     </div>
                     
-                    <button name="deleteButton" type="button" class="btn btn-danger btn-sm mx-1"><span class="fa fa-trash"></span></button>
+                    <button name="deleteButton" type="button" class="btn btn-danger btn-sm mx-1"
+                    data-toggle="tooltip" data-placement="top" title="Delete the agent">
+                        <i class="fa fa-trash"></i>
+                    </button>
                 </li>`;
         }).join('');
 

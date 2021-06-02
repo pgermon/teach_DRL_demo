@@ -42,9 +42,6 @@
 
     <script defer src="js/CPPN/cppn.js"></script>
     <script defer src="js/envs/drawing_mapcp.js"></script>
-    <!--<script defer src="js/envs/multi_agents_parametric_continuous_parkour.js"></script>-->
-    <!--<script defer src="js/envs/parametric_continuous_parkour.js"></script>-->
-    <!--<script defer src="js/envs/parametric_continuous_flat_parkour.js"></script>-->
     <script defer src="./js/parkour_game.js"></script>
     <script defer src="./js/draw_p5js.js"></script>
 
@@ -92,19 +89,14 @@
                             data-bs-target="#getting-started" type="button" role="tab" aria-controls="getting-started"
                             aria-selected="true">Getting Started</button>
                     </li>
-                    <!--<li class="nav-item" role="presentation">
-                        <button class="nav-link" id="agent-selection-tab" data-bs-toggle="tab"
-                            data-bs-target="#agent-sel-config" type="button" role="tab" aria-controls="agent-sel-config"
-                            aria-selected="false">Agent Selection</button>
-                    </li>-->
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="parkour-gen-tab" data-bs-toggle="tab" data-bs-target="#parkour-gen-config"
-                            type="button" role="tab" aria-controls="parkour-gen-config" aria-selected="false">Parkour
-                            Generation</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="draw-config-tab" data-bs-toggle="tab" data-bs-target="#draw-config"
-                            type="button" role="tab" aria-controls="draw-config" aria-selected="false">Draw Yourself!</button>
+                    <li class="nav-item dropdown" role="presentation">
+                        <a class="nav-link dropdown-toggle" id="parkour-customization-btn" data-bs-toggle="dropdown"
+                            role="button" aria-expanded="false">
+                            Parkour Customization</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item" id="draw-tab-btn" data-bs-toggle="tab" data-bs-target="#draw-tab"> Draw Yourself! </li>
+                            <li class="dropdown-item" id="proc-gen-tab-btn" data-bs-toggle="tab" data-bs-target="#proc-gen-tab"> Procedural Generation </li>
+                        </ul>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="advanced-options-tab" data-bs-toggle="tab" data-bs-target="#advanced-opt-config"
@@ -124,10 +116,38 @@
                         <p>Enjoy!</p>
                     </div>
 
-                    <div class="tab-pane" id="parkour-gen-config" role="tabpanel" aria-labelledby="parkour-gen-tab">
+                    <div class="tab-pane" id="draw-tab" role="tabpanel" aria-labelledby="draw-tab-btn">
+                        <!-- terrain drawing -->
+                        <p class="has-text-centered mt-2"> Here you can draw your own parkour! Select the <strong style="color: green"><i
+                                class="fas fa-pencil-alt"></i> Ground</strong> or <strong style="color: dimgrey"><i
+                                class="fas fa-pencil-alt"></i> Ceiling</strong> button to start drawing the corresponding terrain shape with the mouse.</p>
+                        <p class="has-text-centered"> Be careful not to draw more than one line at different heights if you want the result to be optimal.
+                            You can use the <strong style="color: #FFC700"><i class="fas fa-eraser"></i> Erase</strong> button if you need to correct your drawing or the <strong style="color: red"><i class="fas fa-times"></i> Clear</strong> one to clear all your drawing.</p>
+                        <p class="has-text-centered"> When you are satisfied with the result, just click the <strong style="color: green">Generate Terrain</strong> button.</p>
+                        <div id="drawingMode" class="row justify-content-md-center g-2 mt-1">
+                            <div class="col col-md-auto">
+                                <button id="drawGroundButton" class="btn btn-outline-success disabled"><i class="fas fa-pencil-alt"></i> Ground </button>
+                            </div>
+                            <div class="col col-md-auto">
+                                <button id="drawCeilingButton" class="btn btn-outline-secondary disabled"><i class="fas fa-pencil-alt"></i> Ceiling </button>
+                            </div>
+                            <div class="col col-md-auto">
+                                <button id="eraseButton" class="btn btn-outline-warning disabled"><i class="fas fa-eraser"></i>
+                                    Erase </button>
+                            </div>
+                            <div class="col col-md-auto">
+                                <button id="clearButton" class="btn btn-danger"><i class="fas fa-times"></i> Clear </button>
+                            </div>
+                            <div class="col col-md-auto">
+                                <button id="generateTerrainButton" class="btn btn-success disabled"> Generate Terrain </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="proc-gen-tab" role="tabpanel" aria-labelledby="proc-gen-tab-btn">
                         <!-- parkour generation -->
                         <div class="row justify-content-md-center mt-3 mx-1">
-                            Parkour Generation
+                            Parkour Procedural Generation
                         </div>
 
                         <div class="row justify-content-md-center mt-3 mx-1">
@@ -244,33 +264,6 @@
                         </div>
                     </div>
 
-                    <div class="tab-pane" id="draw-config" role="tabpanel" aria-labelledby="draw-config-tab">
-                        <!-- terrain drawing -->
-                        <div id="drawingMode" class="row justify-content-md-center g-2 mt-1">
-                            <div class="col col-md-auto">
-                                <button id="drawGroundButton" class="btn btn-outline-success disabled"><i
-                                        class="fas fa-pencil-alt"></i> Ground </button>
-                            </div>
-                            <div class="col col-md-auto">
-                                <button id="drawCeilingButton" class="btn btn-outline-secondary disabled"><i
-                                        class="fas fa-pencil-alt"></i> Ceiling </button>
-                            </div>
-                            <div class="col col-md-auto">
-                                <button id="eraseButton" class="btn btn-outline-warning disabled"><i
-                                        class="fas fa-eraser"></i>
-                                    Erase </button>
-                            </div>
-                            <div class="col col-md-auto">
-                                <button id="clearButton" class="btn btn-danger"><i class="fas fa-times"></i> Clear
-                                </button>
-                            </div>
-                            <div class="col col-md-auto">
-                                <button id="generateTerrainButton" class="btn btn-success disabled"> Generate terrain
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="tab-pane" id="advanced-opt-config" role="tabpanel" aria-labelledby="advanced-options-tab">
                         <!-- Draw joins/sensors/names selectors -->
                         <div id="advancedOptions" class="row justify-content-md-left g-2 mt-1">
@@ -305,10 +298,7 @@
             <div id="agent-sel-config" class="col col-3">
                 <!-- select the morphology -->
                 <h1 class="has-text-centered my-2"> <strong> List of morphologies</strong>  </h1>
-                <!--<p class="has-text-centered my-2"> Choose an agent to add</p>-->
                 <ol class="list-group" id="agentsSelection"></ol>
-                <!--<div id="agentsSelection" class="row justify-content-md-center g-2 mt-1">
-                </div>-->
             </div>
         </div>
     </div>
