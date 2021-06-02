@@ -190,15 +190,26 @@ export default {
         window.init_default();
         return state;
     },
+    switchTab(state, payload) {
+        if(payload == 'draw_yourself' || payload == 'proc_gen'){
+            state.activeTab.main = 'parkour_custom';
+            state.activeTab.sub = payload;
+        }
+        else{
+            state.activeTab.main = payload;
+            state.activeTab.sub = null;
+        }
+        return state;
+    },
     generateTerrain(state, payload){
-        state.drawingModeState.drawing = payload;
+        state.drawingModeState.drawing = !payload;
         state.simulationState.status = 'init';
 
         window.game.env.set_zoom(INIT_ZOOM);
         window.game.env.set_scroll(null, -0.05 * RENDERING_VIEWER_W, 0);
 
         // Generate the terrain from the shapes drawn
-        if(!state.drawingModeState.drawing) {
+        if(payload) {
 
             state.drawingModeState.drawing_ground = false;
             state.drawingModeState.drawing_ceiling = false;

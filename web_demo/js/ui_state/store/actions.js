@@ -112,9 +112,6 @@ export default {
     renameAgent(context, payload){
         context.commit('renameAgent', payload);
     },
-    selectMorphology(context, payload) {
-        context.commit('selectMorphology', payload);
-    },
     selectSeedIdx(context, payload) {
         context.commit('selectSeedIdx', payload);
     },
@@ -122,19 +119,26 @@ export default {
         context.commit('addMorphology', payload);
     },
     switchTab(context, payload) {
-        // If a tab other than "Draw Yourself!" is selected during the drawing is activated, the terrain is generated
-        if(!payload && context.state.drawingModeState.drawing){
+        if(context.state.activeTab.main == 'parkour_custom'){
+            if(payload != 'parkour_custom'){
+                if(context.state.drawingModeState.drawing && payload != 'draw_yourself'){
+                    context.commit('generateTerrain', true);
+                }
+                else if(payload == 'draw_yourself'){
+                    drawing_canvas.clear();
+                    window.terrain = {
+                        ground: [],
+                        ceiling: []
+                    };
+                    context.commit('generateTerrain', false);
+                }
+            }
+        }
+        else if(payload == 'parkour_custom'){
             context.commit('generateTerrain', false);
+            payload = 'draw_yourself';
         }
-        // If the "Draw Yourself!" tab is selected during the drawing is not activated, the drawings are cleared
-        else if(payload && !context.state.drawingModeState.drawing){
-            drawing_canvas.clear();
-            window.terrain = {
-                ground: [],
-                ceiling: []
-            };
-            context.commit('generateTerrain', true);
-        }
+        context.commit('switchTab', payload);
     },
     drawGround(context, payload) {
         context.commit('drawGround', payload);

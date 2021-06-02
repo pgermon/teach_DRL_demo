@@ -7,6 +7,10 @@ export default {
         agentFollowed: null,
         agentSelected: null,
     },
+    activeTab: {
+        main:'getting_started', // 'getting_started', 'parkour_custom, 'advanced_options'
+        sub: null // 'draw_yourself', 'proc_gen'
+    },
     parkourConfig: {
         dim1: 1.0,
         dim2: 0.95,
