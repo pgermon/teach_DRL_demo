@@ -963,9 +963,11 @@ class DrawingMAPCP {
             agent.agent_body.destroy(this.world);
             //window.agent_selected = null;
 
-            for(let agent of this.agents){
-                agent.id = this.agents.indexOf(agent);
+            for(let i = 0; i < this.agents.length; i++){
+                this.agents[i].id = i;
             }
+
+            window.game.obs[window.game.obs.length - 1].splice(agent_index, 1);
         }
 
     }
