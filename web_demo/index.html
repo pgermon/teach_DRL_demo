@@ -66,7 +66,7 @@
                 <div id="canvas_container"></div>
             </div>
             <div id="agents_list_container" class="col col-3 border border-secondary rounded">
-                <h1 class="has-text-centered my-2"> List of agents </h1>
+                <h1 class="has-text-centered my-2"><strong> List of running agents </strong></h1>
                 <ol class="list-group" id="agentsList"></ol>
             </div>
         </div>
@@ -84,7 +84,7 @@
 
 
         <div class="row justify-content-md-center g-2 mt-1">
-            <div class="col col-7">
+            <div class="col col-9">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -302,10 +302,13 @@
                 </div>
             </div>
 
-            <div class="col col-5 border border-top-0 border-right-0 border-bottom-0 border-secondary" id="agent-sel-config">
+            <div id="agent-sel-config" class="col col-3">
                 <!-- select the morphology -->
-                <div id="agentsSelection" class="row justify-content-md-center g-2 mt-1">
-                </div>
+                <h1 class="has-text-centered my-2"> <strong> List of morphologies</strong>  </h1>
+                <!--<p class="has-text-centered my-2"> Choose an agent to add</p>-->
+                <ol class="list-group" id="agentsSelection"></ol>
+                <!--<div id="agentsSelection" class="row justify-content-md-center g-2 mt-1">
+                </div>-->
             </div>
         </div>
     </div>
