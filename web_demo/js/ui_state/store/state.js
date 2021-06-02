@@ -1,12 +1,11 @@
 export default {
     morphologies: [],
-    //currentMorphology: "bipedal",
-    //currentSeedIdx: "0",
     currentSeedsIdx: {},
     agents: [],
     simulationState: {
         status: 'init', // 'running', 'paused'
         agentFollowed: null,
+        agentSelected: null,
     },
     parkourConfig: {
         dim1: 1.0,

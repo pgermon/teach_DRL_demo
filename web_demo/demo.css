@@ -40,6 +40,11 @@ btn-asset:hover{
     overflow: scroll;
 }
 
+.list-group-item.active{
+    background-color: #FFC700;
+    border-color: #FFC700;
+}
+
 /*
 .slider {
     -webkit-appearance: none;

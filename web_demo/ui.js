@@ -243,3 +243,8 @@ window.markCppnInitialized = () => {
 window.clickOutsideCanvas = () => {
     store.dispatch('clickOutsideCanvas', {});
 }
+
+window.set_agent_selected = (index) => {
+    let payload = {value: index != null, index: index}
+    store.dispatch('selectAgent', payload);
+}

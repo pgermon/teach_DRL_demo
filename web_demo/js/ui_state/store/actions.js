@@ -19,24 +19,11 @@ export default {
         if (state.cppnInitialized && state.morphologies.length != 0 && !state.defaultAgentAdded) {
             context.commit('disableDefaultAgent', payload);
 
-            let morphology, name, path;
-            /*if(payload == {}){
-                const morphology = bodyTypeMapping.get(context.state.currentMorphology);
-                const currentSeed = context.state.morphologies
-                    .filter(m => m.morphology == context.state.currentMorphology)
-                    .flatMap(morphology => morphology.seeds)
-                    .find(seed => seed.idx == context.state.currentSeedIdx);
-                //const name = context.state.currentMorphology + "_" + currentSeed.seed;
-                const name = seed_names[context.state.currentMorphology][context.state.currentSeedIdx];
-                const path = currentSeed.path;
 
-            }
-            else{*/
-                morphology = payload;
-                name = seed_names[morphology][context.state.currentSeedsIdx[morphology]];
-                path = state.morphologies.filter(m => m.morphology == morphology)
+            let morphology = payload;
+            let name = seed_names[morphology][context.state.currentSeedsIdx[morphology]];
+            let path = state.morphologies.filter(m => m.morphology == morphology)
                     .flatMap(morphology => morphology.seeds)[0].path;
-            //}
 
             context.commit('addAgent', {
                 morphology: bodyTypeMapping.get(morphology),
@@ -110,34 +97,14 @@ export default {
         if (context.state.simulationState.status == 'running') {
             context.commit('pauseSimulation', {});
         }
-
-        let morphology, name, path;
-
-        /*if(payload == {}){
-            morphology = bodyTypeMapping.get(context.state.currentMorphology);
-            const currentSeed = context.state.morphologies
-                .filter(m => m.morphology == context.state.currentMorphology)
-                .flatMap(morphology => morphology.seeds)
-                .find(seed => seed.idx == context.state.currentSeedIdx);
-            //const name = context.state.currentMorphology + "_" + currentSeed.seed;
-            name = seed_names[context.state.currentMorphology][context.state.currentSeedIdx];
-            path = currentSeed.path;
-        }
-        else{*/
-            morphology = payload.morphology;
-            name = payload.name;
-            path = payload.path;
-        //}
-
-        context.commit('addAgent', {
-            morphology: morphology,
-            name: name,
-            path: path,
-        });
+        context.commit('addAgent', payload);
 
     },
     deleteAgent(context, payload) {
         context.commit('deleteAgent', payload);
+    },
+    selectAgent(context, payload){
+        context.commit('selectAgent', payload);
     },
     followAgent(context, payload) {
         context.commit('followAgent', payload);

@@ -73,7 +73,8 @@ export default class MorphologySelect extends Component {
                 store.dispatch('addAgent', {
                     morphology: bodyTypeMapping.get(morph.morphology),
                     name: seed_names[morph.morphology][store.state.currentSeedsIdx[morph.morphology]],
-                    path: morph.seeds[store.state.currentSeedsIdx[morph.morphology]].path});
+                    path: morph.seeds[store.state.currentSeedsIdx[morph.morphology]].path,
+                });
             });
         });
 

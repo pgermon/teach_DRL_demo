@@ -11,7 +11,7 @@ function init(cppn_input_vector, water_level, creepers_width, creepers_height, c
         positions = [...window.game.env.agents.map(agent => agent.agent_body.reference_head_object.GetPosition())];
     }
     window.game = new ParkourGame(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling, align);
-    window.agent_selected = null;
+    window.set_agent_selected(null);
     window.asset_selected = null;
     window.game.env.set_zoom(INIT_ZOOM);
     window.game.env.set_scroll(window.agent_selected, -0.05 * RENDERING_VIEWER_W, 0);
@@ -32,7 +32,7 @@ function init_default() {
 }
 
 async function loadModel() {
-    window.agent_selected = null;
+    window.set_agent_selected(null);
     window.cppn_model = await tf.loadGraphModel('./js/CPPN/weights/same_ground_ceiling_cppn/tfjs_model/model.json');
     init_default();
     window.markCppnInitialized();
@@ -101,18 +101,24 @@ function mousePressed(){
             let mousePos = convertPosCanvasToEnv(mouseX, mouseY);
 
             // Select an agent in the canvas if the mouse is clicked over its body
-            for(let agent of window.game.env.agents){
+            let one_agent_touched = false;
+            for(let i = 0; i < window.game.env.agents.length; i++){
+                let agent = window.game.env.agents[i];
 
                 // Check if the agent is touched by the mouse
                 let is_agent_touched = agent.agent_body.isMousePosInside(mousePos);
 
                 // If the agent is touched and not selected yet, it is now selected and all other agents are deselected
-                if(!agent.is_selected && is_agent_touched){
-                    agent.is_selected = true;
-                    window.agent_selected = agent;
-                    for(let other_agent of window.game.env.agents){
-                        if(other_agent != agent){
-                            other_agent.is_selected = false;
+                if(is_agent_touched){
+                    one_agent_touched = true;
+
+                    if(!agent.is_selected) {
+                        agent.is_selected = true;
+                        window.set_agent_selected(i);
+                        for (let other_agent of window.game.env.agents) {
+                            if (other_agent != agent) {
+                                other_agent.is_selected = false;
+                            }
                         }
                     }
                     break;
@@ -121,6 +127,10 @@ function mousePressed(){
                 else if(!is_agent_touched){
                     agent.is_selected = false;
                 }
+            }
+
+            if(!one_agent_touched){
+                window.set_agent_selected(null);
             }
 
             // Select an asset in the canvas if the mouse is clicked over its body
