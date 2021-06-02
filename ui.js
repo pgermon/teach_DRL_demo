@@ -121,10 +121,10 @@ const gettingStartedTab = document.querySelector('#getting-started-tab');
 gettingStartedTab.addEventListener('click', () => {
     store.dispatch('switchTab', false);
 })
-const agentSelectionTab = document.querySelector('#agent-selection-tab');
+/*const agentSelectionTab = document.querySelector('#agent-selection-tab');
 agentSelectionTab.addEventListener('click', () => {
     store.dispatch('switchTab', false);
-})
+})*/
 const parkourGenTab = document.querySelector('#parkour-gen-tab');
 parkourGenTab.addEventListener('click', () => {
     store.dispatch('switchTab', false);
@@ -242,4 +242,9 @@ window.markCppnInitialized = () => {
 
 window.clickOutsideCanvas = () => {
     store.dispatch('clickOutsideCanvas', {});
+}
+
+window.set_agent_selected = (index) => {
+    let payload = {value: index != null, index: index}
+    store.dispatch('selectAgent', payload);
 }

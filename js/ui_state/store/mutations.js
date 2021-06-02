@@ -112,6 +112,17 @@ export default {
         window.game.env.render();
         return state;
     },
+    selectAgent(state, payload) {
+        if(payload.value){
+            window.agent_selected = window.game.env.agents[payload.index];
+            state.simulationState.agentSelected = state.agents[payload.index];
+        }
+        else{
+            window.agent_selected = null;
+            state.simulationState.agentSelected = null;
+        }
+        return state;
+    },
     followAgent(state, payload) {
         if(payload.value){
             window.follow_agent = payload.value;
@@ -132,11 +143,6 @@ export default {
         window.game.env.render();
         return state;
     },
-    /*selectMorphology(state, payload) {
-        state.currentMorphology = payload;
-        state.currentSeedIdx = 0;
-        return state;
-    },*/
     selectSeedIdx(state, payload) {
         //state.currentSeedIdx = payload.index;
         state.currentSeedsIdx[payload.morphology] = payload.index;

@@ -14,6 +14,10 @@ bodyTypeMapping.set("bipedal", "classic_bipedal");
 bodyTypeMapping.set("chimpanzee", "climbing_profile_chimpanzee");
 bodyTypeMapping.set("fish", "fish");
 
+function strUcFirst(a){
+    return (a+'').charAt(0).toUpperCase()+a.substr(1);
+}
+
 export default class MorphologySelect extends Component {
     constructor() {
         super({
@@ -22,19 +26,19 @@ export default class MorphologySelect extends Component {
         });
     }
     render() {
-
         let agents_div = this.element.querySelector('#agentsSelection');
 
         agents_div.innerHTML = store.state.morphologies.map(m => {
-            return `<div class="col col-4">
+            //return `<div class="col col-4">
+            //return `<div class="row justify-content-between">
+            return `<li class="list-group-item d-flex justify-content-between align-items-center px-2 py-1">
+                        
                         <img name="morphology_thumbnail" src=${thumbnails_path + m.morphology + "_thumbnail.png"} 
-                             alt=${m.morphology + "_thumbnail"}
-                             width="25%">
-                        <br>
-                       <label for="morphology_thumbnail">${m.morphology}</label>
-                       
-                        <br>
-                        <label for="select_button">Choose an agent to add:</label>
+                         alt=${m.morphology + "_thumbnail"}
+                         width="20%">
+                        <label for="morphology_thumbnail"><strong>${strUcFirst(m.morphology)}</strong></label>                 
+
+                        <!--<label for="select_button">Choose an agent to add:</label>-->
                         <!--<div name="select_button" class="row justify-content-md-left mt-1">-->
                         <div name="select_button" class="input-group mt-1 w-50">                          
                             <select name="models" class="form-select"></select>
@@ -42,7 +46,7 @@ export default class MorphologySelect extends Component {
                                 <button name="addAgentButton" class="btn btn-warning"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
-                    </div>`
+                    </li>`
         }).join('');
 
         agents_div.querySelectorAll('select[name="models"]').forEach((span, index) => {
@@ -69,7 +73,8 @@ export default class MorphologySelect extends Component {
                 store.dispatch('addAgent', {
                     morphology: bodyTypeMapping.get(morph.morphology),
                     name: seed_names[morph.morphology][store.state.currentSeedsIdx[morph.morphology]],
-                    path: morph.seeds[store.state.currentSeedsIdx[morph.morphology]].path});
+                    path: morph.seeds[store.state.currentSeedsIdx[morph.morphology]].path,
+                });
             });
         });
 

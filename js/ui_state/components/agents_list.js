@@ -17,7 +17,7 @@ export default class AgentsList extends Component {
     }
     render() {
         this.element.innerHTML = store.state.agents.map(agent => {
-            return `<li class="list-group-item d-flex justify-content-between align-items-center px-0 py-1">
+            return `<li name="agent-list-item" class="list-group-item d-flex justify-content-between align-items-center px-0 py-1">
                     <img src=${thumbnails_path + bodyTypeMapping.get(agent.morphology) + "_thumbnail.png"} 
                              alt=${agent.morphology + "_thumbnail"}
                              width="8%"
@@ -41,6 +41,15 @@ export default class AgentsList extends Component {
                     <button name="deleteButton" type="button" class="btn btn-danger btn-sm mx-1"><span class="fa fa-trash"></span></button>
                 </li>`;
         }).join('');
+
+        this.element.querySelectorAll('li[name="agent-list-item"]').forEach((span, index) => {
+            if(store.state.agents[index] == store.state.simulationState.agentSelected){
+                span.classList.add("active");
+            }
+            else{
+                span.classList.remove("active");
+            }
+        });
 
         this.element.querySelectorAll('button[name="deleteButton"]').forEach((span, index) => {
             span.addEventListener('click', () => {
