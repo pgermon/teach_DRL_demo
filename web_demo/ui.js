@@ -9,27 +9,9 @@ import CreepersConfig from './js/ui_state/components/creepers_config.js';
 import DrawingMode from "./js/ui_state/components/drawing_mode.js";
 import AdvancedOptions from "./js/ui_state/components/advanced_options.js";
 
-// Morphology selector setup
-/*const morphologySelectElement = document.querySelector('#morphology');
-morphologySelectElement.addEventListener('input', evt => {
-    store.dispatch('selectMorphology', morphologySelectElement.value);
-});*/
 const morphologySelectInstance = new MorphologySelect();
 morphologySelectInstance.render();
 
-// model selector setup
-/*const modelSelectElement = document.querySelector('#models');
-modelSelectElement.addEventListener('input', evt => {
-    store.dispatch('selectSeedIdx', modelSelectElement.selectedIndex);
-});
-const modelSelectInstance = new ModelSelect();
-modelSelectInstance.render();*/
-
-// Add/delete agent setup
-/*const addAgentBtn = document.querySelector("#addAgentButton");
-addAgentBtn.addEventListener('click', evt => {
-    store.dispatch('addAgent', {});
-});*/
 const agentListInstance = new AgentsList();
 agentListInstance.render();
 
@@ -121,15 +103,11 @@ const gettingStartedTab = document.querySelector('#getting-started-tab');
 gettingStartedTab.addEventListener('click', () => {
     store.dispatch('switchTab', false);
 })
-/*const agentSelectionTab = document.querySelector('#agent-selection-tab');
-agentSelectionTab.addEventListener('click', () => {
-    store.dispatch('switchTab', false);
-})*/
-const parkourGenTab = document.querySelector('#parkour-gen-tab');
+const parkourGenTab = document.querySelector('#proc-gen-tab-btn');
 parkourGenTab.addEventListener('click', () => {
     store.dispatch('switchTab', false);
 })
-const drawingModeTab = document.querySelector('#draw-config-tab');
+const drawingModeTab = document.querySelector('#draw-tab-btn');
 drawingModeTab.addEventListener('click', () => {
     store.dispatch('switchTab', true); // true for drawing mode tab, else false
 })
