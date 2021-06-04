@@ -34,10 +34,26 @@ export default {
         }
     },
     changeCreepersConfig(context, payload) {
+        if(context.state.drawingModeState.drawing){
+            drawing_canvas.clear();
+            window.terrain = {
+                ground: [],
+                ceiling: []
+            };
+            context.commit('generateTerrain', true);
+        }
         context.commit('updateCreepersConfig', payload);
         context.commit('resetSimulation', {keepPositions: true});
     },
     changeCppnCongfig(context, payload) {
+        if(context.state.drawingModeState.drawing){
+            drawing_canvas.clear();
+            window.terrain = {
+                ground: [],
+                ceiling: []
+            };
+            context.commit('generateTerrain', true);
+        }
         context.commit('updateCppnConfig', payload);
         if(['dim1', 'dim2', 'dim3'].indexOf(payload.name) != -1){
             window.ground = [];
