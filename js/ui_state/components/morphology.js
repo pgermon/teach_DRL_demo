@@ -22,24 +22,19 @@ export default class MorphologySelect extends Component {
     constructor() {
         super({
             store,
-            element: document.querySelector('#agent-sel-config')
+            element: document.querySelector('#agentsSelection')
         });
     }
     render() {
-        let agents_div = this.element.querySelector('#agentsSelection');
 
-        agents_div.innerHTML = store.state.morphologies.map(m => {
-            //return `<div class="col col-4">
-            //return `<div class="row justify-content-between">
-            return `<li class="list-group-item d-flex justify-content-between align-items-center px-2 py-1">
+        this.element.innerHTML = store.state.morphologies.map(m => {
+            return `<li name="morph-list-item" class="list-group-item d-flex justify-content-between align-items-center px-2 py-1">
                         
                         <img name="morphology_thumbnail" src=${thumbnails_path + m.morphology + "_thumbnail.png"} 
                          alt=${m.morphology + "_thumbnail"}
                          width="20%">
                         <label for="morphology_thumbnail"><strong>${strUcFirst(m.morphology)}</strong></label>                 
 
-                        <!--<label for="select_button">Choose an agent to add:</label>-->
-                        <!--<div name="select_button" class="row justify-content-md-left mt-1">-->
                         <div name="select_button" class="input-group mt-1 w-50">                          
                             <select name="models" class="form-select"></select>
                             <div class="input-group-append">
@@ -49,7 +44,13 @@ export default class MorphologySelect extends Component {
                     </li>`
         }).join('');
 
-        agents_div.querySelectorAll('select[name="models"]').forEach((span, index) => {
+        this.element.querySelectorAll('li[name="morph-list-item"]').forEach((span, index) => {
+            if (store.state.drawingModeState.drawing) {
+                span.classList.add('disabled');
+            }
+        });
+
+        this.element.querySelectorAll('select[name="models"]').forEach((span, index) => {
             span.innerHTML = store.state.morphologies
                 .filter(m => m.morphology == store.state.morphologies[index].morphology)
                 .flatMap(morphology => morphology.seeds)
@@ -67,7 +68,7 @@ export default class MorphologySelect extends Component {
             span.selectedIndex = store.state.currentSeedsIdx[store.state.morphologies[index].morphology];
         });
 
-        agents_div.querySelectorAll('button[name="addAgentButton"]').forEach((span, index) => {
+        this.element.querySelectorAll('button[name="addAgentButton"]').forEach((span, index) => {
             span.addEventListener('click', () => {
                 let morph = store.state.morphologies[index];
                 store.dispatch('addAgent', {
@@ -77,9 +78,5 @@ export default class MorphologySelect extends Component {
                 });
             });
         });
-
-        /*let morphologySelector = this.element.querySelector('#morphology');
-        morphologySelector.innerHTML = store.state.morphologies.map(m => `<option>${m.morphology}</option>`).join('');
-        morphologySelector.value = store.state.currentMorphology;*/
     }
 };

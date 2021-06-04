@@ -49,12 +49,18 @@ export default class AgentsList extends Component {
         }).join('');
 
         this.element.querySelectorAll('li[name="agent-list-item"]').forEach((span, index) => {
-            if(store.state.agents[index] == store.state.simulationState.agentSelected){
-                span.classList.add("active");
+            if(store.state.drawingModeState.drawing){
+                span.classList.add('disabled');
             }
             else{
-                span.classList.remove("active");
+                if(store.state.agents[index] == store.state.simulationState.agentSelected){
+                    span.classList.add("active");
+                }
+                else{
+                    span.classList.remove("active");
+                }
             }
+
         });
 
         this.element.querySelectorAll('button[name="deleteButton"]').forEach((span, index) => {

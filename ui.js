@@ -98,23 +98,32 @@ creepersTypeSelect.addEventListener('input', () => {
 const creepersConfigInstance = new CreepersConfig();
 creepersConfigInstance.render()
 
-// Tabs setup
-const gettingStartedTab = document.querySelector('#getting-started-tab');
-gettingStartedTab.addEventListener('click', () => {
-    store.dispatch('switchTab', false);
+// Tabs buttons setup
+const gettingStartedBtn = document.querySelector('#getting-started-tab');
+gettingStartedBtn.addEventListener('click', () => {
+    store.dispatch('switchTab', 'getting_started');
 })
-const parkourGenTab = document.querySelector('#proc-gen-tab-btn');
-parkourGenTab.addEventListener('click', () => {
-    store.dispatch('switchTab', false);
-})
-const drawingModeTab = document.querySelector('#draw-tab-btn');
-drawingModeTab.addEventListener('click', () => {
-    store.dispatch('switchTab', true); // true for drawing mode tab, else false
-})
-const advancedOptionsTab = document.querySelector('#advanced-options-tab');
-advancedOptionsTab.addEventListener('click', () => {
-    store.dispatch('switchTab', false);
-})
+const parkourCustomTab = document.querySelector('#parkour-custom-btn');
+parkourCustomTab.addEventListener('click', () => {
+    if(store.state.activeTab.main != 'parkour_custom'){
+        let drawTabBtn = document.querySelector('#draw-tab-btn');
+        let drawYourselfTab = new bootstrap.Tab(drawTabBtn);
+        drawYourselfTab.show();
+    }
+    store.dispatch('switchTab', 'parkour_custom'); // true for "Parkour Customization" and "Draw Yourself!" tab, else false
+});
+const drawYourselfBtn = document.querySelector('#draw-tab-btn');
+drawYourselfBtn.addEventListener('click', () => {
+    store.dispatch('switchTab', 'draw_yourself');
+});
+const procGenBtn = document.querySelector('#proc-gen-tab-btn');
+procGenBtn.addEventListener('click', () => {
+    store.dispatch('switchTab', 'proc_gen');
+});
+const advancedOptionsBtn = document.querySelector('#advanced-options-tab');
+advancedOptionsBtn.addEventListener('click', () => {
+    store.dispatch('switchTab', 'advanced_options');
+});
 
 // Drawing Mode setup
 const drawGroundButton = document.querySelector('#drawGroundButton');
@@ -135,7 +144,7 @@ clearButton.addEventListener('click', () => {
 });
 const generateTerrainButton = document.querySelector('#generateTerrainButton');
 generateTerrainButton.addEventListener('click', () => {
-    store.dispatch('generateTerrain', !store.state.drawingModeState.drawing);
+    store.dispatch('generateTerrain', store.state.drawingModeState.drawing);
 });
 const drawingModeInstance = new DrawingMode();
 drawingModeInstance.render();

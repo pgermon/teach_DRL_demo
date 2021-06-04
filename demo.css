@@ -3,12 +3,6 @@
     margin-right: 30px;
 }
 
-hr{
-    height: 3px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
 #creepers{
     position: relative;
     bottom: 25px;
@@ -40,8 +34,25 @@ btn-asset:hover{
     overflow: scroll;
 }
 
+.list-group-item{
+    border-color: white;
+}
+
 .list-group-item.active{
     background-color: #FFC700;
     border-color: #FFC700;
 }
+
+.list-group-item.disabled{
+    background-color: lightgrey;
+    border-color: lightgrey;
+}
+
+
+
+hr.solid {
+    border-top: 2px solid #999;
+}
+
+
 
