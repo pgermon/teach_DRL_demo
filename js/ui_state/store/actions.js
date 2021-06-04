@@ -35,23 +35,18 @@ export default {
     },
     changeCreepersConfig(context, payload) {
         if(context.state.drawingModeState.drawing){
-            drawing_canvas.clear();
-            window.terrain = {
-                ground: [],
-                ceiling: []
-            };
             context.commit('generateTerrain', true);
         }
         context.commit('updateCreepersConfig', payload);
         context.commit('resetSimulation', {keepPositions: true});
     },
     changeCppnCongfig(context, payload) {
+        drawing_canvas.clear();
+        window.terrain = {
+            ground: [],
+            ceiling: []
+        };
         if(context.state.drawingModeState.drawing){
-            drawing_canvas.clear();
-            window.terrain = {
-                ground: [],
-                ceiling: []
-            };
             context.commit('generateTerrain', true);
         }
         context.commit('updateCppnConfig', payload);
