@@ -65,7 +65,7 @@ export default class AgentsList extends Component {
 
         this.element.querySelectorAll('button[name="deleteButton"]').forEach((span, index) => {
             span.addEventListener('click', () => {
-                store.dispatch('deleteAgent', { index });
+                store.dispatch('deleteAgent', {index: index});
             });
         });
 
