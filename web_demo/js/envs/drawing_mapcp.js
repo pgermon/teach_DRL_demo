@@ -511,15 +511,6 @@ class DrawingMAPCP {
         }
     }
 
-    clip_ceiling_values(row, clip_offset){
-        if(row["ceiling"] >= row["ground"] + clip_offset){
-            return row["ceiling"];
-        }
-        else{
-            return row["ground"] + clip_offset;
-        }
-    }
-
     _generate_terrain(ground = [], ceiling = []){
 
         this.terrain_ground = [];
@@ -606,6 +597,9 @@ class DrawingMAPCP {
         window.ground.splice(0, this.TERRAIN_STARTPAD);
         window.ceiling = [...this.terrain_ceiling];
         window.ceiling.splice(0, this.TERRAIN_STARTPAD);
+
+        //console.log(window.ground);
+        //console.log(window.ceiling);
 
         // Draw terrain
         this.terrain_bodies = [];
@@ -919,37 +913,30 @@ class DrawingMAPCP {
             }
         }
         else{
-            /*this.scroll = [
-                this.scroll[0] + h,
-                this.scroll[1] + v
-            ];*/
             this.scroll = [h, v];
         }
 
         this.scroll = [
             Math.max(- 0.05 * RENDERING_VIEWER_W, Math.min(this.scroll[0], terrain_length * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9)),
-            Math.max(-SCROLL_MAX, Math.min(this.scroll[1], SCROLL_MAX))
+            Math.max(-SCROLL_MAX * this.zoom, Math.min(this.scroll[1], SCROLL_MAX * this.zoom))
         ];
 
-        window.scroll = this.scroll;
-    }
-
-    drag_scroll(h, v){
-        this.scroll = [
-            this.scroll[0] + h,
-            this.scroll[1] + v
-        ];
         window.scroll = this.scroll;
     }
 
     set_zoom(zoom){
-        this.zoom = Math.max(0.2, Math.min(parseFloat(zoom), 1.5));
+        this.zoom = Math.max(0.1, Math.min(parseFloat(zoom), 1.5));
         window.zoom = this.zoom;
     }
 
-    add_agent(morphology, policy){
-        this.create_agent(morphology, policy, null);
-        this._generate_agent(this.agents[this.agents.length - 1]);
+    add_agent(morphology, policy, pos){
+        this.create_agent(morphology, policy, pos);
+        if(pos != null){
+            this._generate_agent(this.agents[this.agents.length - 1], pos.x, pos.y);
+        }
+        else{
+            this._generate_agent(this.agents[this.agents.length - 1]);
+        }
         this.init_agent(this.agents[this.agents.length - 1]);
         let step_rets = this.step();
         window.game.obs.push([...step_rets.map(e => e[0])]);

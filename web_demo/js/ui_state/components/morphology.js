@@ -75,6 +75,7 @@ export default class MorphologySelect extends Component {
                     morphology: bodyTypeMapping.get(morph.morphology),
                     name: seed_names[morph.morphology][store.state.currentSeedsIdx[morph.morphology]],
                     path: morph.seeds[store.state.currentSeedsIdx[morph.morphology]].path,
+                    init_pos: null
                 });
             });
         });

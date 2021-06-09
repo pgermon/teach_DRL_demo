@@ -1,6 +1,8 @@
 const bodyTypeMapping = new Map();
 bodyTypeMapping.set("bipedal", "classic_bipedal");
+bodyTypeMapping.set("classic_bipedal", "classic_bipedal");
 bodyTypeMapping.set("chimpanzee", "climbing_profile_chimpanzee");
+bodyTypeMapping.set("climbing_profile_chimpanzee", "climbing_profile_chimpanzee");
 bodyTypeMapping.set("fish", "fish");
 
 const seed_names = {
@@ -10,6 +12,43 @@ const seed_names = {
 };
 
 export default {
+    addEnv(context, payload){
+        context.commit('addEnv', payload);
+    },
+    deleteEnv(context, payload){
+        context.commit('deleteEnv', payload);
+    },
+    loadEnv(context, payload){
+        drawing_canvas.clear();
+        window.terrain = {
+            ground: [],
+            ceiling: []
+        };
+        window.ground = [...payload.terrain.ground];
+        window.ceiling = [...payload.terrain.ceiling];
+
+        // Update the values of the terrain sliders
+        for(let param in payload.terrain.parkourConfig){
+            context.commit('updateCppnConfig', {name: param, value: payload.terrain.parkourConfig[param]});
+        }
+        for(let param in payload.terrain.creepersConfig){
+            context.commit('updateCreepersConfig', {name: param, value: payload.terrain.creepersConfig[param]});
+        }
+
+        // Replace previous agents by the ones of the env
+        while (context.state.agents.length > 0){
+            context.commit('deleteAgent', {index: 0});
+        }
+        for(let agent of payload.agents){
+            context.commit('addAgent', {
+                morphology: bodyTypeMapping.get(agent.morphology),
+                name: agent.name,
+                path: agent.path,
+                init_pos: agent.init_pos
+            });
+        }
+        context.commit('resetSimulation', {keepPositions: false});
+    },
     markCppnInitialized(context, payload) {
         context.commit('markCppnInitialized', payload);
     },
@@ -29,6 +68,7 @@ export default {
                 morphology: bodyTypeMapping.get(morphology),
                 name: name,
                 path: path,
+                init_pos: null,
             });
 
         }
@@ -109,10 +149,12 @@ export default {
             context.commit('pauseSimulation', {});
         }
         context.commit('addAgent', payload);
-
     },
     deleteAgent(context, payload) {
         context.commit('deleteAgent', payload);
+    },
+    setAgentInitPos(context, payload){
+        context.commit('setAgentInitPos', payload);
     },
     selectAgent(context, payload){
         context.commit('selectAgent', payload);

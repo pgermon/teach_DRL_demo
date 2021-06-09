@@ -396,7 +396,12 @@ function mouseWheel(event){
 
 function keyPressed(){
     if(keyCode == DELETE){
-        if(window.asset_selected != null){
+        if(window.agent_selected != null){
+            window.delete_agent(agent_selected);
+            window.agent_selected(null);
+            return false;
+        }
+        else if(window.asset_selected != null){
             window.game.env.delete_asset(window.asset_selected);
             window.asset_selected = null;
             window.game.env.render();
