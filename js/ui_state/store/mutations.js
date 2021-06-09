@@ -1,4 +1,17 @@
 export default {
+    addEnv(state, payload){
+        if(payload.set == 'base'){
+            state.baseEnvsSet.push(payload.env);
+        }
+        else if(payload.set == 'custom'){
+            state.customEnvsSet.push(payload.env);
+        }
+      return state;
+    },
+    deleteEnv(state, payload){
+        state.customEnvsSet.splice(payload, 1);
+        return state;
+    },
     markCppnInitialized(state, payload) {
         state.cppnInitialized = true;
         return state;
@@ -35,10 +48,10 @@ export default {
             case 'dim3':
                 state.parkourConfig.dim3 = payload.value;
                 break;
-            case 'smoothingSlider':
+            case 'smoothing':
                 state.parkourConfig.smoothing = payload.value;
                 break;
-            case 'waterSlider':
+            case 'waterLevel':
                 state.parkourConfig.waterLevel = payload.value;
                 break;
         }
@@ -65,9 +78,9 @@ export default {
         });
         let positions;
         if (payload.keepPositions) {
-            positions = [...window.game.env.agents.map(agent => agent.agent_body.reference_head_object.GetPosition())];
+            positions = [...state.agents.map((agent, index) => window.game.env.agents[index].agent_body.reference_head_object.GetPosition())];
         } else {
-            positions = [...window.game.env.agents.map(agent => agent.init_pos)];
+            positions = [...state.agents.map((agent, index) => window.game.env.agents[index].init_pos)];
         }
 
         const parkourConfig = state.parkourConfig;
@@ -102,7 +115,7 @@ export default {
     },
     addAgent(state, payload) {
         state.agents.push(payload);
-        window.game.env.add_agent(payload.morphology, { name: payload.name, path: payload.path });
+        window.game.env.add_agent(payload.morphology, { name: payload.name, path: payload.path}, payload.init_pos);
         window.game.env.render();
         return state;
     },
@@ -110,6 +123,11 @@ export default {
         state.agents.splice(payload.index, 1);
         window.game.env.delete_agent(payload.index);
         window.game.env.render();
+        return state;
+    },
+    setAgentInitPos(state, payload){
+        window.game.env.agents[payload.index].init_pos = payload.init_pos;
+        state.agents[payload.index].init_pos = payload.init_pos;
         return state;
     },
     selectAgent(state, payload) {

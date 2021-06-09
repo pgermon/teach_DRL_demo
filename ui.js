@@ -1,19 +1,24 @@
 import store from './js/ui_state/store/index.js';
 import MorphologySelect from './js/ui_state/components/morphology.js';
-import ModelSelect from './js/ui_state/components/model_select.js';
 import AgentsList from './js/ui_state/components/agents_list.js';
 import RunButtons from './js/ui_state/components/run_buttons.js';
-import DrawSwitches from './js/ui_state/components/advanced_options.js';
 import TerrainConfig from './js/ui_state/components/terrain_config.js';
 import CreepersConfig from './js/ui_state/components/creepers_config.js';
 import DrawingMode from "./js/ui_state/components/drawing_mode.js";
 import AdvancedOptions from "./js/ui_state/components/advanced_options.js";
+import EnvsSet from "./js/ui_state/components/envs_set.js";
 
+// Morphology list setup
 const morphologySelectInstance = new MorphologySelect();
 morphologySelectInstance.render();
 
+// Agents list setup
 const agentListInstance = new AgentsList();
 agentListInstance.render();
+
+// Environments set setup
+const envsSetInstance = new EnvsSet();
+envsSetInstance.render();
 
 // Run/Reset buttons setup
 const runButton = document.querySelector("#runButton");
@@ -26,6 +31,31 @@ resetButton.addEventListener('click', () => {
 });
 const runButtonsInstance = new RunButtons();
 runButtonsInstance.render();
+
+const saveEnvButton = document.querySelector('#saveEnvButton');
+saveEnvButton.addEventListener('click', () => {
+
+    // Save the current pos of the agents
+    for(let i = 0; i < store.state.agents.length; i++){
+        store.dispatch('setAgentInitPos', {index: i, init_pos: window.game.env.agents[i].agent_body.reference_head_object.GetPosition().Clone()});
+    }
+
+    let env = {
+        terrain: {
+            ground: [...window.ground],
+            ceiling: [...window.ceiling],
+            parkourConfig: Object.assign({}, store.state.parkourConfig),
+            creepersConfig: Object.assign({}, store.state.creepersConfig)
+        },
+        agents: [...store.state.agents],
+        description: {
+            name: 'Custom Parkour ' + store.state.customEnvsSet.length,
+            text: 'My custom parkour.'
+        },
+        image: 'images/envs_thumbnails/flat_parkour_bipedal.png'
+    };
+    store.dispatch('addEnv',{set: 'custom', env: env});
+});
 
 // Terrain sliders setup
 const dim1SliderElement = document.querySelector("#dim1Slider")
@@ -52,14 +82,14 @@ dim3SliderElement.addEventListener('input', () => {
 const smoothingSliderElement = document.querySelector("#smoothingSlider")
 smoothingSliderElement.addEventListener('input', () => {
     store.dispatch('changeCppnCongfig', {
-        name: "smoothingSlider",
+        name: "smoothing",
         value: parseFloat(smoothingSliderElement.value)
     });
 });
 const waterSliderElement = document.querySelector("#waterSlider")
 waterSliderElement.addEventListener('input', () => {
     store.dispatch('changeCppnCongfig', {
-        name: "waterSlider",
+        name: "waterLevel",
         value: parseFloat(waterSliderElement.value)
     });
 });
@@ -168,6 +198,12 @@ const circleAssetButton = document.querySelector('#circleAssetButton');
 circleAssetButton.addEventListener('click', () => {
     store.dispatch('drawAsset', {name: 'circle', value: !store.state.advancedOptionsState.assets.circle});
 });
+
+/*const loadEnvButton = document.querySelector('#loadEnvButton');
+loadEnvButton.addEventListener('click', () => {
+    let file = document.querySelector('#loadEnvFile').files[0]
+    store.dispatch('loadEnv', {});
+});*/
 const advancedOptionsInstance = new AdvancedOptions();
 advancedOptionsInstance.render();
 
@@ -193,6 +229,115 @@ fetch('./policies.json')
     .then(done => {
         store.dispatch('addDefaultAgent', {});
     });
+
+// fetch environments set
+let env0 = {
+    terrain: {
+        ground: [
+            {x: INITIAL_TERRAIN_STARTPAD * TERRAIN_STEP, y: TERRAIN_HEIGHT},
+            {x: (INITIAL_TERRAIN_STARTPAD + TERRAIN_LENGTH) * TERRAIN_STEP, y: TERRAIN_HEIGHT}
+            ],
+        ceiling: [
+            {x: INITIAL_TERRAIN_STARTPAD * TERRAIN_STEP, y: TERRAIN_HEIGHT + 200 / 10},
+            {x: (INITIAL_TERRAIN_STARTPAD + TERRAIN_LENGTH) * TERRAIN_STEP, y: TERRAIN_HEIGHT + 200 / 10}
+            ],
+        parkourConfig: {
+            dim1: 0,
+            dim2: 0,
+            dim3: 0,
+            smoothing: 10,
+            waterLevel: 0,
+        },
+        creepersConfig: {
+            width: 0.2,
+            height: 0.2,
+            spacing: 5,
+            type: 'Rigid'
+        }
+    },
+    agents: [
+        {
+            morphology: 'bipedal',
+            name: 'Joe',
+            path: 'policy_models/walker/bipedal/16-02_old_walker_parkour_student_sac_v0.1.1_teacher_ALP-GMM_s1',
+            init_pos: null,
+        }
+    ],
+    description: {
+        name: 'Flat parkour + bipedal',
+        text: 'This parkour is completely flat, perfect for bipedal walkers.'
+    },
+    image: "images/envs_thumbnails/flat_parkour_bipedal.png"
+};
+
+let env1 = {
+    terrain: {
+        ground: [],
+        ceiling: [],
+        parkourConfig: {
+            dim1: 1,
+            dim2: 0.95,
+            dim3: 0,
+            smoothing: 25,
+            waterLevel: 0,
+        },
+        creepersConfig: {
+            width: 0.3,
+            height: 2.5,
+            spacing: 1,
+            type: 'Swingable'
+        }
+    },
+    agents: [
+        {
+            morphology: 'chimpanzee',
+            name: 'Tarzan',
+            path: 'policy_models/climber/chimpanzee/25-01_test_easy_climbing_parkour_CPPN_input_space_small_max_water_level_0.2_walker_type_climbing_profile_chimpanzee_teacher_Random_s11',
+            init_pos: null,
+        }
+    ],
+    description: {
+        name: 'Easy parkour + chimpanzee',
+        text: 'This parkour features creepers hanging from the ceiling and allowing a chimpanzee to swing from one to another.'
+    },
+    image: "images/envs_thumbnails/easy_parkour_chimpanzee.png"
+};
+
+let env2 = {
+    terrain: {
+        ground: [],
+        ceiling: [],
+        parkourConfig: {
+            dim1: 0,
+            dim2: -1,
+            dim3: 0,
+            smoothing: 10,
+            waterLevel: 1
+        },
+        creepersConfig: {
+            width: 0.2,
+            height: 0.2,
+            spacing: 5,
+            type: 'Swingable'
+        }
+    },
+    agents: [
+        {
+            morphology: 'fish',
+            name: 'Nemo',
+            path: 'policy_models/swimmer/fish/04-01_benchmark_parkour_RIAC_walker_type_fish_s12',
+            init_pos: null,
+        }
+    ],
+    description: {
+        name: 'Water parkour + fish',
+        text: 'This parkour is totally underwater, allowing fish to evolve in it.'
+    },
+    image: "images/envs_thumbnails/water_parkour_fish.png"
+};
+store.dispatch('addEnv', {set: 'base', env: env0});
+store.dispatch('addEnv', {set: 'base', env: env1});
+store.dispatch('addEnv', {set: 'base', env: env2});
 
 // interaction with index.js
 window.cancelAgentFollow = () => {
@@ -234,4 +379,18 @@ window.clickOutsideCanvas = () => {
 window.set_agent_selected = (index) => {
     let payload = {value: index != null, index: index}
     store.dispatch('selectAgent', payload);
+}
+
+window.delete_agent = (agent) => {
+    store.dispatch('deleteAgent', {index: window.game.env.agents.indexOf(agent)});
+}
+
+window.downloadObjectAsJson = (exportObj, exportName) => {
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    let downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
 }

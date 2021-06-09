@@ -1,4 +1,6 @@
 export default {
+    baseEnvsSet: [],
+    customEnvsSet: [],
     morphologies: [],
     currentSeedsIdx: {},
     agents: [],

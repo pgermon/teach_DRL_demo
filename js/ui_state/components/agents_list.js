@@ -33,7 +33,7 @@ export default class AgentsList extends Component {
                     <div name="positionButtonsGroup" class="btn-group" role="group">
                         <button name="savePositionButton" type="button" class="btn btn-primary btn-sm" 
                         data-toggle="tooltip" data-placement="top" title="Save the agent's position">
-                            <i class="far fa-save"></i>
+                            <i class="far fa-save fa-lg"></i>
                         </button>
                         <button name="resetPositionButton" type="button" class="btn btn-primary btn-sm"
                         data-toggle="tooltip" data-placement="top" title="Reset the agent's position">
@@ -65,14 +65,14 @@ export default class AgentsList extends Component {
 
         this.element.querySelectorAll('button[name="deleteButton"]').forEach((span, index) => {
             span.addEventListener('click', () => {
-                store.dispatch('deleteAgent', { index });
+                store.dispatch('deleteAgent', {index: index});
             });
         });
 
         this.element.querySelectorAll('button[name="savePositionButton"]').forEach((span, index) => {
             span.addEventListener('click', () => {
-                let agent = window.game.env.agents[index];
-                agent.init_pos = agent.agent_body.reference_head_object.GetPosition().Clone();
+                let pos = window.game.env.agents[index].agent_body.reference_head_object.GetPosition().Clone();
+                store.dispatch('setAgentInitPos', {index: index, init_pos: pos})
             });
         });
 
