@@ -8,6 +8,63 @@ import DrawingMode from "./js/ui_state/components/drawing_mode.js";
 import AdvancedOptions from "./js/ui_state/components/advanced_options.js";
 import EnvsSet from "./js/ui_state/components/envs_set.js";
 
+// Save env modal setup
+window.openModal = (modal) => {
+    modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
+    modal.style.display = "block";
+    modal.classList.add('show');
+}
+
+window.closeModal = (modal) => {
+    modal.classList.remove('show');
+    modal.style.display = 'none';
+    modal.querySelectorAll('.text-field').forEach((span, index) => {
+       span.value = "";
+    });
+
+}
+
+const saveEnvModal = document.querySelector('#saveEnvModal');
+const saveEnvButton = document.querySelector('#saveEnvButton');
+saveEnvButton.addEventListener('click', () => {
+    openModal(saveEnvModal);
+});
+saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
+    span.addEventListener('click', () => {
+
+        if(span.getAttribute('id') == "save-confirm-btn"){
+            let name = saveEnvModal.querySelector('#env-name').value;
+            if(name == ""){
+                name = "Custom Environment " + store.state.customEnvsSet.length;
+            }
+            let description = saveEnvModal.querySelector('#env-description').value;
+
+            // Save the current pos of the agents
+            for(let i = 0; i < store.state.agents.length; i++){
+                store.dispatch('setAgentInitPos', {index: i, init_pos: window.game.env.agents[i].agent_body.reference_head_object.GetPosition().Clone()});
+            }
+
+            let env = {
+                terrain: {
+                    ground: [...window.ground],
+                    ceiling: [...window.ceiling],
+                    parkourConfig: Object.assign({}, store.state.parkourConfig),
+                    creepersConfig: Object.assign({}, store.state.creepersConfig)
+                },
+                agents: [...store.state.agents],
+                description: {
+                    name: name,
+                    text: description
+                },
+                image: 'images/envs_thumbnails/flat_parkour_bipedal.png'
+            };
+            store.dispatch('addEnv',{set: 'custom', env: env});
+        }
+
+        closeModal(saveEnvModal);
+    });
+});
+
 // Morphology list setup
 const morphologySelectInstance = new MorphologySelect();
 morphologySelectInstance.render();
@@ -31,31 +88,6 @@ resetButton.addEventListener('click', () => {
 });
 const runButtonsInstance = new RunButtons();
 runButtonsInstance.render();
-
-const saveEnvButton = document.querySelector('#saveEnvButton');
-saveEnvButton.addEventListener('click', () => {
-
-    // Save the current pos of the agents
-    for(let i = 0; i < store.state.agents.length; i++){
-        store.dispatch('setAgentInitPos', {index: i, init_pos: window.game.env.agents[i].agent_body.reference_head_object.GetPosition().Clone()});
-    }
-
-    let env = {
-        terrain: {
-            ground: [...window.ground],
-            ceiling: [...window.ceiling],
-            parkourConfig: Object.assign({}, store.state.parkourConfig),
-            creepersConfig: Object.assign({}, store.state.creepersConfig)
-        },
-        agents: [...store.state.agents],
-        description: {
-            name: 'Custom Parkour ' + store.state.customEnvsSet.length,
-            text: 'My custom parkour.'
-        },
-        image: 'images/envs_thumbnails/flat_parkour_bipedal.png'
-    };
-    store.dispatch('addEnv',{set: 'custom', env: env});
-});
 
 // Terrain sliders setup
 const dim1SliderElement = document.querySelector("#dim1Slider")
@@ -245,7 +277,7 @@ let env0 = {
             dim1: 0,
             dim2: 0,
             dim3: 0,
-            smoothing: 10,
+            smoothing: 15,
             waterLevel: 0,
         },
         creepersConfig: {

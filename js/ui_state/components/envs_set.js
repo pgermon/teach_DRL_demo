@@ -37,20 +37,19 @@ export default class EnvsSet extends Component{
         let customEnvs = this.element.querySelector('#customEnvsSet');
         let uploadCard = `<div class="col mb-3">
                             <div class="card h-100">
-                                <img class="card-image-top" src="images/plus-solid.svg">                              
-                                <div class="card-footer">
+                                <!--<img class="card-image-top" src="images/plus-solid.svg">-->
+                                <div class="card-body">
+                                    <h1 class="card-title"><strong>Upload an environment</strong></h1>
                                     <div class="input-group my-3">
-                                        <div class="input-group-prepend">
-                                            <button id="uploadEnvBtn" class="btn btn-warning" type="button"><i class="fas fa-upload"></i></button>
-                                        </div>
-                                        <div class="custom-file">
-                                            <input id="uploadEnvFile" type="file" class="custom-file-input" accept=".json">
-                                        </div>
+                                        <input id="uploadEnvFile" type="file" class="custom-file-input" accept=".json">
                                     </div>
-                                    <!--<button name="uploadEnvBtn" class="btn btn-warning" type="button">Upload an environment</button>-->
+                                </div>                            
+                                <div class="card-footer">
+                                    <button id="uploadEnvBtn" class="btn btn-warning w-100" type="button"><i class="fas fa-upload"></i></button>      
                                 </div>
                             </div>
                         </div>`;
+
         let envCards = store.state.customEnvsSet.map((e, index) => {
             return `<div class="col mb-3" name="env-set-item">
                         <div class="card bg-light h-100">
@@ -71,6 +70,19 @@ export default class EnvsSet extends Component{
         }).join('');
 
         customEnvs.innerHTML = [uploadCard, envCards].join('');
+        //customEnvs.innerHTML = envCards;
+
+        customEnvs.querySelector('#uploadEnvBtn').addEventListener('click', () => {
+            let reader = new FileReader();
+            reader.addEventListener('load', () => {
+                let env = JSON.parse(reader.result);
+                store.dispatch('addEnv',{set: 'custom', env: env});
+            });
+            let file = customEnvs.querySelector('#uploadEnvFile').files[0];
+            if(file != null){
+                reader.readAsText(file);
+            }
+        });
 
         customEnvs.querySelectorAll('button[name="selectEnvBtn"]').forEach((span, index) => {
             span.addEventListener('click', () => {
