@@ -56,6 +56,7 @@
     <h1 class="title has-text-centered">Deep Reinforcement Learning Interactive Demo</h1>
 
     <div class="container-fluid">
+
         <div class="row justify-content-md-left g-2 mt-1">
             <div class="col col-9">
         <!--<div class="row justify-content-md-center">
@@ -78,13 +79,41 @@
                 </div>
 
                 <div class="col col-md-auto">
-                    <button id="saveEnvButton" class="btn btn-primary mx-3" data-toggle="tooltip" data-placement="top" title="Save the current environment">
+                    <button id="saveEnvButton" class="btn btn-primary mx-3" data-toggle="modal" data-target="#saveEnvModal">
                         <i class="far fa-save fa-lg"></i>
                     </button>
                 </div>
             </div>
         </div>
 
+        <div class="modal fade" id="saveEnvModal" tabindex="-1" role="dialog" aria-labelledby="saveEnvModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title" id="save-modal-title">Please enter a name and a description for the current environment</h1>
+                        <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="env-name" class="col-form-label">Name:</label>
+                                <input type="text" class="form-control text-field" id="env-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="env-description" class="col-form-label">Description:</label>
+                                <textarea class="form-control text-field" id="env-description"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button id="save-confirm-btn" type="button" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row justify-content-md-center g-2 mt-1">
             <div class="col col-9">
@@ -128,6 +157,15 @@
                         </div>
 
                         <hr class="solid">
+
+                        <!--<div class="input-group my-3">
+                            <div class="input-group-prepend">
+                                <button id="uploadEnvBtn" class="btn btn-warning" type="button"><i class="fas fa-upload"></i></button>
+                            </div>
+                            <div class="custom-file">
+                                <input id="uploadEnvFile" type="file" class="custom-file-input" accept=".json">
+                            </div>
+                        </div>-->
 
                         <div id="customEnvsSet" class="row row-cols-2 row-cols-md-4 my-3">
 
