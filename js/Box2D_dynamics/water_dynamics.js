@@ -1,6 +1,6 @@
 class WaterDynamics {
     constructor(gravity, drag_mod=0.25, lift_mod=0.25, push_mod=0.05,
-                max_drag=2000, max_lift=500, max_push=20){
+                max_drag=2000, max_lift=500, max_push=13){
         this.gravity = gravity;
         this.drag_mod = drag_mod;
         this.lift_mod = lift_mod;

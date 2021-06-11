@@ -283,8 +283,8 @@ let env0 = {
             {x: (INITIAL_TERRAIN_STARTPAD + TERRAIN_LENGTH) * TERRAIN_STEP, y: TERRAIN_HEIGHT}
             ],
         ceiling: [
-            {x: INITIAL_TERRAIN_STARTPAD * TERRAIN_STEP, y: TERRAIN_HEIGHT + 200 / 10},
-            {x: (INITIAL_TERRAIN_STARTPAD + TERRAIN_LENGTH) * TERRAIN_STEP, y: TERRAIN_HEIGHT + 200 / 10}
+            {x: INITIAL_TERRAIN_STARTPAD * TERRAIN_STEP, y: TERRAIN_HEIGHT + 200 / 15},
+            {x: (INITIAL_TERRAIN_STARTPAD + TERRAIN_LENGTH) * TERRAIN_STEP, y: TERRAIN_HEIGHT + 200 / 15}
             ],
         parkourConfig: {
             dim1: 0,
