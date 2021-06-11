@@ -47,7 +47,8 @@ export default {
                 init_pos: agent.init_pos
             });
         }
-        context.commit('resetSimulation', {keepPositions: false});
+        context.commit('init_default', {});
+        //context.commit('resetSimulation', {keepPositions: false});
     },
     markCppnInitialized(context, payload) {
         context.commit('markCppnInitialized', payload);
@@ -81,28 +82,26 @@ export default {
         context.commit('resetSimulation', {keepPositions: true});
     },
     changeCppnCongfig(context, payload) {
-        drawing_canvas.clear();
-        window.terrain = {
-            ground: [],
-            ceiling: []
-        };
 
+        // case one of the cppn dim is changed : align the terrain with the startpad
         if(['dim1', 'dim2', 'dim3'].indexOf(payload.name) != -1){
+
             window.ground = [];
             window.ceiling = [];
             window.align_terrain = {
                 align: true,
-                ceiling_offset: null,
-                ground_offset: null,
-                smoothing: window.game.env.TERRAIN_CPPN_SCALE
+                ceiling_offset: null, // align the ceiling with the startpad
+                ground_offset: null, // align the ground with the startpad
+                smoothing: window.game.env.TERRAIN_CPPN_SCALE // previous smoothing
             };
         }
+        // case smoothing or water_level is changed
         else{
             window.align_terrain = {
                 align: true,
-                ceiling_offset: window.align_terrain.ceiling_offset,
-                ground_offset: window.align_terrain.ground_offset,
-                smoothing: window.game.env.TERRAIN_CPPN_SCALE
+                ceiling_offset: window.align_terrain.ceiling_offset, // keep the same
+                ground_offset: window.align_terrain.ground_offset, // keep the same
+                smoothing: window.game.env.TERRAIN_CPPN_SCALE // previous smoothing
             };
         }
         context.commit('updateCppnConfig', payload);
@@ -110,6 +109,12 @@ export default {
         if(context.state.drawingModeState.drawing){
             context.commit('generateTerrain', true);
         }
+
+        drawing_canvas.clear();
+        window.terrain = {
+            ground: [],
+            ceiling: []
+        };
 
         context.commit('resetSimulation', {keepPositions: true});
     },

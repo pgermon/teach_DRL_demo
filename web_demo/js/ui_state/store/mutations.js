@@ -57,6 +57,17 @@ export default {
         }
         return state;
     },
+    init_default(state, payload){
+        state.simulationState.status = 'init';
+        window.align_terrain = {
+            align: false, // no alignment
+            ceiling_offset: window.ceiling.length > 0 ? window.game.env.ceiling_offset - window.ceiling[0].y : null,
+            ground_offset: window.ground.length > 0 ? window.ground[0].y : null, // first ground y value
+            smoothing: window.game.env.TERRAIN_CPPN_SCALE // current smoothing
+        };
+        window.init_default();
+        return state;
+    },
     startSimulation(state, payload) {
         state.simulationState.status = 'running';
         window.game.run();
@@ -87,10 +98,10 @@ export default {
         const creepersConfig = state.creepersConfig;
 
         window.align_terrain = {
-            align: true,
-            ceiling_offset: window.align_terrain.ceiling_offset,
-            ground_offset: window.align_terrain.ground_offset,
-            smoothing: window.game.env.TERRAIN_CPPN_SCALE
+            align: true, // align the terrain with the startpad
+            ceiling_offset: window.align_terrain.ceiling_offset, // keep the same
+            ground_offset: window.align_terrain.ground_offset, // keep the same
+            smoothing: window.game.env.TERRAIN_CPPN_SCALE // smoothing of the current terrain
         };
 
         window.game.reset(
@@ -246,10 +257,10 @@ export default {
             window.ceiling = [...window.terrain.ceiling];
 
             window.align_terrain = {
-                align: false,
+                align: false, // no alignment
                 ceiling_offset: window.ceiling.length > 0 ? window.game.env.ceiling_offset - window.ceiling[0].y : null,
-                ground_offset: window.ground.length > 0 ? window.ground[0].y : null,
-                smoothing: window.game.env.TERRAIN_CPPN_SCALE
+                ground_offset: window.ground.length > 0 ? window.ground[0].y : null, // first ground y value
+                smoothing: window.game.env.TERRAIN_CPPN_SCALE // current smoothing
             };
             window.init_default();
         }

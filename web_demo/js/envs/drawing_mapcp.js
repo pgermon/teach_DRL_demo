@@ -530,13 +530,16 @@ class DrawingMAPCP {
                 let ground_y_offset = 0;
                 if(this.align_terrain.align && this.align_terrain.smoothing != null){
 
+                    // apply the smoothing as the ratio: current smoothing / previous smoothing
                     ground = [...ground.map(p => {
                         return {x: p.x, y: p.y / (this.TERRAIN_CPPN_SCALE / this.align_terrain.smoothing)};
                     })];
 
+                    // align the ground with the startpad
                     if(this.align_terrain.ground_offset == null){
                         ground_y_offset = TERRAIN_HEIGHT - ground[0].y;
                     }
+                    // keep the same ground alignment (adjusted to fit the smoothing)
                     else{
                         ground_y_offset = this.align_terrain.ground_offset - ground[0].y;
                     }
@@ -550,21 +553,24 @@ class DrawingMAPCP {
             // Create ceiling terrain
             if(ceiling.length > 0) {
                 let ceiling_y_offset = 0
-                if(this.align_terrain.align){
+                if(this.align_terrain.align && this.align_terrain.smoothing != null){
 
+                    // apply the smoothing as the ratio: current smoothing / previous smoothing
                     ceiling = [...ceiling.map(p => {
                         return {x: p.x, y: p.y / (this.TERRAIN_CPPN_SCALE / this.align_terrain.smoothing)};
                     })];
 
+                    // align the ceiling with the startpad
                     if(this.align_terrain.ceiling_offset == null){
                         ceiling_y_offset = TERRAIN_HEIGHT + this.ceiling_offset - ceiling[0].y;
                     }
+                    // keep the same ceiling alignment (adjusted to fit the smoothing)
                     else{
                         ceiling_y_offset = (this.ceiling_offset - ceiling[0].y) - this.align_terrain.ceiling_offset;
                     }
                 }
                 for(let p of ceiling){
-                    this.terrain_ceiling.push({x: p.x, y: p.y + ceiling_y_offset}); //TODO: clip ceiling height according to ground?
+                    this.terrain_ceiling.push({x: p.x, y: p.y + ceiling_y_offset});
                 }
             }
         }
