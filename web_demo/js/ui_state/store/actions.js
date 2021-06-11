@@ -86,10 +86,7 @@ export default {
             ground: [],
             ceiling: []
         };
-        if(context.state.drawingModeState.drawing){
-            context.commit('generateTerrain', true);
-        }
-        context.commit('updateCppnConfig', payload);
+
         if(['dim1', 'dim2', 'dim3'].indexOf(payload.name) != -1){
             window.ground = [];
             window.ceiling = [];
@@ -108,6 +105,12 @@ export default {
                 smoothing: window.game.env.TERRAIN_CPPN_SCALE
             };
         }
+        context.commit('updateCppnConfig', payload);
+
+        if(context.state.drawingModeState.drawing){
+            context.commit('generateTerrain', true);
+        }
+
         context.commit('resetSimulation', {keepPositions: true});
     },
     toggleSwitch(context, payload) {

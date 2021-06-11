@@ -44,6 +44,13 @@ saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
                 store.dispatch('setAgentInitPos', {index: i, init_pos: window.game.env.agents[i].agent_body.reference_head_object.GetPosition().Clone()});
             }
 
+            // Adjust the zoom and scroll to capture the thumbnail
+            let current_zoom = window.zoom;
+            let current_scroll = [...window.scroll];
+            window.game.env.set_zoom(INIT_ZOOM);
+            window.game.env.set_scroll(null, -0.035 * RENDERING_VIEWER_W, 0);
+            window.game.env.render();
+
             let env = {
                 terrain: {
                     ground: [...window.ground],
@@ -56,9 +63,15 @@ saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
                     name: name,
                     text: description
                 },
-                image: 'images/envs_thumbnails/flat_parkour_bipedal.png'
+                image: window.canvas.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
+                //image: 'images/envs_thumbnails/flat_parkour_bipedal.png'
             };
             store.dispatch('addEnv',{set: 'custom', env: env});
+
+            // Set back the zoom and scroll to the previous values
+            window.game.env.set_zoom(current_zoom);
+            window.game.env.set_scroll(null, current_scroll[0], current_scroll[1]);
+            window.game.env.render();
         }
 
         closeModal(saveEnvModal);

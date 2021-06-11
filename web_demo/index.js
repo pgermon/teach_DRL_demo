@@ -14,7 +14,7 @@ function init(cppn_input_vector, water_level, creepers_width, creepers_height, c
     window.set_agent_selected(null);
     window.asset_selected = null;
     window.game.env.set_zoom(INIT_ZOOM);
-    window.game.env.set_scroll(window.agent_selected, -0.05 * RENDERING_VIEWER_W, 0);
+    window.game.env.set_scroll(window.agent_selected, -0.035 * RENDERING_VIEWER_W, 0);
     window.game.env.render();
 }
 
