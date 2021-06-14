@@ -31,7 +31,7 @@ btn-asset:hover{
 
 #agents_list_container{
     height: 400px;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 .list-group-item{

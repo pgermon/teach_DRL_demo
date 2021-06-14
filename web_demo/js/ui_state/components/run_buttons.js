@@ -12,11 +12,13 @@ export default class RunButtons extends Component {
 
         let runButton = this.element.querySelector("#runButton");
         let resetButton = this.element.querySelector("#resetButton");
+        let saveEnvButton = this.element.querySelector('#saveEnvButton');
 
         // Run and reset buttons disabled while drawing
         if(store.state.drawingModeState.drawing){
             runButton.className = "btn btn-success disabled";
             resetButton.className = "btn btn-danger disabled";
+            saveEnvButton.className = "btn btn-primary mx-3 disabled";
         }
         else{
             if (status == 'running') {
@@ -35,6 +37,7 @@ export default class RunButtons extends Component {
                 runButton.childNodes[0].classList.add("fa-play");
             }
             resetButton.className = "btn btn-danger";
+            saveEnvButton.className = "btn btn-primary mx-3";
         }
     }
 };

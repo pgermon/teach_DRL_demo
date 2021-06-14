@@ -150,6 +150,12 @@ export default {
         }
     },
     resetSimulation(context, payload) {
+        window.align_terrain = {
+            align: true, // align the terrain with the startpad
+            ceiling_offset: window.ceiling.length > 0 ? window.game.env.ceiling_offset - window.ceiling[0].y : null,
+            ground_offset: window.ground.length > 0 ? window.ground[0].y : null, // first ground y value
+            smoothing: window.game.env.TERRAIN_CPPN_SCALE // smoothing of the current terrain
+        };
         context.commit('resetSimulation', {keepPositions: false});
     },
     addAgent(context, payload) {

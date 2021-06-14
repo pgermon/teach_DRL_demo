@@ -14,7 +14,7 @@ function init(cppn_input_vector, water_level, creepers_width, creepers_height, c
     window.set_agent_selected(null);
     window.asset_selected = null;
     window.game.env.set_zoom(INIT_ZOOM);
-    window.game.env.set_scroll(window.agent_selected, -0.035 * RENDERING_VIEWER_W, 0);
+    window.game.env.set_scroll(window.agent_selected, INIT_SCROLL_X, 0);
     window.game.env.render();
 }
 
@@ -35,8 +35,9 @@ async function loadModel() {
     window.set_agent_selected(null);
     window.cppn_model = await tf.loadGraphModel('./js/CPPN/weights/same_ground_ceiling_cppn/tfjs_model/model.json');
     init_default();
-    window.markCppnInitialized();
-    window.addDefaultAgent();
+    window.loadDefaultEnv();
+    /*window.markCppnInitialized();
+    window.addDefaultAgent();*/
 }
 window.addEventListener("load", loadModel, false);
 
