@@ -4,5 +4,6 @@ node_modules
 web_demo/models
 web_demo/policy_models
 policies.json
+web_demo/base_envs_set.json
 models.csv
 .ipynb_checkpoints/
