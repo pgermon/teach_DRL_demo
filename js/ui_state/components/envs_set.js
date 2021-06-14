@@ -14,20 +14,20 @@ export default class EnvsSet extends Component{
         let baseEnvs = this.element.querySelector('#baseEnvsSet');
         baseEnvs.innerHTML = store.state.baseEnvsSet.map(e => {
             return `<div class="col" name="env-set-item">
-                        <div class="card bg-light h-100">
+                        <div class="card bg-light h-100 btn p-0" name="env-card">
                             <img name="env_thumbnail" class="card-image-top" src=${e.image} alt=${e.description.name}>
                             <div class="card-body">
                                 <h1 class="card-title"><strong>${e.description.name}</strong></h1>
                                 <p class="card-text">${e.description.text}</p>
                             </div>
-                            <div class="card-footer">
+                            <!--<div class="card-footer">
                                 <button name="selectEnvBtn" class="btn btn-outline-success mx-1" type="button"> Select </button>
-                            </div>  
+                            </div>-->
                         </div>
                     </div>`
         }).join('');
 
-        baseEnvs.querySelectorAll('button[name="selectEnvBtn"]').forEach((span, index) => {
+        baseEnvs.querySelectorAll('div[name="env-card"]').forEach((span, index) => {
             span.addEventListener('click', () => {
                 store.dispatch('loadEnv', store.state.baseEnvsSet[index]);
             })
@@ -37,9 +37,9 @@ export default class EnvsSet extends Component{
         let customEnvs = this.element.querySelector('#customEnvsSet');
         let uploadCard = `<div class="col mb-3">
                             <div class="card h-100">
-                                <!--<img class="card-image-top" src="images/plus-solid.svg">-->
                                 <div class="card-body">
                                     <h1 class="card-title"><strong>Upload an environment</strong></h1>
+                                    <p class="card-text">Choose a JSON file then click on the <span style="color: orange;"><i class="fas fa-upload"></i></span> button below to save the corresponding environment in your collection.</p>
                                     <div class="input-group my-3">
                                         <input id="uploadEnvFile" type="file" class="custom-file-input" accept=".json">
                                     </div>
@@ -52,14 +52,14 @@ export default class EnvsSet extends Component{
 
         let envCards = store.state.customEnvsSet.map((e, index) => {
             return `<div class="col mb-3" name="env-set-item">
-                        <div class="card bg-light h-100">
+                        <div class="card bg-light h-100 btn p-0" name="env-card">
                             <img name="env_thumbnail" class="card-image-top" src=${e.image} alt=${e.description.name}>
                             <div class="card-body">
                                 <h1 class="card-title"><strong>${e.description.name}</strong></h1>
                                 <p class="card-text">${e.description.text}</p>
                             </div>
                             <div class="card-footer">
-                                <button name="selectEnvBtn" class="btn btn-outline-success mx-1" type="button"> Select </button>
+                                <!--<button name="selectEnvBtn" class="btn btn-outline-success mx-1" type="button"> Select </button>-->
                                 <button name="downloadEnvBtn" class="btn btn-primary mx-1" type="button" data-toggle="tooltip" data-placement="top" title="Download the environment">
                                 <i class="fas fa-download"></i></button>
                                 <button name="deleteEnvBtn" class="btn btn-danger mx-1" type="button" data-toggle="tooltip" data-placement="top" title="Delete the environment">
@@ -84,7 +84,7 @@ export default class EnvsSet extends Component{
             }
         });
 
-        customEnvs.querySelectorAll('button[name="selectEnvBtn"]').forEach((span, index) => {
+        customEnvs.querySelectorAll('div[name="env-card"]').forEach((span, index) => {
             span.addEventListener('click', () => {
                 store.dispatch('loadEnv', store.state.customEnvsSet[index]);
             })

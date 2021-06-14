@@ -18,7 +18,8 @@ function setup() {
     let canvas_container = document.querySelector('#canvas_container');
     RENDERING_VIEWER_W = canvas_container.offsetWidth;
     window.canvas = createCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H);
-    INIT_ZOOM = RENDERING_VIEWER_W / ((TERRAIN_LENGTH + INITIAL_TERRAIN_STARTPAD) * 1.07 * TERRAIN_STEP * SCALE);
+    let coef = 1.07; // 0.99;
+    INIT_ZOOM = RENDERING_VIEWER_W / ((TERRAIN_LENGTH + INITIAL_TERRAIN_STARTPAD) * coef * TERRAIN_STEP * SCALE);
     canvas.parent("canvas_container");
     canvas.style('display', 'block');
     canvas.style('margin-left', 'auto');

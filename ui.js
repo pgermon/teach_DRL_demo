@@ -48,7 +48,7 @@ saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
             let current_zoom = window.zoom;
             let current_scroll = [...window.scroll];
             window.game.env.set_zoom(INIT_ZOOM);
-            window.game.env.set_scroll(null, -0.035 * RENDERING_VIEWER_W, 0);
+            window.game.env.set_scroll(null, INIT_SCROLL_X, 0);
             window.game.env.render();
 
             let env = {
@@ -276,7 +276,19 @@ fetch('./policies.json')
     });
 
 // fetch environments set
-let env0 = {
+fetch('./base_envs_set.json')
+    .then(resp => resp.text().then(body => {
+        return JSON.parse(body);
+    }))
+    .then(data => data['filenames'].forEach(filename => {
+        fetch('./base_envs_set/' + filename)
+            .then(resp => resp.text().then(body => {
+                let env = JSON.parse(body);
+                store.dispatch('addEnv',{set: 'base', env: env});
+            }))
+    }));
+
+/*let env0 = {
     terrain: {
         ground: [
             {x: INITIAL_TERRAIN_STARTPAD * TERRAIN_STEP, y: TERRAIN_HEIGHT},
@@ -383,6 +395,7 @@ let env2 = {
 store.dispatch('addEnv', {set: 'base', env: env0});
 store.dispatch('addEnv', {set: 'base', env: env1});
 store.dispatch('addEnv', {set: 'base', env: env2});
+*/
 
 // interaction with index.js
 window.cancelAgentFollow = () => {
@@ -407,6 +420,10 @@ window.is_erasing = () => {
 
 window.is_drawing_circle = () => {
     return store.state.advancedOptionsState.assets.circle;
+}
+
+window.loadDefaultEnv = () => {
+    store.dispatch('loadEnv', store.state.baseEnvsSet[0]);
 }
 
 window.addDefaultAgent = () => {

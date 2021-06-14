@@ -23,6 +23,8 @@ const WATER_DENSITY = 1.0;
 const CREEPER_UNIT = 1;
 const NB_FIRST_STEPS_HANG = 5;
 const SCROLL_MAX = 300;
+const INIT_SCROLL_X = -0.035 * RENDERING_VIEWER_W;
+//const INIT_SCROLL_X = 0;
 let INIT_ZOOM = 0.27;
 
 //endregion
@@ -922,16 +924,24 @@ class DrawingMAPCP {
             this.scroll = [h, v];
         }
 
-        this.scroll = [
-            Math.max(- 0.05 * RENDERING_VIEWER_W, Math.min(this.scroll[0], terrain_length * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9)),
-            Math.max(-SCROLL_MAX * this.zoom, Math.min(this.scroll[1], SCROLL_MAX * this.zoom))
-        ];
+        if(window.is_drawing()){
+            this.scroll = [
+                Math.max(- 0.05 * RENDERING_VIEWER_W, Math.min(this.scroll[0], terrain_length * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9)),
+                Math.max(-SCROLL_MAX, Math.min(this.scroll[1], SCROLL_MAX))
+            ];
+        }
+        else {
+            this.scroll = [
+                Math.max(-0.05 * RENDERING_VIEWER_W, Math.min(this.scroll[0], terrain_length * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9)),
+                this.scroll[1]
+            ];
+        }
 
         window.scroll = this.scroll;
     }
 
     set_zoom(zoom){
-        this.zoom = Math.max(0.1, Math.min(parseFloat(zoom), 1.5));
+        this.zoom = Math.max(0.2, Math.min(parseFloat(zoom), 1.5));
         window.zoom = this.zoom;
     }
 

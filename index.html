@@ -53,11 +53,11 @@
 
 <body>
 
-    <h1 class="title has-text-centered">Deep Reinforcement Learning Interactive Demo</h1>
+    <h1 class="title has-text-centered my-1">Deep Reinforcement Learning Interactive Demo</h1>
 
     <div class="container-fluid">
 
-        <div class="row justify-content-md-left g-2 mt-1">
+        <div class="row justify-content-md-left g-2">
             <div class="col col-9">
         <!--<div class="row justify-content-md-center">
             <div class="col col-md-auto">-->
@@ -69,8 +69,8 @@
             </div>
         </div>
 
-        <div class="row justify-content-md-center g-2 mt-1">
-            <div id="runButtons" class="row justify-content-md-left g-2 mt-1 w-50">
+        <div class="row justify-content-md-center">
+            <div id="runButtons" class="row justify-content-md-left g-2 w-50">
                 <div class="col col-md-auto">
                     <button id="runButton" class="btn btn-success"><i class="fas fa-play"></i></button>
                 </div>
@@ -90,12 +90,13 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title" id="save-modal-title">Please enter a name and a description for the current environment</h1>
+                        <h1 class="modal-title" id="save-modal-title"><strong>Please enter a name and a description for the current environment</strong>.</h1>
                         <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
                     <div class="modal-body">
+                        <p class="modal-text">This environment will be saved in your collection of custom environments so that you could reload it later or download it to share it.</p>
                         <form>
                             <div class="form-group">
                                 <label for="env-name" class="col-form-label">Name:</label>
@@ -122,17 +123,19 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="getting-started-tab" data-bs-toggle="tab"
                             data-bs-target="#getting-started" type="button" role="tab" aria-controls="getting-started"
-                            aria-selected="true">Getting Started</button>
+                            aria-selected="true"><strong>Getting Started</strong></button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="parkour-custom-btn" data-bs-toggle="tab"
                                 data-bs-target="#parkour-custom-tab" type="button" role="tab" aria-controls="parkour-custom-tab">
-                                Parkour Customization
+                                <strong>Parkour Customization</strong>
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="advanced-options-tab" data-bs-toggle="tab" data-bs-target="#advanced-opt-config"
-                                type="button" role="tab" aria-controls="advanced-opt-config" aria-selected="false">Advanced Options</button>
+                                type="button" role="tab" aria-controls="advanced-opt-config" aria-selected="false">
+                            <strong>Advanced Options</strong>
+                        </button>
                     </li>
                 </ul>
 
@@ -140,34 +143,19 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="getting-started" role="tabpanel" aria-labelledby="getting-started-tab">
                         <p>Welcome to the Deep Reinforcement Learning demo!</p>
-                        <br>
                         <p>Here you can play with a simulation where pre-trained agents are trying to navigate through a
                             generated environment.</p>
-                        <p>To get started, click the green button above to start the agent. If you want to customise the simulation, go through the different tabs above.</p>
-                        <br>
-                        <p>Enjoy!</p>
-
-                        <hr class="solid">
-
-                        <p class="has-text-centered">
-                            To begin you can select one of the following environments:
-                        </p>
+                        <p>To begin you can select one of the following environments to load it into the simulation and then you can click on the <span style="color: green">
+                            <i class="fas fa-play"></i></span> button to run the simulation. </p>
                         <div id="baseEnvsSet" class="row row-cols-1 row-cols-md-4 my-3">
 
                         </div>
 
                         <hr class="solid">
+                        <p>In this section you can store your own custom environments by saving them thanks to the <span style="color: blue"><i
+                                class="far fa-save fa-lg"></i></span> button above or by uploading them from a JSON file.</p>
 
-                        <!--<div class="input-group my-3">
-                            <div class="input-group-prepend">
-                                <button id="uploadEnvBtn" class="btn btn-warning" type="button"><i class="fas fa-upload"></i></button>
-                            </div>
-                            <div class="custom-file">
-                                <input id="uploadEnvFile" type="file" class="custom-file-input" accept=".json">
-                            </div>
-                        </div>-->
-
-                        <div id="customEnvsSet" class="row row-cols-2 row-cols-md-4 my-3">
+                        <div id="customEnvsSet" class="row row-cols-1 row-cols-md-4 my-3">
 
                         </div>
                     </div>
@@ -372,7 +360,7 @@
                 </div>
             </div>
 
-            <div id="agent-sel-config" class="col col-3">
+            <div id="agent-sel-config" class="col col-3 mb-2">
                 <!-- select the morphology -->
                 <h1 class="has-text-centered my-2"> <strong> List of morphologies</strong>  </h1>
                 <ol class="list-group" id="agentsSelection"></ol>

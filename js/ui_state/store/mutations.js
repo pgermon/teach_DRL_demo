@@ -215,7 +215,7 @@ export default {
         };
         state.simulationState.status = 'init';
         window.game.env.set_zoom(INIT_ZOOM);
-        window.game.env.set_scroll(null, -0.05 * RENDERING_VIEWER_W, 0);
+        window.game.env.set_scroll(null, INIT_SCROLL_X, 0);
         window.init_default();
         return state;
     },
