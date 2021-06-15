@@ -9,12 +9,15 @@ import AdvancedOptions from "./js/ui_state/components/advanced_options.js";
 import EnvsSet from "./js/ui_state/components/envs_set.js";
 
 // Save env modal setup
+
+// Open the modal
 window.openModal = (modal) => {
     modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
     modal.style.display = "block";
     modal.classList.add('show');
 }
 
+// Close the modal and clear the text fields
 window.closeModal = (modal) => {
     modal.classList.remove('show');
     modal.style.display = 'none';
@@ -32,7 +35,10 @@ saveEnvButton.addEventListener('click', () => {
 saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
     span.addEventListener('click', () => {
 
+        // if the confirm button is clicked
         if(span.getAttribute('id') == "save-confirm-btn"){
+
+            // Get the name and description values
             let name = saveEnvModal.querySelector('#env-name').value;
             if(name == ""){
                 name = "Custom Environment " + store.state.customEnvsSet.length;
@@ -51,6 +57,7 @@ saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
             window.game.env.set_scroll(null, INIT_SCROLL_X, 0);
             window.game.env.render();
 
+            // Create the state of the current env
             let env = {
                 terrain: {
                     ground: [...window.ground],
@@ -63,9 +70,11 @@ saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
                     name: name,
                     text: description
                 },
+                // Capture the canvas to create the thumbnail of the env
                 image: window.canvas.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
-                //image: 'images/envs_thumbnails/flat_parkour_bipedal.png'
             };
+
+            // Add the env to the custom set
             store.dispatch('addEnv',{set: 'custom', env: env});
 
             // Set back the zoom and scroll to the previous values
@@ -243,12 +252,6 @@ const circleAssetButton = document.querySelector('#circleAssetButton');
 circleAssetButton.addEventListener('click', () => {
     store.dispatch('drawAsset', {name: 'circle', value: !store.state.advancedOptionsState.assets.circle});
 });
-
-/*const loadEnvButton = document.querySelector('#loadEnvButton');
-loadEnvButton.addEventListener('click', () => {
-    let file = document.querySelector('#loadEnvFile').files[0]
-    store.dispatch('loadEnv', {});
-});*/
 const advancedOptionsInstance = new AdvancedOptions();
 advancedOptionsInstance.render();
 

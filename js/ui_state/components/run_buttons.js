@@ -17,6 +17,7 @@ export default class RunButtons extends Component {
         // Run and reset buttons disabled while drawing
         if(store.state.drawingModeState.drawing){
             runButton.className = "btn btn-success disabled";
+            runButton.title = "Run the simulation";
             resetButton.className = "btn btn-danger disabled";
             saveEnvButton.className = "btn btn-primary mx-3 disabled";
         }
@@ -25,16 +26,18 @@ export default class RunButtons extends Component {
                 runButton.className = "btn btn-warning";
                 runButton.childNodes[0].classList.add("fa-pause");
                 runButton.childNodes[0].classList.remove("fa-play");
+                runButton.title = "Pause the simulation";
             } else if (status == 'paused') {
                 runButton.className = "btn btn-success";
                 runButton.childNodes[0].classList.remove("fa-pause");
                 runButton.childNodes[0].classList.add("fa-play");
-                //runButton.innerText = "Resume";
+                runButton.title = "Run the simulation";
 
             } else { // init
                 runButton.className = "btn btn-success";
                 runButton.childNodes[0].classList.remove("fa-pause");
                 runButton.childNodes[0].classList.add("fa-play");
+                runButton.title = "Run the simulation";
             }
             resetButton.className = "btn btn-danger";
             saveEnvButton.className = "btn btn-primary mx-3";
