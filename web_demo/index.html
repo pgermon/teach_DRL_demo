@@ -72,14 +72,14 @@
         <div class="row justify-content-md-center">
             <div id="runButtons" class="row justify-content-md-left g-2 w-50">
                 <div class="col col-md-auto">
-                    <button id="runButton" class="btn btn-success"><i class="fas fa-play"></i></button>
+                    <button id="runButton" class="btn btn-success" data-toggle="tooltip" title="Run the simulation"><i class="fas fa-play"></i></button>
                 </div>
                 <div class="col col-md-auto">
-                    <button id="resetButton" class="btn btn-danger"><i class="fas fa-undo-alt"></i> Reset </button>
+                    <button id="resetButton" class="btn btn-danger" data-toggle="tooltip" title="Reset the simulation"><i class="fas fa-undo-alt fa-lg"></i></button>
                 </div>
 
                 <div class="col col-md-auto">
-                    <button id="saveEnvButton" class="btn btn-primary mx-3" data-toggle="modal" data-target="#saveEnvModal">
+                    <button id="saveEnvButton" class="btn btn-primary mx-3" data-toggle="modal" data-target="#saveEnvModal" title="Save the current environment">
                         <i class="far fa-save fa-lg"></i>
                     </button>
                 </div>
@@ -145,7 +145,7 @@
                         <p>Welcome to the Deep Reinforcement Learning demo!</p>
                         <p>Here you can play with a simulation where pre-trained agents are trying to navigate through a
                             generated environment.</p>
-                        <p>To begin you can select one of the following environments to load it into the simulation and then you can click on the <span style="color: green">
+                        <p>To begin you can select one of the following environments to load it into the simulation and then you can click the <span style="color: green">
                             <i class="fas fa-play"></i></span> button to run the simulation. </p>
                         <div id="baseEnvsSet" class="row row-cols-1 row-cols-md-4 my-3">
 
