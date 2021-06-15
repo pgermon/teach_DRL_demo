@@ -20,6 +20,10 @@ jobs:
       - name: Generate the list of models
         run:
           python3 policies_to_json.py
+          
+      - name: Generate the list of base environments filenames
+        run:
+          python3 list_base_envs.py
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
