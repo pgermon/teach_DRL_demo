@@ -58,27 +58,25 @@
     <div class="container-fluid">
 
         <div class="row justify-content-md-left g-2">
-            <div class="col col-9">
-        <!--<div class="row justify-content-md-center">
-            <div class="col col-md-auto">-->
+            <div class="col-9">
                 <div id="canvas_container"></div>
             </div>
-            <div id="agents_list_container" class="col col-3 border border-secondary rounded">
+            <div id="agents_list_container" class="col border border-secondary rounded">
                 <h1 class="has-text-centered my-2"><strong> List of running agents </strong></h1>
                 <ol class="list-group" id="agentsList"></ol>
             </div>
         </div>
 
-        <div class="row justify-content-md-center">
-            <div id="runButtons" class="row justify-content-md-left g-2 w-50">
-                <div class="col col-md-auto">
+        <div class="col-9">
+            <div id="runButtons" class="row justify-content-center">
+                <div class="col-auto py-2 px-1">
                     <button id="runButton" class="btn btn-success" data-toggle="tooltip" title="Run the simulation"><i class="fas fa-play"></i></button>
                 </div>
-                <div class="col col-md-auto">
+                <div class="col-auto py-2 px-1">
                     <button id="resetButton" class="btn btn-danger" data-toggle="tooltip" title="Reset the simulation"><i class="fas fa-undo-alt fa-lg"></i></button>
                 </div>
 
-                <div class="col col-md-auto">
+                <div class="col-auto py-2 px-1">
                     <button id="saveEnvButton" class="btn btn-primary mx-3" data-toggle="modal" data-target="#saveEnvModal" title="Save the current environment">
                         <i class="far fa-save fa-lg"></i>
                     </button>
@@ -86,6 +84,7 @@
             </div>
         </div>
 
+        <!-- Dialog box for saving current environment -->
         <div class="modal fade" id="saveEnvModal" tabindex="-1" role="dialog" aria-labelledby="saveEnvModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -116,8 +115,8 @@
             </div>
         </div>
 
-        <div class="row justify-content-md-center g-2 mt-1">
-            <div class="col col-9">
+        <div class="row mt-1">
+            <div class="col-9">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" id="main-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -141,13 +140,16 @@
 
                 <!-- Tab panes -->
                 <div class="tab-content">
+
+                    <!-- Getting Started tab pane -->
                     <div class="tab-pane active" id="getting-started" role="tabpanel" aria-labelledby="getting-started-tab">
                         <p>Welcome to the Deep Reinforcement Learning demo!</p>
                         <p>Here you can play with a simulation where pre-trained agents are trying to navigate through a
                             generated environment.</p>
                         <p>To begin you can select one of the following environments to load it into the simulation and then you can click the <span style="color: green">
-                            <i class="fas fa-play"></i></span> button to run the simulation. </p>
-                        <div id="baseEnvsSet" class="row row-cols-1 row-cols-md-4 my-3">
+                            <i class="fas fa-play"></i></span> button to run the simulation.</p>
+
+                        <div id="baseEnvsSet" class="row row-cols-2 row-cols-md-4 my-3">
 
                         </div>
 
@@ -155,65 +157,75 @@
                         <p>In this section you can store your own custom environments by saving them thanks to the <span style="color: blue"><i
                                 class="far fa-save fa-lg"></i></span> button above or by uploading them from a JSON file.</p>
 
-                        <div id="customEnvsSet" class="row row-cols-1 row-cols-md-4 my-3">
+                        <div id="customEnvsSet" class="row row-cols-2 row-cols-md-4 my-3">
 
                         </div>
                     </div>
 
+                    <!-- Parkour Customization tab pane -->
                     <div class="tab-pane" id="parkour-custom-tab" role="tab-panel" aria-labelledby="parkour-custom-btn">
 
-                        <div class="d-flex align-items-start">
-                            <div class="col col-2">
+                        <div class="row justify-content-center">
+                            <div class="col-2"></div>
+                            <div class="col">
+                                <h1 class="has-text-centered mt-2"><strong> Terrain Generation </strong></h1>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-2">
                                 <div class="nav flex-column nav-pills" id="parkour-pills-tab" role="tablist" aria-orientation="vertical">
                                     <button class="nav-link active my-2" id="draw-tab-btn" data-bs-toggle="pill" data-bs-target="#draw-tab"
                                             type="button" role="tab" aria-controls="draw-tab" aria-selected="true"> Draw Yourself! </button>
+
+                                    <hr class="solid">
+
                                     <button class="nav-link my-2" id="proc-gen-tab-btn" data-bs-toggle="pill" data-bs-target="#proc-gen-tab"
                                             type="button" role="tab" aria-controls="proc-gen-tab" aria-selected="false"> Procedural Generation </button>
                                 </div>
                             </div>
 
-                            <div class="col col-10">
+                            <div class="col">
                                 <div class="tab-content" id="parkour-vpills-tabcontent">
                                     <div class="tab-pane fade show active" id="draw-tab" role="tabpanel" aria-labelledby="draw-tab-btn">
-                                        <!-- terrain drawing -->
-                                        <div class="mx-5">
-                                            <p class="has-text-centered mt-3"> Here you can draw your own parkour! Select the <strong style="color: green"><i
+                                        <!-- Draw Yourself! tab pane -->
+                                        <div class="mx-4 mt-2">
+                                            <p class="has-text-centered"> Here you can draw your own parkour! Select the <strong style="color: green"><i
                                                     class="fas fa-pencil-alt"></i> Ground</strong> or <strong style="color: dimgrey"><i
                                                     class="fas fa-pencil-alt"></i> Ceiling</strong> button to start drawing the corresponding terrain shape with the mouse.</p>
                                             <p class="has-text-centered"> Be careful not to draw more than one line at different heights if you want the result to be optimal.
                                                 You can use the <strong style="color: #FFC700"><i class="fas fa-eraser"></i> Erase</strong> button if you need to correct your drawing or the <strong style="color: red"><i class="fas fa-times"></i> Clear</strong> one to clear all your drawing.</p>
                                             <p class="has-text-centered"> When you are satisfied with the result, just click the <strong style="color: green">Generate Terrain</strong> button.</p>
                                             <div id="drawingMode" class="row justify-content-md-center g-2 mt-1">
-                                                <div class="col col-md-auto">
+                                                <div class="col-auto">
                                                     <button id="drawGroundButton" class="btn btn-outline-success disabled"><i class="fas fa-pencil-alt"></i> Ground </button>
                                                 </div>
-                                                <div class="col col-md-auto">
+                                                <div class="col-auto">
                                                     <button id="drawCeilingButton" class="btn btn-outline-secondary disabled"><i class="fas fa-pencil-alt"></i> Ceiling </button>
                                                 </div>
-                                                <div class="col col-md-auto">
+                                                <div class="col-auto">
                                                     <button id="eraseButton" class="btn btn-outline-warning disabled"><i class="fas fa-eraser"></i>
                                                         Erase </button>
                                                 </div>
-                                                <div class="col col-md-auto">
+                                                <div class="col-auto">
                                                     <button id="clearButton" class="btn btn-danger"><i class="fas fa-times"></i> Clear </button>
                                                 </div>
-                                                <div class="col col-md-auto">
+                                                <div class="col-auto">
                                                     <button id="generateTerrainButton" class="btn btn-success disabled"> Generate Terrain </button>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
 
                                     <div class="tab-pane" id="proc-gen-tab" role="tabpanel" aria-labelledby="proc-gen-tab-btn">
-                                        <!-- parkour generation -->
-                                        <div class="my-3 mx-1">
+                                        <!-- Procedural Generation  tab pane-->
+                                        <div class="my-2 mx-1">
                                             <p class="has-text-centered">
-                                                You can use these three sliders to generate the <strong>terrain shapes</strong> automatically.
+                                                You can also use these three sliders to generate the <strong>terrain shapes</strong> automatically.
                                             </p>
                                         </div>
 
-                                        <div class="row justify-content-md-center mx-1">
+                                        <div class="row justify-content-center mx-1 my-3">
                                             <div class="row">
                                                 <div class="col-11">
                                                     <input type="range" class="form-range" min="-1" max="1" step="0.01" id="dim1Slider">
@@ -241,88 +253,107 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <hr class="solid">
+                        <hr class="solid">
 
-                                <div class="col">
-                                    <div class="row">
-                                        <div class="col">
-                                            <label for="smoothingSlider" class="form-label">Smoothing</label>
-                                        </div>
-                                        <div class="col-8">
-                                            <input type="range" class="form-range" min="10" max="40" value="20" step="0.01"
-                                                   id="smoothingSlider">
-                                        </div>
-                                        <div class="col">
-                                            <span id="smoothingValue"></span>
-                                        </div>
+                        <div class="row justify-content-center mb-3">
+
+                            <!-- Smoothing + Water level sliders -->
+                            <div class="col-5 border border-top-0 border-left-0 border-bottom-0 border-secondary">
+                                <div class="row justify-content-center mb-2">
+                                    <strong class="has-text-centered">General parameters</strong>
+                                </div>
+
+                                <div class="row justify-content-center">
+                                    <div class="col-auto">
+                                        <label for="smoothingSlider" class="form-label">Smoothing</label>
                                     </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <label for="waterSlider" class="form-label">Water level</label>
-                                        </div>
-                                        <div class="col-8">
-                                            <input type="range" class="form-range" min="0" max="1" step="0.01" value="0"
-                                                   id="waterSlider">
-                                        </div>
-                                        <div class="col">
-                                            <span id="waterValue"></span>
-                                        </div>
+                                    <div class="col-8">
+                                        <input type="range" class="form-range" min="10" max="40" value="20" step="0.01"
+                                               id="smoothingSlider">
+                                    </div>
+                                    <div class="col-1">
+                                        <span id="smoothingValue"></span>
                                     </div>
                                 </div>
 
-                                <!-- creepers configuration -->
-                                <div class="row justify-content-md-center mt-3 mx-1">
+                                <div class="row justify-content-center">
+
+                                    <div class="col-auto">
+                                        <label for="waterSlider" class="form-label">Water level</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <input type="range" class="form-range" min="0" max="1" step="0.01" value="0"
+                                               id="waterSlider">
+                                    </div>
+                                    <div class="col-1">
+                                        <span id="waterValue"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Creepers parameters -->
+                            <div class="col">
+                                <div class="row justify-content-center mb-2">
                                     <strong class="has-text-centered">Creepers</strong>
                                 </div>
 
-                                <div class="row justify-content-md-center mt-3 mx-1">
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="col">
+                                <div class="row justify-content-center">
+                                    <div class="col-7">
+                                        <div class="row justify-content-center">
+                                            <div class="col-auto">
                                                 <label for="creepersWidthSlider" class="form-label">Width</label>
                                             </div>
-                                            <div class="col">
+                                            <div class="col-8">
                                                 <input type="range" class="form-range" min="0.2" max="0.7" value="0.3" step="0.01"
                                                        id="creepersWidthSlider">
                                             </div>
-                                            <div class="col">
+                                            <div class="col-auto">
                                                 <span id="creepersWidthValue"></span>
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col">
+                                        <div class="row justify-content-center">
+                                            <div class="col-auto">
                                                 <label for="creepersHeightSlider" class="form-label">Height</label>
                                             </div>
-                                            <div class="col">
+                                            <div class="col-8">
                                                 <input type="range" class="form-range" min="0.2" max="5" value="3" step="0.01"
                                                        id="creepersHeightSlider">
                                             </div>
-                                            <div class="col">
+                                            <div class="col-auto">
                                                 <span id="creepersHeightValue"></span>
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col">
+                                        <div class="row justify-content-center ">
+                                            <div class="col-auto">
                                                 <label for="creepersSpacingSlider" class="form-label">Spacing</label>
                                             </div>
-                                            <div class="col">
+                                            <div class="col-8">
                                                 <input type="range" class="form-range" min="0.6" max="5" value="1" step="0.01"
                                                        id="creepersSpacingSlider">
                                             </div>
-                                            <div class="col">
+                                            <div class="col-auto">
                                                 <span id="creepersSpacingValue"></span>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="col">
-                                        Type:
-                                        <select name="creepersType" id="creepersType" class="form-select">
-                                            <option>Rigid</option>
-                                            <option>Swingable</option>
-                                        </select>
+                                        <div class="row justify-content-center align-items-center my-2">
+                                            <div class="col-auto">
+                                                <label for="creepersType" class="form-label">Type</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <select id="creepersType" class="form-select">
+                                                    <option>Rigid</option>
+                                                    <option>Swingable</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -360,7 +391,7 @@
                 </div>
             </div>
 
-            <div id="agent-sel-config" class="col col-3 mb-2">
+            <div id="agent-sel-config" class="col-3 mb-2">
                 <!-- select the morphology -->
                 <h1 class="has-text-centered my-2"> <strong> List of morphologies</strong>  </h1>
                 <ol class="list-group" id="agentsSelection"></ol>
