@@ -6,7 +6,12 @@ export default {
         else if(payload.set == 'custom'){
             state.customEnvsSet.push(payload.env);
         }
-      return state;
+
+        // Sort the set in the lexicographic order according to the name of the envs
+        state.baseEnvsSet.sort(function(a, b){
+            return a.description.name.localeCompare(b.description.name);
+        });
+        return state;
     },
     deleteEnv(state, payload){
         state.customEnvsSet.splice(payload, 1);

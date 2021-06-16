@@ -426,7 +426,8 @@ window.is_drawing_circle = () => {
 }
 
 window.loadDefaultEnv = () => {
-    store.dispatch('loadEnv', store.state.baseEnvsSet[0]);
+    // Load the Flat Parkour by default
+    store.dispatch('loadEnv', store.state.baseEnvsSet.find(env => env.description.name.split(" ")[0] == "Flat"));
 }
 
 window.addDefaultAgent = () => {
