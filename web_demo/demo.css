@@ -48,10 +48,14 @@ btn-asset:hover{
     border-color: lightgrey;
 }
 
-
-
 hr.solid {
     border-top: 2px solid #999;
+}
+
+.card > img{
+    height: 125px;
+    object-fit: cover;
+    object-position: 5% 0%;
 }
 
 

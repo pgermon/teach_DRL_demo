@@ -45,7 +45,10 @@ export default class EnvsSet extends Component{
                                     </div>
                                 </div>                            
                                 <div class="card-footer">
-                                    <button id="uploadEnvBtn" class="btn btn-warning w-100" type="button"><i class="fas fa-upload"></i></button>      
+                                    <button id="uploadEnvBtn" class="btn btn-warning w-100" type="button"
+                                    data-bs-toggle="tooltip" title="Upload the environment from the file">
+                                    <i class="fas fa-upload"></i>
+                                    </button>      
                                 </div>
                             </div>
                         </div>`;
@@ -60,9 +63,9 @@ export default class EnvsSet extends Component{
                             </div>
                             <div class="card-footer">
                                 <!--<button name="selectEnvBtn" class="btn btn-outline-success mx-1" type="button"> Select </button>-->
-                                <button name="downloadEnvBtn" class="btn btn-primary mx-1" type="button" data-toggle="tooltip" data-placement="top" title="Download the environment">
+                                <button name="downloadEnvBtn" class="btn btn-primary mx-1" type="button" data-bs-toggle="tooltip" title="Download the environment">
                                 <i class="fas fa-download"></i></button>
-                                <button name="deleteEnvBtn" class="btn btn-danger mx-1" type="button" data-toggle="tooltip" data-placement="top" title="Delete the environment">
+                                <button name="deleteEnvBtn" class="btn btn-danger mx-1" type="button" data-bs-toggle="tooltip" title="Delete the environment">
                                 <i class="fa fa-trash"></i></button>
                             </div>  
                         </div>
@@ -102,6 +105,10 @@ export default class EnvsSet extends Component{
             })
         });
 
-
+        this.element.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el, index) => {
+            return new bootstrap.Tooltip(el, {
+                trigger: 'hover'
+            });
+        });
     }
 };

@@ -14,10 +14,6 @@ bodyTypeMapping.set("bipedal", "classic_bipedal");
 bodyTypeMapping.set("chimpanzee", "climbing_profile_chimpanzee");
 bodyTypeMapping.set("fish", "fish");
 
-function strUcFirst(a){
-    return (a+'').charAt(0).toUpperCase()+a.substr(1);
-}
-
 export default class MorphologySelect extends Component {
     constructor() {
         super({
@@ -36,9 +32,10 @@ export default class MorphologySelect extends Component {
                         <label for="morphology_thumbnail"><strong>${strUcFirst(m.morphology)}</strong></label>                 
 
                         <div name="select_button" class="input-group mt-1 w-50">                          
-                            <select name="models" class="form-select"></select>
+                            <select name="models" class="form-select" data-bs-toggle="tooltip" title="Select an agent"></select>
                             <div class="input-group-append">
-                                <button name="addAgentButton" class="btn btn-warning"><i class="fas fa-plus"></i></button>
+                                <button name="addAgentButton" class="btn btn-warning"
+                                data-bs-toggle="tooltip" title="Add the agent to the simulation"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
                     </li>`
@@ -77,6 +74,12 @@ export default class MorphologySelect extends Component {
                     path: morph.seeds[store.state.currentSeedsIdx[morph.morphology]].path,
                     init_pos: null
                 });
+            });
+        });
+
+        this.element.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el, index) => {
+            return new bootstrap.Tooltip(el, {
+                trigger: 'hover'
             });
         });
     }
