@@ -42,5 +42,11 @@ export default class RunButtons extends Component {
             resetButton.className = "btn btn-danger";
             saveEnvButton.className = "btn btn-primary mx-3";
         }
+
+        this.element.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el, index) => {
+            return new bootstrap.Tooltip(el, {
+                trigger: 'hover'
+            });
+        });
     }
 };

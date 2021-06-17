@@ -24,7 +24,8 @@ const CREEPER_UNIT = 1;
 const NB_FIRST_STEPS_HANG = 5;
 const SCROLL_MAX = 300;
 const INIT_SCROLL_X = -0.035 * RENDERING_VIEWER_W;
-//const INIT_SCROLL_X = 0;
+const THUMBNAIL_SCROLL_X = 0;
+let THUMBNAIL_ZOOM = 0.27;
 let INIT_ZOOM = 0.27;
 
 //endregion

@@ -51,10 +51,10 @@ saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
             }
 
             // Adjust the zoom and scroll to capture the thumbnail
-            let current_zoom = window.zoom;
-            let current_scroll = [...window.scroll];
-            window.game.env.set_zoom(INIT_ZOOM);
-            window.game.env.set_scroll(null, INIT_SCROLL_X, 0);
+            let previous_zoom = window.zoom;
+            let previous_scroll = [...window.scroll];
+            window.game.env.set_zoom(THUMBNAIL_ZOOM);
+            window.game.env.set_scroll(null, THUMBNAIL_SCROLL_X, 0);
             window.game.env.render();
 
             // Create the state of the current env
@@ -78,8 +78,8 @@ saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
             store.dispatch('addEnv',{set: 'custom', env: env});
 
             // Set back the zoom and scroll to the previous values
-            window.game.env.set_zoom(current_zoom);
-            window.game.env.set_scroll(null, current_scroll[0], current_scroll[1]);
+            window.game.env.set_zoom(previous_zoom);
+            window.game.env.set_scroll(null, previous_scroll[0], previous_scroll[1]);
             window.game.env.render();
         }
 
@@ -459,4 +459,8 @@ window.downloadObjectAsJson = (exportObj, exportName) => {
     document.body.appendChild(downloadAnchorNode); // required for firefox
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
+}
+
+window.strUcFirst = (a) => {
+    return (a+'').charAt(0).toUpperCase()+a.substr(1);
 }

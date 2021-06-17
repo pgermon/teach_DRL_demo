@@ -86,6 +86,10 @@ window.erasing_radius = 15;
 window.asset_size = 8;
 
 function mousePressed(){
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el, index) => {
+        let tooltip = bootstrap.Tooltip.getInstance(el);
+        tooltip.hide();
+    });
     if(mouseX >= 0 && mouseX <= window.canvas.width
         && mouseY >= 0 && mouseY <= window.canvas.height){
 
@@ -415,7 +419,6 @@ function windowResized(){
     let canvas_container = document.querySelector('#canvas_container');
     RENDERING_VIEWER_W = canvas_container.offsetWidth;
     resizeCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H);
-    let coef = 1.05;
-    //let coef = 0.99;
-    INIT_ZOOM = RENDERING_VIEWER_W / ((TERRAIN_LENGTH + INITIAL_TERRAIN_STARTPAD) * coef * TERRAIN_STEP * SCALE);
+    INIT_ZOOM = RENDERING_VIEWER_W / ((TERRAIN_LENGTH + INITIAL_TERRAIN_STARTPAD) * 1.05 * TERRAIN_STEP * SCALE);
+    THUMBNAIL_ZOOM = RENDERING_VIEWER_W / ((TERRAIN_LENGTH + INITIAL_TERRAIN_STARTPAD) * 0.99 * TERRAIN_STEP * SCALE);
 }

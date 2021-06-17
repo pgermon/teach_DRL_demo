@@ -21,28 +21,29 @@ export default class AgentsList extends Component {
                     <img src=${thumbnails_path + bodyTypeMapping.get(agent.morphology) + "_thumbnail.png"} 
                              alt=${agent.morphology + "_thumbnail"}
                              width="8%"
-                             class="mx-1">
+                             class="mx-1"
+                             data-bs-toggle="tooltip" title=${strUcFirst(bodyTypeMapping.get(agent.morphology))}>
                     <div class="form-group">
                         <input name="agentNameArea" type="text" class="form-control w-75 mx-1" placeholder=${agent.name}>
                     </div>         
                     <label class="form-check-label" for="followSwitch">Follow</label>         
                     <div class="form-check form-switch mx-1">
-                        <input name="followSwitch" class="form-check-input" type="checkbox">
+                        <input name="followSwitch" class="form-check-input" type="checkbox" data-bs-toggle="tooltip" title="Center the viewport on the agent">
                     </div>
 
                     <div name="positionButtonsGroup" class="btn-group" role="group">
                         <button name="savePositionButton" type="button" class="btn btn-primary btn-sm" 
-                        data-toggle="tooltip" data-placement="top" title="Save the agent's position">
+                        data-bs-toggle="tooltip" title="Save the agent's position">
                             <i class="far fa-save fa-lg"></i>
                         </button>
                         <button name="resetPositionButton" type="button" class="btn btn-primary btn-sm"
-                        data-toggle="tooltip" data-placement="top" title="Reset the agent's position">
+                        data-bs-toggle="tooltip" title="Reset the agent's position">
                             <i class="fas fa-undo-alt"></i>
                         </button> 
                     </div>
                     
                     <button name="deleteButton" type="button" class="btn btn-danger btn-sm mx-1"
-                    data-toggle="tooltip" data-placement="top" title="Delete the agent">
+                    data-bs-toggle="tooltip" title="Delete the agent">
                         <i class="fa fa-trash"></i>
                     </button>
                 </li>`;
@@ -76,13 +77,11 @@ export default class AgentsList extends Component {
             });
         });
 
-        /*this.element.querySelectorAll('[data-toggle="tooltip"]').forEach((span, index) => {
-            span.addEventListener('mouseover', () => {
-                span.tooltip();
+        this.element.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el, index) => {
+            return new bootstrap.Tooltip(el, {
+                trigger: 'hover'
             });
-        })*/
-
-        //$('[data-toggle="tooltip"]').tooltip();
+        });
 
         this.element.querySelectorAll('button[name="resetPositionButton"]').forEach((span, index) => {
             span.addEventListener('click', () => {

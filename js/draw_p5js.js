@@ -18,9 +18,8 @@ function setup() {
     let canvas_container = document.querySelector('#canvas_container');
     RENDERING_VIEWER_W = canvas_container.offsetWidth;
     window.canvas = createCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H);
-    let coef = 1.05;
-    //let coef = 0.99;
-    INIT_ZOOM = RENDERING_VIEWER_W / ((TERRAIN_LENGTH + INITIAL_TERRAIN_STARTPAD) * coef * TERRAIN_STEP * SCALE);
+    INIT_ZOOM = RENDERING_VIEWER_W / ((TERRAIN_LENGTH + INITIAL_TERRAIN_STARTPAD) * 1.05 * TERRAIN_STEP * SCALE);
+    THUMBNAIL_ZOOM = RENDERING_VIEWER_W / ((TERRAIN_LENGTH + INITIAL_TERRAIN_STARTPAD) * 0.99 * TERRAIN_STEP * SCALE);
     canvas.parent("canvas_container");
     canvas.style('display', 'block');
     canvas.style('margin-left', 'auto');
