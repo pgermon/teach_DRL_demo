@@ -23,7 +23,7 @@ export default class MorphologySelect extends Component {
     }
     render() {
 
-        this.element.innerHTML = store.state.morphologies.map(m => {
+        /*this.element.innerHTML = store.state.morphologies.map(m => {
             return `<li name="morph-list-item" class="list-group-item d-flex justify-content-between align-items-center px-2 py-1">
                         
                         <img name="morphology_thumbnail" src=${thumbnails_path + m.morphology + "_thumbnail.png"} 
@@ -39,13 +39,36 @@ export default class MorphologySelect extends Component {
                             </div>
                         </div>
                     </li>`
+        }).join('');*/
+
+        this.element.innerHTML = store.state.morphologies.map(m => {
+            return `<li name="morph-list-item" class="list-group-item d-flex justify-content-between align-items-center px-0 my-1">
+
+                        <div class="row align-items-center w-100">
+                            <div class="col-4">
+                                <img name="morphology_thumbnail" src=${thumbnails_path + m.morphology + "_thumbnail.png"} 
+                                 alt=${m.morphology + "_thumbnail"}>
+                            </div>
+                            
+                            <div class="col px-0">
+                                <label for="morphology_thumbnail"><strong>${strUcFirst(m.morphology)}</strong></label>
+                                <div name="select_button" class="input-group mt-1">                       
+                                    <select name="models" class="form-select" data-bs-toggle="tooltip" title="Select an agent"></select>
+                                    <div class="input-group-append">
+                                        <button name="addAgentButton" class="btn btn-warning"
+                                        data-bs-toggle="tooltip" title="Add the agent to the simulation"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>`
         }).join('');
 
-        this.element.querySelectorAll('li[name="morph-list-item"]').forEach((span, index) => {
-            if (store.state.drawingModeState.drawing) {
+        if (store.state.drawingModeState.drawing) {
+            this.element.querySelectorAll('li[name="morph-list-item"]').forEach((span, index) => {
                 span.classList.add('disabled');
-            }
-        });
+            });
+        }
 
         this.element.querySelectorAll('select[name="models"]').forEach((span, index) => {
             span.innerHTML = store.state.morphologies

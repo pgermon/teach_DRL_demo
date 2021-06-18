@@ -9,6 +9,7 @@ function init(cppn_input_vector, water_level, creepers_width, creepers_height, c
         morphologies = [...window.game.env.agents.map(a => a.morphology)];
         policies = [...window.game.env.agents.map(a => a.policy)];
         positions = [...window.game.env.agents.map(agent => agent.agent_body.reference_head_object.GetPosition())];
+        //window.game.env._destroy();
     }
     window.game = new ParkourGame(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling, align);
     window.set_agent_selected(null);
@@ -86,10 +87,14 @@ window.erasing_radius = 15;
 window.asset_size = 8;
 
 function mousePressed(){
+
+    // Hide all the tooltips when mouse pressed
     document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el, index) => {
         let tooltip = bootstrap.Tooltip.getInstance(el);
         tooltip.hide();
     });
+
+    // Case mouse is pressed inside the canvas
     if(mouseX >= 0 && mouseX <= window.canvas.width
         && mouseY >= 0 && mouseY <= window.canvas.height){
 
@@ -190,8 +195,7 @@ function mouseDragged(){
 
         // DRAWING
         if(window.is_drawing()) {
-            //cursor('web_demo/pencil-cursor.png');
-            //cursor(HAND);
+            //cursor('./images/pencil-cursor.png');
             if(window.is_drawing_ground()){
                 drawing_canvas.push();
                 drawing_canvas.stroke("#66994D");

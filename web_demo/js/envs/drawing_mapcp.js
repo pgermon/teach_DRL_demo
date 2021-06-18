@@ -906,8 +906,8 @@ class DrawingMAPCP {
                 let y = agent.agent_body.reference_head_object.GetPosition().y;
 
                 this.scroll = [
-                    x * this.scale * this.zoom - RENDERING_VIEWER_W/5,
-                    y * this.scale * this.zoom - RENDERING_VIEWER_H * 2/5
+                    (x * this.scale - RENDERING_VIEWER_W/5) * this.zoom,
+                    (y * this.scale - RENDERING_VIEWER_H * 2/5)  * this.zoom
                 ];
             }
         }
