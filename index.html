@@ -125,7 +125,7 @@
         </div>
 
         <div class="row mt-1">
-            <div class="col-9">
+            <div class="col-10">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" id="main-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -270,7 +270,7 @@
                         <div class="row justify-content-center mb-3">
 
                             <!-- Smoothing + Water level sliders -->
-                            <div class="col-5 border border-top-0 border-left-0 border-bottom-0 border-secondary">
+                            <div class="col-5 border border-top-0 border-start-0 border-bottom-0">
                                 <div class="row justify-content-center mb-2">
                                     <strong class="has-text-centered">General parameters</strong>
                                 </div>
@@ -369,11 +369,14 @@
                         </div>
                     </div>
 
+                    <!-- Advanced Options tab pane -->
                     <div class="tab-pane" id="advanced-opt-config" role="tabpanel" aria-labelledby="advanced-options-tab">
                         <!-- Draw joins/sensors/names selectors -->
-                        <div id="advancedOptions" class="row justify-content-md-left g-2 mt-1">
-                            <div class="col col-2">
-                                <div id="drawSelectors">
+                        <div id="advancedOptions" class="row mt-3">
+                            <div class="col-1"></div>
+                            <div class="col-2 border border-start-0 border-top-0 border-bottom-0">
+                                <h1 class="has-text-centered my-2"><strong> Rendering Options </strong></h1>
+                                <div id="drawSelectors" class="my-2">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" id="drawJointsSwitch">
                                         <label class="form-check-label" for="drawJointsSwitch">Draw joints</label>
@@ -389,10 +392,12 @@
                                 </div>
                             </div>
 
-                            <div class="col col-5 mt-3">
-                                <div class="row justify-content-md-center mt-3">
-                                    Assets
+                            <div class="col-9">
+                                <div class="has-text-centered">
+                                    <h1 class="my-2"><strong> Assets </strong></h1>
+                                    <p class="mb-2">Here you can find several types of assets, which are objects that you can add to the simulation using the mouse.</p>
                                 </div>
+
                                 <button id="circleAssetButton" class="btn btn-outline-asset"><i class="fas fa-circle"></i> Circle </button>
                             </div>
                         </div>
@@ -400,10 +405,10 @@
                 </div>
             </div>
 
-            <div id="agent-sel-config" class="col-3 mb-2">
+            <div id="agent-sel-config" class="col mx-1 mb-2 px-0">
                 <!-- select the morphology -->
                 <h1 class="has-text-centered my-2"> <strong> List of morphologies</strong>  </h1>
-                <ol class="list-group" id="agentsSelection"></ol>
+                <ul class="list-group" id="agentsSelection"></ul>
             </div>
         </div>
     </div>

@@ -188,6 +188,10 @@ export default {
     },
     addMorphology(state, payload) {
         state.morphologies.push(payload);
+        // Sort the list of morphologies in the lexicographic order according to the name of the morphology
+        state.morphologies.sort(function(a, b){
+            return a.morphology.localeCompare(b.morphology);
+        });
         state.currentSeedsIdx[payload.morphology] = 0;
         return state;
     },

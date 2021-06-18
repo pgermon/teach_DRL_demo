@@ -60,6 +60,9 @@ class ParkourGame {
     reset(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling, align_terrain){
         clearInterval(this.runtime);
         this.running = false;
+        /*if(this.env != null){
+            this.env._destroy();
+        }*/
         this.initWorld(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling, align_terrain);
         this.env.render();
     }
