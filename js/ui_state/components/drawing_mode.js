@@ -5,7 +5,8 @@ export default class DrawingMode extends Component {
     constructor() {
         super({
             store,
-            element: document.querySelector('#drawingMode')
+            element: document.querySelector('#drawingMode'),
+            eventName: 'drawingModeChange'
         });
     }
     render() {

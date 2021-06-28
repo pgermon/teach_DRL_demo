@@ -198,29 +198,30 @@ function mouseDragged(){
         // DRAWING
         if(window.is_drawing()) {
             //cursor('./images/pencil-cursor.png');
-            if(window.is_drawing_ground()){
+            let mousePos = convertPosCanvasToEnv(mouseX, mouseY);
+
+            if(window.is_drawing_ground() && mousePos.x > INITIAL_TERRAIN_STARTPAD * TERRAIN_STEP){
                 drawing_canvas.push();
                 drawing_canvas.stroke("#66994D");
                 drawing_canvas.strokeWeight(4);
                 drawing_canvas.line(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.prevMouseX, window.prevMouseY + SCROLL_MAX - window.game.env.scroll[1]);
                 drawing_canvas.pop();
-                window.terrain.ground.push(convertPosCanvasToEnv(mouseX, mouseY));
+                window.terrain.ground.push(mousePos);
             }
-            else if(window.is_drawing_ceiling()){
+            else if(window.is_drawing_ceiling() && mousePos.x > INITIAL_TERRAIN_STARTPAD * TERRAIN_STEP){
                 drawing_canvas.push();
                 drawing_canvas.stroke("#808080");
                 drawing_canvas.strokeWeight(4);
                 drawing_canvas.line(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.prevMouseX, window.prevMouseY + SCROLL_MAX - window.game.env.scroll[1]);
                 drawing_canvas.pop();
-                window.terrain.ceiling.push(convertPosCanvasToEnv(mouseX, mouseY));
+                window.terrain.ceiling.push(mousePos);
             }
-            else if(window.is_erasing()){
-                erasing_canvas.clear();
-                erasing_canvas.noStroke();
-                erasing_canvas.fill(255);
-                erasing_canvas.circle(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.erasing_radius * 2);
+            else if(window.is_erasing() && mousePos.x > INITIAL_TERRAIN_STARTPAD * TERRAIN_STEP){
+                trace_canvas.clear();
+                trace_canvas.noStroke();
+                trace_canvas.fill(255);
+                trace_canvas.circle(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.erasing_radius * 2);
                 if(window.terrain.ground.length > 0 || window.terrain.ceiling.length > 0){
-                    let mousePos = convertPosCanvasToEnv(mouseX, mouseY);
 
                     // Remove the points that are within the circle radius from the ground and ceiling lists
                     window.terrain.ground = window.terrain.ground.filter(function(point, index, array){
@@ -235,15 +236,18 @@ function mouseDragged(){
                     drawing_canvas.noErase();
                 }
             }
+
             // Dragging to move
             else{
                 cursor(MOVE);
                 window.game.env.set_scroll(null, this.scroll[0] + window.prevMouseX - mouseX, this.scroll[1] + mouseY - prevMouseY);
             }
 
+
             window.game.env.render();
             image(drawing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
-            image(erasing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
+            image(trace_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
+            image(forbidden_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
         }
 
         // DRAGGING
@@ -348,20 +352,19 @@ function mouseReleased(){
 
 function mouseMoved(){
 
-    erasing_canvas.clear();
-    assets_canvas.clear();
+    trace_canvas.clear();
 
     if(window.is_drawing_circle()){
         if(mouseX >= 0 && mouseX <= window.canvas.width
             && mouseY >= 0 && mouseY <= window.canvas.height) {
 
-            assets_canvas.noStroke();
-            assets_canvas.fill(136, 92, 0, 180);
-            assets_canvas.circle(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.asset_size * 4 * window.game.env.zoom);
+            trace_canvas.noStroke();
+            trace_canvas.fill(136, 92, 0, 180);
+            trace_canvas.circle(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.asset_size * 4 * window.game.env.zoom);
         }
 
         window.game.env.render();
-        image(assets_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
+        image(trace_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
 
     }
     else if(window.is_drawing()) {
@@ -370,14 +373,15 @@ function mouseMoved(){
             if (mouseX >= 0 && mouseX <= window.canvas.width
                 && mouseY >= 0 && mouseY <= window.canvas.height) {
 
-                erasing_canvas.noStroke();
-                erasing_canvas.fill(255, 180);
-                erasing_canvas.circle(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.erasing_radius * 2);
+                trace_canvas.noStroke();
+                trace_canvas.fill(255, 180);
+                trace_canvas.circle(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.erasing_radius * 2);
             }
 
             window.game.env.render();
             image(drawing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
-            image(erasing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
+            image(trace_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
+            image(forbidden_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
         }
     }
 }

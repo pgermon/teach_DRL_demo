@@ -18,7 +18,8 @@ export default class MorphologySelect extends Component {
     constructor() {
         super({
             store,
-            element: document.querySelector('#agentsSelection')
+            element: document.querySelector('#agentsSelection'),
+            eventName: 'morphologiesChange'
         });
     }
     render() {

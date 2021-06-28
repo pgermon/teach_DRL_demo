@@ -29,10 +29,10 @@ export default {
 
         // Update the values of the terrain sliders
         for(let param in payload.terrain.parkourConfig){
-            context.commit('updateCppnConfig', {name: param, value: payload.terrain.parkourConfig[param]});
+            context.commit('updateParkourConfig', {name: param, value: payload.terrain.parkourConfig[param]});
         }
         for(let param in payload.terrain.creepersConfig){
-            context.commit('updateCreepersConfig', {name: param, value: payload.terrain.creepersConfig[param]});
+            context.commit('updateParkourConfig', {name: param, value: payload.terrain.creepersConfig[param]});
         }
 
         // Replace previous agents by the ones of the env
@@ -74,7 +74,43 @@ export default {
 
         }
     },
-    changeCreepersConfig(context, payload) {
+    changeParkourConfig(context, payload){
+
+        // case one of the cppn dim is changed : align the terrain with the startpad
+        if(['dim1', 'dim2', 'dim3'].indexOf(payload.name) != -1){
+
+            window.ground = [];
+            window.ceiling = [];
+            window.align_terrain = {
+                align: true,
+                ceiling_offset: null, // align the ceiling with the startpad
+                ground_offset: null, // align the ground with the startpad
+                smoothing: window.game.env.TERRAIN_CPPN_SCALE // previous smoothing
+            };
+        }
+        // case smoothing, water_level or creepers is changed
+        else{
+            window.align_terrain = {
+                align: true,
+                ceiling_offset: window.align_terrain.ceiling_offset, // keep the same
+                ground_offset: window.align_terrain.ground_offset, // keep the same
+                smoothing: window.game.env.TERRAIN_CPPN_SCALE // previous smoothing
+            };
+        }
+
+        context.commit('updateParkourConfig', payload);
+
+        if(context.state.drawingModeState.drawing){
+            context.commit('generateTerrain', true);
+        }
+        drawing_canvas.clear();
+        window.terrain = {
+            ground: [],
+            ceiling: []
+        };
+        context.commit('resetSimulation', {keepPositions: true});
+    },
+    /*changeCreepersConfig(context, payload) {
         if(context.state.drawingModeState.drawing){
             context.commit('generateTerrain', true);
         }
@@ -117,7 +153,7 @@ export default {
         };
 
         context.commit('resetSimulation', {keepPositions: true});
-    },
+    },*/
     toggleSwitch(context, payload) {
         switch (payload.name) {
             case 'drawJoints':
@@ -186,7 +222,7 @@ export default {
         context.commit('addMorphology', payload);
     },
     switchTab(context, payload) {
-        if(context.state.activeTab.main == 'parkour_custom'){
+        if(context.state.activeTab == 'parkour_custom'){
             if(payload != 'parkour_custom'){
                 if(context.state.drawingModeState.drawing && payload != 'draw_yourself'){
                     context.commit('generateTerrain', true);

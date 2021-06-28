@@ -18,7 +18,31 @@ export default class Store {
             set: function (state, key, value) {
                 state[key] = value;
                 console.log(`stateChange: ${key}: ${value}`);
-                self.events.publish('stateChange', self.state);
+
+                if(key == 'envsSets'){
+                    self.events.publish('envsSetChange', self.state);
+                }
+                else if(key == 'morphologies' || key == 'currentSeedsIdxChange'){
+                    self.events.publish('morphologiesChange', self.state);
+                }
+                else if(key == 'agents'){
+                    self.events.publish('agentsListChange', self.state);
+                }
+                else if(key == 'simulationState'){
+                    self.events.publish('agentsListChange', self.state);
+                    self.events.publish('runButtonsChange', self.state);
+                }
+                else if(key == 'parkourConfig'){
+                    self.events.publish('parkourConfigChange', self.state);
+                }
+                else if(key == 'drawingModeState'){
+                    self.events.publish('drawingModeChange', self.state);
+                }
+                else if(key == 'advancedOptionsState'){
+                    self.events.publish('advancedOptionsChange', self.state);
+                }
+
+                //self.events.publish('stateChange', self.state);
                 if (self.status !== 'mutation') {
                     console.warn(`You should use a mutation to set ${key}`);
                 }

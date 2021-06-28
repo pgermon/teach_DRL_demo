@@ -12,8 +12,8 @@ let JOINTS_COLORS = {
 };
 
 let drawing_canvas;
-let erasing_canvas;
-let assets_canvas;
+let trace_canvas;
+let forbidden_canvas;
 function setup() {
     let canvas_container = document.querySelector('#canvas_container');
     RENDERING_VIEWER_W = canvas_container.offsetWidth;
@@ -26,10 +26,10 @@ function setup() {
     canvas.style('margin-right', 'auto');
 
     drawing_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
-    erasing_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
-    assets_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
+    trace_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
+    forbidden_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
 
-    //background("#e6e6ff");
+   //background("#e6e6ff");
     noLoop();
     //frameRate(30);
 }
