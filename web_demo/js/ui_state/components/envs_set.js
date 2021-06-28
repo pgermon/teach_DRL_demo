@@ -5,14 +5,15 @@ export default class EnvsSet extends Component{
     constructor() {
         super({
             store,
-            element: document.querySelector('#getting-started')
+            element: document.querySelector('#getting-started'),
+            eventName: 'envsSetChange'
         });
     }
 
     render(){
         // Base envs set
         let baseEnvs = this.element.querySelector('#baseEnvsSet');
-        baseEnvs.innerHTML = store.state.baseEnvsSet.map(e => {
+        baseEnvs.innerHTML = store.state.envsSets.baseEnvsSet.map(e => {
             return `<div class="col" name="env-set-item">
                         <div class="card bg-light h-100 btn p-0" name="env-card">
                             <img name="env_thumbnail" class="card-image-top" src=${e.image} alt=${e.description.name}>
@@ -29,7 +30,7 @@ export default class EnvsSet extends Component{
 
         baseEnvs.querySelectorAll('div[name="env-card"]').forEach((span, index) => {
             span.addEventListener('click', () => {
-                store.dispatch('loadEnv', store.state.baseEnvsSet[index]);
+                store.dispatch('loadEnv', store.state.envsSets.baseEnvsSet[index]);
             })
         });
 
@@ -53,7 +54,7 @@ export default class EnvsSet extends Component{
                             </div>
                         </div>`;
 
-        let envCards = store.state.customEnvsSet.map((e, index) => {
+        let envCards = store.state.envsSets.customEnvsSet.map((e, index) => {
             return `<div class="col mb-3" name="env-set-item">
                         <div class="card bg-light h-100 btn p-0" name="env-card">
                             <img name="env_thumbnail" class="card-image-top" src=${e.image} alt=${e.description.name}>
@@ -89,13 +90,13 @@ export default class EnvsSet extends Component{
 
         customEnvs.querySelectorAll('div[name="env-card"]').forEach((span, index) => {
             span.addEventListener('click', () => {
-                store.dispatch('loadEnv', store.state.customEnvsSet[index]);
+                store.dispatch('loadEnv', store.state.envsSets.customEnvsSet[index]);
             })
         });
 
         customEnvs.querySelectorAll('button[name="downloadEnvBtn"]').forEach((span, index) => {
             span.addEventListener('click', () => {
-                downloadObjectAsJson(store.state.customEnvsSet[index], store.state.customEnvsSet[index].description.name.split(' ').join('_'));
+                downloadObjectAsJson(store.state.envsSets.customEnvsSet[index], store.state.envsSets.customEnvsSet[index].description.name.split(' ').join('_'));
             })
         });
 

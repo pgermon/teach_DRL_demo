@@ -12,7 +12,8 @@ export default class AgentsList extends Component {
     constructor() {
         super({
             store,
-            element: document.querySelector('#agentsList')
+            element: document.querySelector('#agentsList'),
+            eventName: 'agentsListChange'
         });
     }
     render() {

@@ -4,7 +4,8 @@ export default class RunButtons extends Component {
     constructor() {
         super({
             store,
-            element: document.querySelector('#runButtons')
+            element: document.querySelector('#runButtons'),
+            eventName: 'runButtonsChange'
         });
     }
     render() {

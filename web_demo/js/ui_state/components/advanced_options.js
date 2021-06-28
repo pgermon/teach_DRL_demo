@@ -4,7 +4,8 @@ export default class AdvancedOptions extends Component {
     constructor() {
         super({
             store,
-            element: document.querySelector('#advancedOptions')
+            element: document.querySelector('#advancedOptions'),
+            eventName: 'advancedOptionsChange'
         });
     }
     render() {

@@ -2,7 +2,7 @@ import store from './js/ui_state/store/index.js';
 import MorphologySelect from './js/ui_state/components/morphology.js';
 import AgentsList from './js/ui_state/components/agents_list.js';
 import RunButtons from './js/ui_state/components/run_buttons.js';
-import TerrainConfig from './js/ui_state/components/terrain_config.js';
+import ParkourConfig from './js/ui_state/components/parkour_config.js';
 import CreepersConfig from './js/ui_state/components/creepers_config.js';
 import DrawingMode from "./js/ui_state/components/drawing_mode.js";
 import AdvancedOptions from "./js/ui_state/components/advanced_options.js";
@@ -41,7 +41,7 @@ saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
             // Get the name and description values
             let name = saveEnvModal.querySelector('#env-name').value;
             if(name == ""){
-                name = "Custom Environment " + store.state.customEnvsSet.length;
+                name = "Custom Environment " + store.state.envsSets.customEnvsSet.length;
             }
             let description = saveEnvModal.querySelector('#env-description').value;
 
@@ -62,8 +62,8 @@ saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
                 terrain: {
                     ground: [...window.ground],
                     ceiling: [...window.ceiling],
-                    parkourConfig: Object.assign({}, store.state.parkourConfig),
-                    creepersConfig: Object.assign({}, store.state.creepersConfig)
+                    parkourConfig: Object.assign({}, store.state.parkourConfig.terrain),
+                    creepersConfig: Object.assign({}, store.state.parkourConfig.creepers)
                 },
                 agents: [...store.state.agents],
                 description: {
@@ -114,35 +114,35 @@ runButtonsInstance.render();
 // Terrain sliders setup
 const dim1SliderElement = document.querySelector("#dim1Slider")
 dim1SliderElement.addEventListener('input', () => {
-    store.dispatch('changeCppnCongfig', {
+    store.dispatch('changeParkourConfig', {
         name: "dim1",
         value: parseFloat(dim1SliderElement.value)
     });
 });
 const dim2SliderElement = document.querySelector("#dim2Slider")
 dim2SliderElement.addEventListener('input', () => {
-    store.dispatch('changeCppnCongfig', {
+    store.dispatch('changeParkourConfig', {
         name: "dim2",
         value: parseFloat(dim2SliderElement.value)
     });
 });
 const dim3SliderElement = document.querySelector("#dim3Slider")
 dim3SliderElement.addEventListener('input', () => {
-    store.dispatch('changeCppnCongfig', {
+    store.dispatch('changeParkourConfig', {
         name: "dim3",
         value: parseFloat(dim3SliderElement.value)
     });
 });
 const smoothingSliderElement = document.querySelector("#smoothingSlider")
 smoothingSliderElement.addEventListener('input', () => {
-    store.dispatch('changeCppnCongfig', {
+    store.dispatch('changeParkourConfig', {
         name: "smoothing",
         value: parseFloat(smoothingSliderElement.value)
     });
 });
 const waterSliderElement = document.querySelector("#waterSlider")
 waterSliderElement.addEventListener('input', () => {
-    store.dispatch('changeCppnCongfig', {
+    store.dispatch('changeParkourConfig', {
         name: "waterLevel",
         value: parseFloat(waterSliderElement.value)
     });
@@ -151,35 +151,35 @@ waterSliderElement.addEventListener('input', () => {
 // Creepers setup
 const creepersWidthSlider = document.querySelector("#creepersWidthSlider");
 creepersWidthSlider.addEventListener('input', () => {
-    store.dispatch('changeCreepersConfig', {
+    store.dispatch('changeParkourConfig', {
         name: "width",
         value: parseFloat(creepersWidthSlider.value)
     });
 });
 const creepersHeightSlider = document.querySelector("#creepersHeightSlider");
 creepersHeightSlider.addEventListener('input', () => {
-    store.dispatch('changeCreepersConfig', {
+    store.dispatch('changeParkourConfig', {
         name: "height",
         value: parseFloat(creepersHeightSlider.value)
     });
 });
 const creepersSpacingSlider = document.querySelector("#creepersSpacingSlider");
 creepersSpacingSlider.addEventListener('input', () => {
-    store.dispatch('changeCreepersConfig', {
+    store.dispatch('changeParkourConfig', {
         name: "spacing",
         value: parseFloat(creepersSpacingSlider.value)
     });
 });
 const creepersTypeSelect = document.querySelector("#creepersType");
 creepersTypeSelect.addEventListener('input', () => {
-    store.dispatch('changeCreepersConfig', {
+    store.dispatch('changeParkourConfig', {
         name: "type",
         value: creepersTypeSelect.value
     });
 });
 
-const terrainConfigInstance = new TerrainConfig();
-terrainConfigInstance.render();
+const parkourConfigInstance = new ParkourConfig();
+parkourConfigInstance.render();
 //const creepersConfigInstance = new CreepersConfig();
 //creepersConfigInstance.render()
 
@@ -320,7 +320,7 @@ window.is_drawing_circle = () => {
 
 window.loadDefaultEnv = () => {
     // Load the Flat Parkour by default
-    store.dispatch('loadEnv', store.state.baseEnvsSet.find(env => env.description.name.split(" ")[0] == "Flat"));
+    store.dispatch('loadEnv', store.state.envsSets.baseEnvsSet.find(env => env.description.name.split(" ")[0] == "Flat"));
 }
 
 window.addDefaultAgent = () => {

@@ -1,20 +1,20 @@
 export default {
     addEnv(state, payload){
         if(payload.set == 'base'){
-            state.baseEnvsSet.push(payload.env);
+            state.envsSets.baseEnvsSet.push(payload.env);
         }
         else if(payload.set == 'custom'){
-            state.customEnvsSet.push(payload.env);
+            state.envsSets.customEnvsSet.push(payload.env);
         }
 
         // Sort the set in the lexicographic order according to the name of the envs
-        state.baseEnvsSet.sort(function(a, b){
+        state.envsSets.baseEnvsSet.sort(function(a, b){
             return a.description.name.localeCompare(b.description.name);
         });
         return state;
     },
     deleteEnv(state, payload){
-        state.customEnvsSet.splice(payload, 1);
+        state.envsSets.customEnvsSet.splice(payload, 1);
         return state;
     },
     /*markCppnInitialized(state, payload) {
@@ -25,19 +25,51 @@ export default {
         state.defaultAgentAdded = true;
         return state;
     },*/
-    updateCreepersConfig(state, payload) {
+    updateParkourConfig(state, payload){
         switch (payload.name) {
+            case 'dim1':
+                state.parkourConfig.terrain.dim1 = payload.value;
+                break;
+            case 'dim2':
+                state.parkourConfig.terrain.dim2 = payload.value;
+                break;
+            case 'dim3':
+                state.parkourConfig.terrain.dim3 = payload.value;
+                break;
+            case 'smoothing':
+                state.parkourConfig.terrain.smoothing = payload.value;
+                break;
+            case 'waterLevel':
+                state.parkourConfig.terrain.waterLevel = payload.value;
+                break;
             case 'width':
-                state.creepersConfig.width = payload.value;
+                state.parkourConfig.creepers.width = payload.value;
                 break;
             case 'height':
-                state.creepersConfig.height = payload.value;
+                state.parkourConfig.creepers.height = payload.value;
                 break;
             case 'spacing':
-                state.creepersConfig.spacing = payload.value;
+                state.parkourConfig.creepers.spacing = payload.value;
                 break;
             case 'type':
-                state.creepersConfig.type = payload.value;
+                state.parkourConfig.creepers.type = payload.value;
+                break;
+        }
+        return state;
+    },
+    /*updateCreepersConfig(state, payload) {
+        switch (payload.name) {
+            case 'width':
+                state.parkourConfig.creepers.width = payload.value;
+                break;
+            case 'height':
+                state.parkourConfig.creepers.height = payload.value;
+                break;
+            case 'spacing':
+                state.parkourConfig.creepers.spacing = payload.value;
+                break;
+            case 'type':
+                state.parkourConfig.creepers.type = payload.value;
                 break;
         }
         return state;
@@ -45,23 +77,23 @@ export default {
     updateCppnConfig(state, payload) {
         switch (payload.name) {
             case 'dim1':
-                state.parkourConfig.dim1 = payload.value;
+                state.parkourConfig.terrain.dim1 = payload.value;
                 break;
             case 'dim2':
-                state.parkourConfig.dim2 = payload.value;
+                state.parkourConfig.terrain.dim2 = payload.value;
                 break;
             case 'dim3':
-                state.parkourConfig.dim3 = payload.value;
+                state.parkourConfig.terrain.dim3 = payload.value;
                 break;
             case 'smoothing':
-                state.parkourConfig.smoothing = payload.value;
+                state.parkourConfig.terrain.smoothing = payload.value;
                 break;
             case 'waterLevel':
-                state.parkourConfig.waterLevel = payload.value;
+                state.parkourConfig.terrain.waterLevel = payload.value;
                 break;
         }
         return state;
-    },
+    },*/
     init_default(state, payload){
         state.simulationState.status = 'init';
         window.align_terrain = {
@@ -99,8 +131,8 @@ export default {
             positions = [...state.agents.map((agent, index) => window.game.env.agents[index].init_pos)];
         }
 
-        const parkourConfig = state.parkourConfig;
-        const creepersConfig = state.creepersConfig;
+        const terrainConfig = state.parkourConfig.terrain;
+        const creepersConfig = state.parkourConfig.creepers;
 
         window.align_terrain = {
             align: true, // align the terrain with the startpad
@@ -113,12 +145,12 @@ export default {
             morphologies,
             policies,
             positions,
-            [parkourConfig.dim1,parkourConfig.dim2,parkourConfig.dim3],
-            parkourConfig.waterLevel,
+            [terrainConfig.dim1,terrainConfig.dim2,terrainConfig.dim3],
+            terrainConfig.waterLevel,
             creepersConfig.width,
             creepersConfig.height,
             creepersConfig.spacing,
-            parkourConfig.smoothing,
+            terrainConfig.smoothing,
             creepersConfig.type == "Swingable",
             window.ground,
             window.ceiling,
