@@ -9,10 +9,7 @@ export default {
         agentFollowed: null,
         agentSelected: null,
     },
-    activeTab: {
-        main:'getting_started', // 'getting_started', 'parkour_custom, 'advanced_options'
-        sub: null // 'draw_yourself', 'proc_gen'
-    },
+    activeTab:'getting_started', // 'getting_started', 'parkour_custom, 'advanced_options'
     parkourConfig: {
         dim1: 1.0,
         dim2: 0.95,
@@ -40,6 +37,6 @@ export default {
             circle: false,
         },
     },
-    defaultAgentAdded: false,
-    cppnInitialized: false,
+    //defaultAgentAdded: false,
+    //cppnInitialized: false,
 };

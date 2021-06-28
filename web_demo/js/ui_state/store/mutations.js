@@ -17,14 +17,14 @@ export default {
         state.customEnvsSet.splice(payload, 1);
         return state;
     },
-    markCppnInitialized(state, payload) {
+    /*markCppnInitialized(state, payload) {
         state.cppnInitialized = true;
         return state;
     },
     disableDefaultAgent(state, payload) {
         state.defaultAgentAdded = true;
         return state;
-    },
+    },*/
     updateCreepersConfig(state, payload) {
         switch (payload.name) {
             case 'width':
@@ -228,16 +228,16 @@ export default {
         window.game.env.set_zoom(INIT_ZOOM);
         window.game.env.set_scroll(null, INIT_SCROLL_X, 0);
         window.init_default();
+        image(drawing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
+        image(forbidden_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
         return state;
     },
     switchTab(state, payload) {
         if(payload == 'draw_yourself' || payload == 'proc_gen'){
-            state.activeTab.main = 'parkour_custom';
-            state.activeTab.sub = payload;
+            state.activeTab = 'parkour_custom';
         }
         else{
-            state.activeTab.main = payload;
-            state.activeTab.sub = null;
+            state.activeTab = payload;
         }
         return state;
     },
@@ -278,6 +278,8 @@ export default {
 
         // Return to drawing
         else {
+
+            window.draw_forbidden_area();
 
             // Case no ground has been drawn yet
             if(window.terrain.ground.length == 0 && window.ground.length > 0){
@@ -331,6 +333,7 @@ export default {
             window.ceiling = [];
             window.init_default();
             image(drawing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
+            image(forbidden_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
         }
         return state;
     },

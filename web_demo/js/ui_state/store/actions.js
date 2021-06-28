@@ -186,7 +186,7 @@ export default {
         context.commit('addMorphology', payload);
     },
     switchTab(context, payload) {
-        if(context.state.activeTab.main == 'parkour_custom'){
+        if(context.state.activeTab == 'parkour_custom'){
             if(payload != 'parkour_custom'){
                 if(context.state.drawingModeState.drawing && payload != 'draw_yourself'){
                     context.commit('generateTerrain', true);

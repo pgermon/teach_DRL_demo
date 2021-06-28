@@ -147,8 +147,6 @@ waterSliderElement.addEventListener('input', () => {
         value: parseFloat(waterSliderElement.value)
     });
 });
-const terrainConfigInstance = new TerrainConfig();
-terrainConfigInstance.render();
 
 // Creepers setup
 const creepersWidthSlider = document.querySelector("#creepersWidthSlider");
@@ -179,8 +177,11 @@ creepersTypeSelect.addEventListener('input', () => {
         value: creepersTypeSelect.value
     });
 });
-const creepersConfigInstance = new CreepersConfig();
-creepersConfigInstance.render()
+
+const terrainConfigInstance = new TerrainConfig();
+terrainConfigInstance.render();
+//const creepersConfigInstance = new CreepersConfig();
+//creepersConfigInstance.render()
 
 // Tabs buttons setup
 const gettingStartedBtn = document.querySelector('#getting-started-tab');
@@ -189,12 +190,13 @@ gettingStartedBtn.addEventListener('click', () => {
 })
 const parkourCustomTab = document.querySelector('#parkour-custom-btn');
 parkourCustomTab.addEventListener('click', () => {
-    if(store.state.activeTab.main != 'parkour_custom'){
+    // Show the "Draw Yourself!" subtab when opening the "Parkour Customization" tab
+    if(store.state.activeTab != 'parkour_custom'){
         let drawTabBtn = document.querySelector('#draw-tab-btn');
         let drawYourselfTab = new bootstrap.Tab(drawTabBtn);
         drawYourselfTab.show();
+        store.dispatch('switchTab', 'parkour_custom');
     }
-    store.dispatch('switchTab', 'parkour_custom');
 });
 const drawYourselfBtn = document.querySelector('#draw-tab-btn');
 drawYourselfBtn.addEventListener('click', () => {
@@ -273,10 +275,10 @@ fetch('./policies.json')
                 });
             });
         });
-    })
-    .then(done => {
-        store.dispatch('addDefaultAgent', {});
     });
+    /*.then(done => {
+        store.dispatch('addDefaultAgent', {});
+    });*/
 
 // fetch environments set
 fetch('./base_envs_set.json')
@@ -325,9 +327,9 @@ window.addDefaultAgent = () => {
     store.dispatch('addDefaultAgent', 'bipedal'); // 'bipedal', 'chimpanzee', 'fish
 }
 
-window.markCppnInitialized = () => {
+/*window.markCppnInitialized = () => {
     store.dispatch('markCppnInitialized', {});
-}
+}*/
 
 window.clickOutsideCanvas = () => {
     store.dispatch('clickOutsideCanvas', {});
@@ -354,4 +356,13 @@ window.downloadObjectAsJson = (exportObj, exportName) => {
 
 window.strUcFirst = (a) => {
     return (a+'').charAt(0).toUpperCase()+a.substr(1);
+}
+
+window.draw_forbidden_area = () => {
+    forbidden_canvas.clear();
+    forbidden_canvas.stroke("#FF0000");
+    forbidden_canvas.strokeWeight(3);
+    forbidden_canvas.fill(255, 50, 0, 75);
+    let w = convertPosEnvToCanvas((INITIAL_TERRAIN_STARTPAD - 1) * TERRAIN_STEP, 0).x;
+    forbidden_canvas.rect(0, 0, w, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
 }
