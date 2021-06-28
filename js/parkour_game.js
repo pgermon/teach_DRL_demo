@@ -64,6 +64,8 @@ class ParkourGame {
             this.env._destroy();
         }*/
         this.initWorld(morphologies, policies, positions, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type, ground, ceiling, align_terrain);
+        window.game.env.set_zoom(window.zoom);
+        window.game.env.set_scroll(window.agent_selected, window.scroll[0], window.scroll[1]);
         this.env.render();
     }
 

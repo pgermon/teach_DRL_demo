@@ -125,6 +125,7 @@ function mousePressed(){
                     if(!agent.is_selected) {
                         agent.is_selected = true;
                         window.set_agent_selected(i);
+                        //window.agent_selected = window.game.env.agents[i];
                         for (let other_agent of window.game.env.agents) {
                             if (other_agent != agent) {
                                 other_agent.is_selected = false;
@@ -134,13 +135,14 @@ function mousePressed(){
                     break;
                 }
                 // If the agent is not touched it is deselected
-                else if(!is_agent_touched){
+                else {
                     agent.is_selected = false;
                 }
             }
 
-            if(!one_agent_touched){
+            if(!one_agent_touched && window.agent_selected != null){
                 window.set_agent_selected(null);
+                //window.agent_selected = null;
             }
 
             // Select an asset in the canvas if the mouse is clicked over its body

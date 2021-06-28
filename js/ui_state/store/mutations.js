@@ -124,9 +124,7 @@ export default {
             window.ceiling,
             window.align_terrain);
         window.agent_selected = null;
-        window.game.env.set_zoom(window.zoom);
-        window.game.env.set_scroll(window.agent_selected, window.scroll[0], window.scroll[1]);
-        window.game.env.render();
+        state.simulationState.agentSelected = null;
         return state;
     },
     addAgent(state, payload) {

@@ -194,7 +194,7 @@ parkourCustomTab.addEventListener('click', () => {
         let drawYourselfTab = new bootstrap.Tab(drawTabBtn);
         drawYourselfTab.show();
     }
-    store.dispatch('switchTab', 'parkour_custom'); // true for "Parkour Customization" and "Draw Yourself!" tab, else false
+    store.dispatch('switchTab', 'parkour_custom');
 });
 const drawYourselfBtn = document.querySelector('#draw-tab-btn');
 drawYourselfBtn.addEventListener('click', () => {
@@ -290,115 +290,6 @@ fetch('./base_envs_set.json')
                 store.dispatch('addEnv',{set: 'base', env: env});
             }))
     }));
-
-/*let env0 = {
-    terrain: {
-        ground: [
-            {x: INITIAL_TERRAIN_STARTPAD * TERRAIN_STEP, y: TERRAIN_HEIGHT},
-            {x: (INITIAL_TERRAIN_STARTPAD + TERRAIN_LENGTH) * TERRAIN_STEP, y: TERRAIN_HEIGHT}
-            ],
-        ceiling: [
-            {x: INITIAL_TERRAIN_STARTPAD * TERRAIN_STEP, y: TERRAIN_HEIGHT + 200 / 15},
-            {x: (INITIAL_TERRAIN_STARTPAD + TERRAIN_LENGTH) * TERRAIN_STEP, y: TERRAIN_HEIGHT + 200 / 15}
-            ],
-        parkourConfig: {
-            dim1: 0,
-            dim2: 0,
-            dim3: 0,
-            smoothing: 15,
-            waterLevel: 0,
-        },
-        creepersConfig: {
-            width: 0.2,
-            height: 0.2,
-            spacing: 5,
-            type: 'Rigid'
-        }
-    },
-    agents: [
-        {
-            morphology: 'bipedal',
-            name: 'Joe',
-            path: 'policy_models/walker/bipedal/16-02_old_walker_parkour_student_sac_v0.1.1_teacher_ALP-GMM_s1',
-            init_pos: null,
-        }
-    ],
-    description: {
-        name: 'Flat parkour + bipedal',
-        text: 'This parkour is completely flat, perfect for bipedal walkers.'
-    },
-    image: "images/envs_thumbnails/flat_parkour_bipedal.png"
-};
-
-let env1 = {
-    terrain: {
-        ground: [],
-        ceiling: [],
-        parkourConfig: {
-            dim1: 1,
-            dim2: 0.95,
-            dim3: 0,
-            smoothing: 25,
-            waterLevel: 0,
-        },
-        creepersConfig: {
-            width: 0.3,
-            height: 2.5,
-            spacing: 1,
-            type: 'Swingable'
-        }
-    },
-    agents: [
-        {
-            morphology: 'chimpanzee',
-            name: 'Tarzan',
-            path: 'policy_models/climber/chimpanzee/25-01_test_easy_climbing_parkour_CPPN_input_space_small_max_water_level_0.2_walker_type_climbing_profile_chimpanzee_teacher_Random_s11',
-            init_pos: null,
-        }
-    ],
-    description: {
-        name: 'Easy parkour + chimpanzee',
-        text: 'This parkour features creepers hanging from the ceiling and allowing a chimpanzee to swing from one to another.'
-    },
-    image: "images/envs_thumbnails/easy_parkour_chimpanzee.png"
-};
-
-let env2 = {
-    terrain: {
-        ground: [],
-        ceiling: [],
-        parkourConfig: {
-            dim1: 0,
-            dim2: -1,
-            dim3: 0,
-            smoothing: 10,
-            waterLevel: 1
-        },
-        creepersConfig: {
-            width: 0.2,
-            height: 0.2,
-            spacing: 5,
-            type: 'Swingable'
-        }
-    },
-    agents: [
-        {
-            morphology: 'fish',
-            name: 'Nemo',
-            path: 'policy_models/swimmer/fish/04-01_benchmark_parkour_RIAC_walker_type_fish_s12',
-            init_pos: null,
-        }
-    ],
-    description: {
-        name: 'Water parkour + fish',
-        text: 'This parkour is totally underwater, allowing fish to evolve in it.'
-    },
-    image: "images/envs_thumbnails/water_parkour_fish.png"
-};
-store.dispatch('addEnv', {set: 'base', env: env0});
-store.dispatch('addEnv', {set: 'base', env: env1});
-store.dispatch('addEnv', {set: 'base', env: env2});
-*/
 
 // interaction with index.js
 window.cancelAgentFollow = () => {
