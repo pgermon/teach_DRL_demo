@@ -22,7 +22,7 @@ export default class Store {
                 if(key == 'envsSets'){
                     self.events.publish('envsSetChange', self.state);
                 }
-                else if(key == 'morphologies' || key == 'currentSeedsIdxChange'){
+                else if(key == 'morphologies'){
                     self.events.publish('morphologiesChange', self.state);
                 }
                 else if(key == 'agents'){
@@ -46,7 +46,6 @@ export default class Store {
                 if (self.status !== 'mutation') {
                     console.warn(`You should use a mutation to set ${key}`);
                 }
-                self.status = 'resting';
                 return true;
             }
         });
@@ -72,6 +71,7 @@ export default class Store {
         self.status = 'mutation';
         let newState = self.mutations[mutationKey](self.state, payload);
         self.state = Object.assign(self.state, newState);
+        self.status = 'resting';
         return true;
     }   
 }

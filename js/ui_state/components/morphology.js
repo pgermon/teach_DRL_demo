@@ -9,6 +9,12 @@ const seed_names = {
     fish: ['Nemo', 'Dory', 'Oscar', 'Bubbles']
 };
 
+const morphologies_descriptions = {
+    bipedal: "This morphology is composed of a head and two legs which allow it to walk on the floor.",
+    chimpanzee: "This morphology is composed of a head, a torso and two arms and legs. It can only move by climbing the ceiling and grasping the creepers.",
+    fish: "This morphology is composed of a head, a tail and a fin, allowing it to swim in the water."
+}
+
 const bodyTypeMapping = new Map();
 bodyTypeMapping.set("bipedal", "classic_bipedal");
 bodyTypeMapping.set("chimpanzee", "climbing_profile_chimpanzee");
@@ -48,11 +54,11 @@ export default class MorphologySelect extends Component {
                         <div class="row align-items-center w-100">
                             <div class="col-4">
                                 <img name="morphology_thumbnail" src=${thumbnails_path + m.morphology + "_thumbnail.png"} 
-                                 alt=${m.morphology + "_thumbnail"}>
+                                 alt=${m.morphology + "_thumbnail"} data-bs-toggle="tooltip" title="${morphologies_descriptions[m.morphology]}">
                             </div>
                             
                             <div class="col px-0">
-                                <label for="morphology_thumbnail"><strong>${strUcFirst(m.morphology)}</strong></label>
+                                <label for="morphology_thumbnail"><strong>${strUcFirst(m.morphology)}</strong></label>                              
                                 <div name="select_button" class="input-group mt-1">                       
                                     <select name="models" class="form-select" data-bs-toggle="tooltip" title="Select an agent"></select>
                                     <div class="input-group-append">
@@ -75,7 +81,6 @@ export default class MorphologySelect extends Component {
             span.innerHTML = store.state.morphologies
                 .filter(m => m.morphology == store.state.morphologies[index].morphology)
                 .flatMap(morphology => morphology.seeds)
-                //.map((seedEntry, index) => `<option value="${seedEntry.path}">${store.state.currentMorphology}_${seedEntry.seed}</option>`)
                 .map((seedEntry, idx) => {
                     let name = seed_names[store.state.morphologies[index].morphology][idx];
                     return `<option value="${seedEntry.path}">${name}</option>`;
