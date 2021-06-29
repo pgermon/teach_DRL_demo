@@ -519,6 +519,10 @@ class DrawingMAPCP {
         this.terrain_ground = [];
         this.terrain_ceiling = [];
 
+        // Smooth ground and ceiling by removing points that are too close to reduce the number of bodies created
+        ground = smoothTerrainFiler(ground, TERRAIN_STEP * 3/4);
+        ceiling = smoothTerrainFiler(ceiling, TERRAIN_STEP * 3/4);
+
         // Create startpad
         for(let i = 0; i < this.TERRAIN_STARTPAD; i++){
             this.terrain_ground.push({x: i * TERRAIN_STEP, y: TERRAIN_HEIGHT});
@@ -606,9 +610,6 @@ class DrawingMAPCP {
         window.ground.splice(0, this.TERRAIN_STARTPAD);
         window.ceiling = [...this.terrain_ceiling];
         window.ceiling.splice(0, this.TERRAIN_STARTPAD);
-
-        //console.log(window.ground);
-        //console.log(window.ceiling);
 
         // Draw terrain
         this.terrain_bodies = [];
@@ -1083,4 +1084,20 @@ function find_best_y(x, array, max_dist=null){
             y = null;
     }
     return y;
+}
+
+function smoothTerrainFiler(terrain, epsilon){
+    let smooth_terrain = [];
+    if(terrain.length > 0){
+        smooth_terrain.push(terrain[0]);
+        let n = 0;
+        for(let i = 1; i < terrain.length - 1; i++){
+            if(terrain[i].x >= smooth_terrain[n].x + epsilon){
+                smooth_terrain.push(terrain[i]);
+                n += 1;
+            }
+        }
+        smooth_terrain.push(terrain[terrain.length - 1]);
+    }
+    return smooth_terrain;
 }
