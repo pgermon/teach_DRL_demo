@@ -3,13 +3,11 @@ import MorphologySelect from './js/ui_state/components/morphology.js';
 import AgentsList from './js/ui_state/components/agents_list.js';
 import RunButtons from './js/ui_state/components/run_buttons.js';
 import ParkourConfig from './js/ui_state/components/parkour_config.js';
-import CreepersConfig from './js/ui_state/components/creepers_config.js';
 import DrawingMode from "./js/ui_state/components/drawing_mode.js";
 import AdvancedOptions from "./js/ui_state/components/advanced_options.js";
 import EnvsSet from "./js/ui_state/components/envs_set.js";
 
 // Save env modal setup
-
 // Open the modal
 window.openModal = (modal) => {
     modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
@@ -24,7 +22,6 @@ window.closeModal = (modal) => {
     modal.querySelectorAll('.text-field').forEach((span, index) => {
        span.value = "";
     });
-
 }
 
 const saveEnvModal = document.querySelector('#saveEnvModal');
@@ -184,7 +181,7 @@ parkourConfigInstance.render();
 //creepersConfigInstance.render()
 
 // Tabs buttons setup
-const gettingStartedBtn = document.querySelector('#getting-started-tab');
+const gettingStartedBtn = document.querySelector('#getting-started-btn');
 gettingStartedBtn.addEventListener('click', () => {
     store.dispatch('switchTab', 'getting_started');
 })
@@ -206,9 +203,13 @@ const procGenBtn = document.querySelector('#proc-gen-tab-btn');
 procGenBtn.addEventListener('click', () => {
     store.dispatch('switchTab', 'proc_gen');
 });
-const advancedOptionsBtn = document.querySelector('#advanced-options-tab');
+const advancedOptionsBtn = document.querySelector('#advanced-options-btn');
 advancedOptionsBtn.addEventListener('click', () => {
     store.dispatch('switchTab', 'advanced_options');
+});
+const aboutDRLBtn = document.querySelector('#about-drl-btn');
+aboutDRLBtn.addEventListener('click', () => {
+    store.dispatch('switchTab', 'about_drl');
 });
 
 // Drawing Mode setup

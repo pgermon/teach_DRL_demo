@@ -17,14 +17,6 @@ export default {
         state.envsSets.customEnvsSet.splice(payload, 1);
         return state;
     },
-    /*markCppnInitialized(state, payload) {
-        state.cppnInitialized = true;
-        return state;
-    },
-    disableDefaultAgent(state, payload) {
-        state.defaultAgentAdded = true;
-        return state;
-    },*/
     updateParkourConfig(state, payload){
         switch (payload.name) {
             case 'dim1':
@@ -57,43 +49,6 @@ export default {
         }
         return state;
     },
-    /*updateCreepersConfig(state, payload) {
-        switch (payload.name) {
-            case 'width':
-                state.parkourConfig.creepers.width = payload.value;
-                break;
-            case 'height':
-                state.parkourConfig.creepers.height = payload.value;
-                break;
-            case 'spacing':
-                state.parkourConfig.creepers.spacing = payload.value;
-                break;
-            case 'type':
-                state.parkourConfig.creepers.type = payload.value;
-                break;
-        }
-        return state;
-    },
-    updateCppnConfig(state, payload) {
-        switch (payload.name) {
-            case 'dim1':
-                state.parkourConfig.terrain.dim1 = payload.value;
-                break;
-            case 'dim2':
-                state.parkourConfig.terrain.dim2 = payload.value;
-                break;
-            case 'dim3':
-                state.parkourConfig.terrain.dim3 = payload.value;
-                break;
-            case 'smoothing':
-                state.parkourConfig.terrain.smoothing = payload.value;
-                break;
-            case 'waterLevel':
-                state.parkourConfig.terrain.waterLevel = payload.value;
-                break;
-        }
-        return state;
-    },*/
     init_default(state, payload){
         state.simulationState.status = 'init';
         window.align_terrain = {

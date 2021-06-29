@@ -5,7 +5,7 @@ export default class EnvsSet extends Component{
     constructor() {
         super({
             store,
-            element: document.querySelector('#getting-started'),
+            element: document.querySelector('#getting-started-tab'),
             eventName: 'envsSetChange'
         });
     }

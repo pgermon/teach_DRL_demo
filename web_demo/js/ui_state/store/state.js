@@ -11,7 +11,7 @@ export default {
         agentFollowed: null,
         agentSelected: null,
     },
-    activeTab:'getting_started', // 'getting_started', 'parkour_custom, 'advanced_options'
+    activeTab:'getting_started', // 'getting_started', 'parkour_custom, 'advanced_options', 'about_drl'
     parkourConfig: {
         terrain:{
             dim1: 1.0,
@@ -41,6 +41,4 @@ export default {
             circle: false,
         },
     },
-    //defaultAgentAdded: false,
-    //cppnInitialized: false,
 };

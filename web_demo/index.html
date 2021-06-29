@@ -127,10 +127,10 @@
         <div class="row mt-1">
             <div class="col-10">
                 <!-- Nav tabs -->
-                <ul class="nav nav-tabs" id="main-tabs" role="tablist">
+                <ul class="nav nav-tabs nav-fill" id="main-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="getting-started-tab" data-bs-toggle="tab"
-                            data-bs-target="#getting-started" type="button" role="tab" aria-controls="getting-started"
+                        <button class="nav-link active" id="getting-started-btn" data-bs-toggle="tab"
+                            data-bs-target="#getting-started-tab" type="button" role="tab" aria-controls="getting-started-tab"
                             aria-selected="true"><strong>Getting Started</strong></button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -140,9 +140,15 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="advanced-options-tab" data-bs-toggle="tab" data-bs-target="#advanced-opt-config"
-                                type="button" role="tab" aria-controls="advanced-opt-config" aria-selected="false">
+                        <button class="nav-link" id="advanced-options-btn" data-bs-toggle="tab" data-bs-target="#advanced-options-tab"
+                                type="button" role="tab" aria-controls="advanced-options-tab" aria-selected="false">
                             <strong>Advanced Options</strong>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="about-drl-btn" data-bs-toggle="tab" data-bs-target="#about-drl-tab"
+                                type="button" role="tab" aria-controls="about-drl-tab" aria-selected="false">
+                            <i class="fas fa-info-circle fa-lg"></i> <strong>About DeepRL</strong>
                         </button>
                     </li>
                 </ul>
@@ -151,7 +157,7 @@
                 <div class="tab-content">
 
                     <!-- Getting Started tab pane -->
-                    <div class="tab-pane active" id="getting-started" role="tabpanel" aria-labelledby="getting-started-tab">
+                    <div class="tab-pane active" id="getting-started-tab" role="tabpanel" aria-labelledby="getting-started-btn">
                         <p>Welcome to the Deep Reinforcement Learning demo!</p>
                         <p>Here you can play with a simulation where pre-trained agents are trying to navigate through a
                             generated environment.</p>
@@ -370,7 +376,7 @@
                     </div>
 
                     <!-- Advanced Options tab pane -->
-                    <div class="tab-pane" id="advanced-opt-config" role="tabpanel" aria-labelledby="advanced-options-tab">
+                    <div class="tab-pane" id="advanced-options-tab" role="tabpanel" aria-labelledby="advanced-options-btn">
                         <!-- Draw joins/sensors/names selectors -->
                         <div id="advancedOptions" class="row mt-3">
                             <div class="col-1"></div>
@@ -402,13 +408,18 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- About DeepRL tab pane -->
+                    <div class="tab-pane active" id="about-drl-tab" role="tabpanel" aria-labelledby="about-drl-btn">
+                        <p>Welcome to the Deep Reinforcement Learning demo!</p>
+                    </div>
                 </div>
             </div>
 
             <div id="agent-sel-config" class="col mx-1 mb-2 px-2 border border-top-0 border-end-0 border-bottom-0">
                 <!-- select the morphology -->
                 <h1 class="has-text-centered my-2"> <strong> Add an agent</strong>  </h1>
-                <p class="has-text-centered my-2"> Here you can add an agent with the morphology of your choice to the simulation.</p>
+                <p class="has-text-centered my-2"> Here you can add an agent to the simulation with the morphology of your choice.</p>
                 <ul class="list-group" id="agentsSelection"></ul>
             </div>
         </div>
