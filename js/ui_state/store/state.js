@@ -1,18 +1,19 @@
+// State of all UI elements
 export default {
     envsSets: {
-        baseEnvsSet: [],
-        customEnvsSet: []
+        baseEnvsSet: [], // list of environments of the base set
+        customEnvsSet: [] // list of environments of the custom set
     },
-    morphologies: [],
-    currentSeedsIdx: {},
-    agents: [],
+    morphologies: [], // list of available morphologies
+    currentSeedsIdx: {}, // index of the policy selected for each morphology
+    agents: [], // list of running agents
     simulationState: {
         status: 'init', // 'running', 'paused'
         agentFollowed: null,
         agentSelected: null,
     },
     activeTab:'getting_started', // 'getting_started', 'parkour_custom, 'advanced_options', 'about_drl'
-    parkourConfig: {
+    parkourConfig: { // parkour customization parameters
         terrain:{
             dim1: 1.0,
             dim2: 0.95,

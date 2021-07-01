@@ -1,5 +1,6 @@
 p5.disableFriendlyErrors = true; // disables FES
 
+// Colors to be used for the joints
 let JOINTS_COLORS = {
     "creeper": "#00B400",
     "hip": "#FF7818",
@@ -11,9 +12,14 @@ let JOINTS_COLORS = {
     "grip": "#FF0000",
 };
 
-let drawing_canvas;
-let trace_canvas;
-let forbidden_canvas;
+// Secondary off-screen canvas
+let drawing_canvas; // Used to draw the terrain shapes
+let trace_canvas; // Used to draw the erase and assets traces following the mouse
+let forbidden_canvas; // Used to draw the forbidden red area on the terrain startpad
+
+/**
+ * Creates the different canvas and sets them up. Called automatically when the programs starts.
+ */
 function setup() {
     let canvas_container = document.querySelector('#canvas_container');
     RENDERING_VIEWER_W = canvas_container.offsetWidth;
@@ -25,23 +31,39 @@ function setup() {
     canvas.style('margin-left', 'auto');
     canvas.style('margin-right', 'auto');
 
+    // Creates the off-screen canvas. Height is bigger than main canvas' so that one can scroll vertically when drawing.
     drawing_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
     trace_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
     forbidden_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
 
-   //background("#e6e6ff");
+    // Prevents automatic calls the draw() function
     noLoop();
-    //frameRate(30);
 }
 
+/**
+ * Converts one rgb component to hexadecimal.
+ * @param c {number}
+ * @return {string}
+ */
 function componentToHex(c) {
     let hex = c.toString(16);
     return hex.length == 1 ? "0" + hex : hex;
 }
 
+/**
+ * Converts the rgb array to hexadecimal string.
+ * @param rgb {Array}
+ * @return {string}
+ */
 function rgbToHex(rgb) {
     return "#" + componentToHex(rgb[0]) + componentToHex(rgb[1]) + componentToHex(rgb[2]);
 }
+
+/**
+ * Converts hexadecimal string to rgb array
+ * @param hex
+ * @return {[number, number, number]}
+ */
 function hexToRgb(hex) {
     let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     let rgb = [
@@ -52,10 +74,14 @@ function hexToRgb(hex) {
     return result ? rgb : null;
 }
 
+/**
+ * Color agent's head depending on its 'dying' state.
+ * @param agent {Object}
+ * @param c1 {Array}
+ * @param c2 {Array}
+ * @return {Array}
+ */
 function color_agent_head(agent, c1, c2){
-    /*
-     * Color agent's head depending on its 'dying' state.
-     */
     let ratio = 0;
     if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
         ratio = agent.nb_steps_outside_water / agent.agent_body.nb_steps_can_survive_outside_water;
@@ -73,20 +99,23 @@ function color_agent_head(agent, c1, c2){
     return [color1, color2];
 }
 
+/**
+ * Renders all the elements of the environment.
+ */
 function draw() {
     background("#E6F0FF");
     if(window.game != null){
-        let parkour = window.game.env;
+        let env = window.game.env;
         push();
 
-        drawParkour(parkour);
+        drawTerrain(env);
 
-        for(let agent of parkour.agents){
+        for(let agent of env.agents){
             if(!window.is_drawing()){
-                drawAgent(parkour, agent, parkour.scale);
+                drawAgent(agent, env.scale);
 
                 if(window.draw_lidars){
-                    drawLidars(agent.lidars, parkour.scale);
+                    drawLidars(agent.lidars, env.scale);
                 }
 
                 if(window.draw_joints){
@@ -96,11 +125,11 @@ function draw() {
                     if(agent.agent_body.body_type == BodyTypesEnum.CLIMBER){
                         joints.push(agent.agent_body.neck_joint);
                     }
-                    drawJoints(joints, parkour.scale);
+                    drawJoints(joints, env.scale);
 
                     if(agent.agent_body.body_type == BodyTypesEnum.CLIMBER){
                         joints = [...agent.agent_body.sensors.map(s => s.GetUserData().has_joint ? s.GetUserData().joint : null)];
-                        drawJoints(joints, parkour.scale);
+                        drawJoints(joints, env.scale);
                     }
                 }
 
@@ -108,7 +137,7 @@ function draw() {
                     let pos = agent.agent_body.reference_head_object.GetPosition();
                     fill(0);
                     noStroke()
-                    textSize(25/ parkour.scale);
+                    textSize(25/ env.scale);
                     textAlign(CENTER);
                     let x_pos = pos.x;
                     let y_pos;
@@ -129,13 +158,18 @@ function draw() {
 
         if(window.draw_joints) {
             // Creepers joints
-            drawJoints(parkour.creepers_joints, parkour.scale);
+            drawJoints(env.creepers_joints, env.scale);
         }
 
         pop();
     }
 }
 
+/**
+ * Draws the given sensors.
+ * @param sensors {Array}
+ * @param scale {number} - Scale of the environment
+ */
 function drawSensors(sensors, scale){
     for(let i = 0; i < sensors.length; i++){
         let radius = sensors[i].GetFixtureList().GetShape().m_radius + 0.01;
@@ -147,6 +181,11 @@ function drawSensors(sensors, scale){
     }
 }
 
+/**
+ * Draws the given joints.
+ * @param joints
+ * @param scale {number} - Scale of the environment
+ */
 function drawJoints(joints, scale){
     for(let i = 0; i < joints.length; i++){
         if(joints[i] != null){
@@ -162,7 +201,12 @@ function drawJoints(joints, scale){
     }
 }
 
-function drawAgent(parkour, agent, scale){
+/**
+ * Draws all the body parts of the given agent.
+ * @param agent {Object}
+ * @param scale {number} - Scale of the environment
+ */
+function drawAgent(agent, scale){
     let stroke_coef = 1;
 
     if(agent.is_selected){
@@ -191,6 +235,11 @@ function drawAgent(parkour, agent, scale){
     }
 }
 
+/**
+ * Draws the given lidars.
+ * @param lidars {Array}
+ * @param scale {number}
+ */
 function drawLidars(lidars, scale){
     for(let i = 0; i < lidars.length; i++){
         let vertices = [
@@ -202,7 +251,11 @@ function drawLidars(lidars, scale){
     }
 }
 
-function drawSkyClouds(parkour){
+/**
+ * Draws the sky and the clouds
+ * @param env
+ */
+function drawSkyClouds(env){
     push();
 
     // Sky
@@ -216,19 +269,18 @@ function drawSkyClouds(parkour){
     //drawPolygon(vertices, "#e6e6ff");
 
     // Translation to scroll horizontally and vertically
-    translate(- parkour.scroll[0]/3, parkour.scroll[1]/3);
+    translate(- env.scroll[0]/3, env.scroll[1]/3);
 
     // Rescaling
-    scale(parkour.scale);
-    scale(parkour.zoom * 3/4);
+    scale(env.scale);
+    scale(env.zoom * 3/4);
 
     // Translating so that the environment is always horizontally centered
-    translate(0, (1 - parkour.scale * parkour.zoom) * VIEWPORT_H/(parkour.scale * parkour.zoom));
-    translate(0, (parkour.zoom - 1) * (parkour.ceiling_offset)/parkour.zoom * 1/3);
+    translate(0, (1 - env.scale * env.zoom) * VIEWPORT_H/(env.scale * env.zoom));
+    translate(0, (env.zoom - 1) * (env.ceiling_offset)/env.zoom * 1/3);
 
     // Clouds
-    for(let cloud of parkour.cloud_polys){
-        //if(cloud.x1 >= parkour.scroll[0]/2 && cloud.x1 <= parkour.scroll[0]/2 + RENDERING_VIEWER_W/parkour.scale){
+    for(let cloud of env.cloud_polys){
         noStroke();
         drawPolygon(cloud.poly, "#FFFFFF");
     }
@@ -236,47 +288,50 @@ function drawSkyClouds(parkour){
     pop();
 }
 
-function drawParkour(parkour){
-    // Update scroll to stay centered on the agent position
+/**
+ * Draws all the bodies composing the terrain of the given environment.
+ * @param env {Object}
+ */
+function drawTerrain(env){
+    // Updates scroll to stay centered on the agent position
     if(window.follow_agent && window.agent_selected != null){
-        parkour.set_scroll(window.agent_selected, null, null);
+        env.set_scroll(window.agent_selected, null, null);
     }
 
     // Sky & clouds
-    drawSkyClouds(parkour);
+    drawSkyClouds(env);
 
     // Translation to scroll horizontally and vertically
-    translate(- parkour.scroll[0], parkour.scroll[1]);
+    translate(- env.scroll[0], env.scroll[1]);
 
     // Rescaling
-    scale(parkour.scale);
-    scale(parkour.zoom);
+    scale(env.scale);
+    scale(env.zoom);
 
     // Translating so that the environment is always horizontally centered
-    translate(0, (1 - parkour.scale * parkour.zoom) * VIEWPORT_H/(parkour.scale * parkour.zoom));
-    translate(0, (parkour.zoom - 1) * (parkour.ceiling_offset)/parkour.zoom * 1/3);
+    translate(0, (1 - env.scale * env.zoom) * VIEWPORT_H/(env.scale * env.zoom));
+    translate(0, (env.zoom - 1) * (env.ceiling_offset)/env.zoom * 1/3);
 
     // Water
     let vertices = [
         [-RENDERING_VIEWER_W, -RENDERING_VIEWER_H],
-        [-RENDERING_VIEWER_W, parkour.water_y],
-        [2 * RENDERING_VIEWER_W, parkour.water_y],
+        [-RENDERING_VIEWER_W, env.water_y],
+        [2 * RENDERING_VIEWER_W, env.water_y],
         [2 * RENDERING_VIEWER_W, -RENDERING_VIEWER_H]
     ];
     noStroke();
     drawPolygon(vertices, "#77ACE5");
 
-
-    // Draw all background elements
-    for(let i = 0; i < parkour.background_polys.length; i++) {
-        let poly = parkour.background_polys[i];
+    // Draws all background elements
+    for(let i = 0; i < env.background_polys.length; i++) {
+        let poly = env.background_polys[i];
         noStroke();
         drawPolygon(poly.vertices, poly.color);
     }
 
-    // Draw all terrain elements
-    for(let i = 0; i < parkour.terrain_bodies.length; i++) {
-        let poly = parkour.terrain_bodies[i];
+    // Draws all terrain elements
+    for(let i = 0; i < env.terrain_bodies.length; i++) {
+        let poly = env.terrain_bodies[i];
         let shape = poly.body.GetFixtureList().GetShape();
         let vertices = [];
 
@@ -292,20 +347,20 @@ function drawParkour(parkour){
             let v1 = poly.body.GetWorldPoint(shape.m_vertex1);
             let v2 = poly.body.GetWorldPoint(shape.m_vertex2);
             vertices = [[v1.x, v1.y], [v2.x, v2.y]];
-            strokeWeight(1/parkour.scale);
+            strokeWeight(1/env.scale);
             drawLine(vertices, poly.color);
         }
     }
 
-    // Draw all assets
-    for(let asset of parkour.assets_bodies){
+    // Draws all assets
+    for(let asset of env.assets_bodies){
         let shape = asset.body.GetFixtureList().GetShape();
 
         let stroke_coef = asset.is_selected ? 2 : 1;
 
         if(asset.type == "circle"){
             let center = asset.body.GetWorldCenter();
-            strokeWeight(stroke_coef * 2/parkour.scale);
+            strokeWeight(stroke_coef * 2/env.scale);
             stroke(asset.color2);
             fill(asset.color1);
             circle(center.x, RENDERING_VIEWER_H - center.y, shape.m_radius * 2);
@@ -313,6 +368,11 @@ function drawParkour(parkour){
     }
 }
 
+/**
+ * Draws a polygon in the canvas with the given vertices.
+ * @param vertices {Array}
+ * @param color {string}
+ */
 function drawPolygon(vertices, color){
     fill(color);
     beginShape();
@@ -322,6 +382,11 @@ function drawPolygon(vertices, color){
     endShape(CLOSE);
 }
 
+/**
+ * Draws a line in the canvas between the two vertices.
+ * @param vertices {Array}
+ * @param color {string}
+ */
 function drawLine(vertices, color){
     stroke(color);
     line(vertices[0][0], VIEWPORT_H - vertices[0][1], vertices[1][0], VIEWPORT_H - vertices[1][1]);

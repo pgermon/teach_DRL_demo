@@ -1,4 +1,14 @@
+/**
+ * @classdesc Abstract class for swimmer morphologies.
+ */
 class SwimmerAbstractBody extends AbstractBody{
+    /**
+     * @constructor
+     * @param scale {number} - Scale of the environment
+     * @param motors_torque {number}
+     * @param density {number} - Density of the agent's body.
+     * @param nb_steps_outside_water {number}
+     */
     constructor(scale, motors_torque, density, nb_steps_outside_water) {
         super(scale, motors_torque);
         this.body_type = BodyTypesEnum.SWIMMER;

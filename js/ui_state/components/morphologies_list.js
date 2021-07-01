@@ -20,7 +20,7 @@ bodyTypeMapping.set("bipedal", "classic_bipedal");
 bodyTypeMapping.set("chimpanzee", "climbing_profile_chimpanzee");
 bodyTypeMapping.set("fish", "fish");
 
-export default class MorphologySelect extends Component {
+export default class MorphologiesList extends Component {
     constructor() {
         super({
             store,

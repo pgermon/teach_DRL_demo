@@ -1,8 +1,17 @@
-const SPEED_HIP = 4;
-const SPEED_KNEE = 6;
-const SPEED_HAND = 8;
+const CHIMP_SPEED_HIP = 4;
+const CHIMP_SPEED_KNEE = 6;
+const CHIMP_SPEED_HAND = 8;
 
-class ClimbingProfileCHimpanzee extends ClimberAbstractBody {
+/**
+ * @classdesc Chimpanzee morphology.
+ */
+class ClimbingProfileChimpanzee extends ClimberAbstractBody {
+    /**
+     * @constructor
+     * @param scale {number} - Scale of the environment
+     * @param motors_torque {number}
+     * @param nb_steps_under_water {number}
+     */
     constructor(scale, motors_torque=100, nb_steps_under_water=600){
         super(scale, motors_torque, nb_steps_under_water);
 
@@ -142,7 +151,7 @@ class ClimbingProfileCHimpanzee extends ClimberAbstractBody {
             rjd.lowerAngle = -0.3 * Math.PI;
             rjd.upperAngle = 0.6 * Math.PI;
             joint_motor = world.CreateJoint(rjd);
-            joint_motor.SetUserData(new CustomMotorUserData("hip", SPEED_HIP, false));
+            joint_motor.SetUserData(new CustomMotorUserData("hip", CHIMP_SPEED_HIP, false));
             this.motors.push(joint_motor);
 
             // Lower leg
@@ -167,7 +176,7 @@ class ClimbingProfileCHimpanzee extends ClimberAbstractBody {
             rjd.upperAngle = -0.1;
             joint_motor = world.CreateJoint(rjd);
             joint_motor.SetUserData(new CustomMotorUserData("knee",
-                                                            SPEED_KNEE,
+                                                            CHIMP_SPEED_KNEE,
                                                             true,
                                                             1,
                                                             lower));
@@ -197,7 +206,7 @@ class ClimbingProfileCHimpanzee extends ClimberAbstractBody {
             rjd.lowerAngle = -0.75 * 2 * Math.PI;
             rjd.upperAngle = 0;
             joint_motor = world.CreateJoint(rjd);
-            joint_motor.SetUserData(new CustomMotorUserData("shoulder", SPEED_HIP, false));
+            joint_motor.SetUserData(new CustomMotorUserData("shoulder", CHIMP_SPEED_HIP, false));
             this.motors.push(joint_motor);
 
             // Lower arm
@@ -222,7 +231,7 @@ class ClimbingProfileCHimpanzee extends ClimberAbstractBody {
             rjd.upperAngle = 0.75 * Math.PI;
             joint_motor = world.CreateJoint(rjd);
             joint_motor.SetUserData(new CustomMotorUserData("elbow",
-                                                            SPEED_HIP,
+                                                            CHIMP_SPEED_HIP,
                                                             false));
             this.motors.push(joint_motor);
 
@@ -253,7 +262,7 @@ class ClimbingProfileCHimpanzee extends ClimberAbstractBody {
                 rjd.upperAngle = angle_boundaries[u][1] * Math.PI;
                 joint_motor = world.CreateJoint(rjd);
                 joint_motor.SetUserData(new CustomMotorUserData("hand",
-                                                                SPEED_HAND,
+                                                                CHIMP_SPEED_HAND,
                                                                 true,
                                                                 0,
                                                                 hand_part));

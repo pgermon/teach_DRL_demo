@@ -1,3 +1,8 @@
+/**
+ * @classdesc Class that derives from b2.ContactListener and that handles both water and climbing collisions.
+ * @param env {Object}
+ * @constructor
+ */
 function ContactDetector (env){
     b2.ContactListener.call(this);
     this.water_contact_detector = new WaterContactDetector();
@@ -26,16 +31,6 @@ ContactDetector.prototype.BeginContact = function (contact){
             let body = bodies[i];
             if(body.GetUserData().object_type == CustomUserDataObjectTypes.BODY_OBJECT && body.GetUserData().check_contact){
                 body.GetUserData().has_contact = true;
-                /*let other_body = bodies[(i + 1) % 2];
-                // Authorize climbing bodies to touch climbing parts
-
-                //TODO: check to which agent the body belongs
-                 agent_body = this.env.agents[0].agent_body;
-
-                if(body.GetUserData().is_contact_critical && !(other_body.GetUserData().object_type == CustomUserDataObjectTypes.GRIP_TERRAIN
-                                                        && agent_body.body_type == BodyTypesEnum.CLIMBER)){
-                    this.env.critical_contact = true;
-                }*/
             }
         }
     }
@@ -65,7 +60,11 @@ ContactDetector.prototype.Reset = function (){
     this.climbing_contact_detector.Reset();
 }
 
-
+/**
+ * @classdesc Class that derives from b2.RayCastCallback and that handles lidars raycasts.
+ * @param agent_mask_filter
+ * @constructor
+ */
 function LidarCallback(agent_mask_filter){
     b2.RayCastCallback.call(this);
     this.agent_mask_filter = agent_mask_filter;

@@ -1,6 +1,15 @@
+/**
+ * @classdesc Class that handles the climbing dynamics.
+ */
 class ClimbingDynamics {
     constructor(){};
 
+    /**
+     * Prepares the agent's sensors to grasp or release according to the actions.
+     * @param actions {Array} - Actions of the agent
+     * @param agent_body {Object} - Climber morphology
+     * @param world - {Object} - Box2D world
+     */
     before_step_climbing_dynamics(actions, agent_body, world){
         for(let i = 0; i < agent_body.sensors.length; i++){
             let action_to_check = actions[actions.length - i - 1];
@@ -10,17 +19,17 @@ class ClimbingDynamics {
             }
             else {
                 sensor_to_check.GetUserData().ready_to_attach = false;
-                if(sensor_to_check.GetUserData().has_joint){ // if release and it had a joint => destroy it
+                if(sensor_to_check.GetUserData().has_joint){ // if released and it had a joint => destroys it
                     sensor_to_check.GetUserData().has_joint = false;
 
-                    // Get a list of all the joints of the sensor body
+                    // Gets a list of all the joints of the sensor body
                     let sensor_joints = [];
                     let _joint = sensor_to_check.GetJointList();
                     while(_joint != null){
                         sensor_joints.push(_joint.joint);
                         _joint = _joint.next;
                     }
-                    // Find the index of the first revolute joint
+                    // Finds the index of the first revolute joint
                     const isRevolute = (s) => s.m_type == b2.Joint.e_revoluteJoint;
                     let idx_to_destroy = sensor_joints.findIndex(isRevolute);
                     if(idx_to_destroy != -1){
@@ -31,8 +40,13 @@ class ClimbingDynamics {
         }
     }
 
+    /**
+     * Creates joints between sensors ready to grasp if collision with graspable area was detected
+     * @param contact_detector {Object}
+     * @param world {Object} - Box2D world
+     */
     after_step_climbing_dynamics(contact_detector, world){
-        // Add climbing joints if needed
+        // Adds climbing joints if needed
         for(let i = 0; i < contact_detector.contact_dictionaries.sensors.length; i++){
             let sensor = contact_detector.contact_dictionaries.sensors[i];
             if(contact_detector.contact_dictionaries.bodies[i].length > 0
@@ -41,7 +55,7 @@ class ClimbingDynamics {
                 let other_bodies = [...contact_detector.contact_dictionaries.bodies[i]];
                 for(let other_body of other_bodies){
 
-                    // Check if still overlapping after solver
+                    // Checks if still overlapping after solver
                     // Super coarse yet fast way, mainly useful for creepers
                     let other_body_shape = other_body.GetFixtureList().GetShape();
                     let x_values = [];
@@ -74,7 +88,7 @@ class ClimbingDynamics {
                         break;
                     }
                     else {
-                        // Remove other_body from the list of bodies in contact with the sensor
+                        // Removes other_body from the list of bodies in contact with the sensor
                         let sensor_idx = contact_detector.contact_dictionaries.sensors.indexOf(sensor);
                         if(sensor_idx != -1){
                             let other_idx = contact_detector.contact_dictionaries.bodies[sensor_idx].indexOf(other_body);
@@ -91,11 +105,11 @@ class ClimbingDynamics {
     }
 }
 
-
+/**
+ * @classdesc Stores contacts between sensors and graspable surfaces in a dictionaries associated to the sensor.
+ * @constructor
+ */
 function ClimbingContactDetector() {
-    /*
-     * Store contacts between sensors and graspable surfaces in a dictionaries associated to the sensor.
-     */
     b2.ContactListener.call(this);
     this.contact_dictionaries = {
         sensors: [],

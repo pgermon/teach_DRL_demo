@@ -1,6 +1,12 @@
+/**
+ * @classdesc CPPN class.
+ */
 class CPPN {
-    /*
-     * CPPN class wich takes an input vector in addition of a vector defining the x position.
+
+    /**
+     * @constructor
+     * @param x_dim {number} - Number of terrain steps to generate
+     * @param input_dim {number} - Dimension of the input encoding vector
      */
     constructor(x_dim, input_dim){
         this.x_dim = x_dim;
@@ -8,6 +14,11 @@ class CPPN {
         this.cppn_model = window.cppn_model;
     }
 
+    /**
+     * Generates the terrain shapes with the CPPN model.
+     * @param input_vector {Array} - 3-dimensional array that encodes the CPPN
+     * @returns {Array} - Array of y-coordinates of the terrain shapes : [[y_ground, y_ceiling]
+     */
     generate(input_vector){
         let x = [...Array(this.x_dim).keys()];
         let scaled_x = x.map(e => e / (this.x_dim - 1));

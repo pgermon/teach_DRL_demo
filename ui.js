@@ -1,5 +1,5 @@
 import store from './js/ui_state/store/index.js';
-import MorphologySelect from './js/ui_state/components/morphology.js';
+import MorphologiesList from './js/ui_state/components/morphologies_list.js';
 import AgentsList from './js/ui_state/components/agents_list.js';
 import RunButtons from './js/ui_state/components/run_buttons.js';
 import ParkourConfig from './js/ui_state/components/parkour_config.js';
@@ -7,15 +7,20 @@ import DrawingMode from "./js/ui_state/components/drawing_mode.js";
 import AdvancedOptions from "./js/ui_state/components/advanced_options.js";
 import EnvsSet from "./js/ui_state/components/envs_set.js";
 
-// Save env modal setup
-// Open the modal
+/**
+ * Opens the given modal.
+ * @param modal {HTMLDivElement}
+ */
 window.openModal = (modal) => {
     modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
     modal.style.display = "block";
     modal.classList.add('show');
 }
 
-// Close the modal and clear the text fields
+/**
+ * Closes the given modal and clears the text fields.
+ * @param modal {HTMLDivElement}
+ */
 window.closeModal = (modal) => {
     modal.classList.remove('show');
     modal.style.display = 'none';
@@ -24,37 +29,34 @@ window.closeModal = (modal) => {
     });
 }
 
+// Save env modal setup
 const saveEnvModal = document.querySelector('#saveEnvModal');
-const saveEnvButton = document.querySelector('#saveEnvButton');
-saveEnvButton.addEventListener('click', () => {
-    openModal(saveEnvModal);
-});
 saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
     span.addEventListener('click', () => {
 
-        // if the confirm button is clicked
+        // If the confirm button is clicked
         if(span.getAttribute('id') == "save-confirm-btn"){
 
-            // Get the name and description values
+            // Gets the name and description values
             let name = saveEnvModal.querySelector('#env-name').value;
             if(name == ""){
                 name = "Custom Environment " + store.state.envsSets.customEnvsSet.length;
             }
             let description = saveEnvModal.querySelector('#env-description').value;
 
-            // Save the current pos of the agents
+            // Saves the current position of the agents
             for(let i = 0; i < store.state.agents.length; i++){
                 store.dispatch('setAgentInitPos', {index: i, init_pos: window.game.env.agents[i].agent_body.reference_head_object.GetPosition().Clone()});
             }
 
-            // Adjust the zoom and scroll to capture the thumbnail
+            // Adjusts the zoom and scroll to capture the thumbnail
             let previous_zoom = window.zoom;
             let previous_scroll = [...window.scroll];
             window.game.env.set_zoom(THUMBNAIL_ZOOM);
             window.game.env.set_scroll(null, THUMBNAIL_SCROLL_X, 0);
             window.game.env.render();
 
-            // Create the state of the current env
+            // Creates the state of the current env
             let env = {
                 terrain: {
                     ground: [...window.ground],
@@ -67,14 +69,14 @@ saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
                     name: name,
                     text: description
                 },
-                // Capture the canvas to create the thumbnail of the env
+                // Captures the canvas to create the thumbnail of the env
                 image: window.canvas.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
             };
 
-            // Add the env to the custom set
+            // Adds the env to the custom set
             store.dispatch('addEnv',{set: 'custom', env: env});
 
-            // Set back the zoom and scroll to the previous values
+            // Sets back the zoom and scroll to the previous values
             window.game.env.set_zoom(previous_zoom);
             window.game.env.set_scroll(null, previous_scroll[0], previous_scroll[1]);
             window.game.env.render();
@@ -84,9 +86,25 @@ saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
     });
 });
 
-// Morphology list setup
-const morphologySelectInstance = new MorphologySelect();
-morphologySelectInstance.render();
+// Run/Reset/Save buttons setup
+const runButton = document.querySelector("#runButton");
+runButton.addEventListener('click', () => {
+    store.dispatch('toggleRun', {});
+});
+const resetButton = document.querySelector("#resetButton");
+resetButton.addEventListener('click', () => {
+    store.dispatch('resetSimulation', {});
+});
+const saveEnvButton = document.querySelector('#saveEnvButton');
+saveEnvButton.addEventListener('click', () => {
+    openModal(saveEnvModal);
+});
+const runButtonsInstance = new RunButtons();
+runButtonsInstance.render();
+
+// Morphologies list setup
+const morphologiesListInstance = new MorphologiesList();
+morphologiesListInstance.render();
 
 // Agents list setup
 const agentListInstance = new AgentsList();
@@ -96,19 +114,7 @@ agentListInstance.render();
 const envsSetInstance = new EnvsSet();
 envsSetInstance.render();
 
-// Run/Reset buttons setup
-const runButton = document.querySelector("#runButton");
-runButton.addEventListener('click', () => {
-    store.dispatch('toggleRun', {});
-});
-const resetButton = document.querySelector("#resetButton");
-resetButton.addEventListener('click', () => {
-    store.dispatch('resetSimulation', {});
-});
-const runButtonsInstance = new RunButtons();
-runButtonsInstance.render();
-
-// Terrain sliders setup
+// Parkour config parameters setup
 const dim1SliderElement = document.querySelector("#dim1Slider")
 dim1SliderElement.addEventListener('input', () => {
     store.dispatch('changeParkourConfig', {
@@ -144,8 +150,6 @@ waterSliderElement.addEventListener('input', () => {
         value: parseFloat(waterSliderElement.value)
     });
 });
-
-// Creepers setup
 const creepersWidthSlider = document.querySelector("#creepersWidthSlider");
 creepersWidthSlider.addEventListener('input', () => {
     store.dispatch('changeParkourConfig', {
@@ -174,11 +178,8 @@ creepersTypeSelect.addEventListener('input', () => {
         value: creepersTypeSelect.value
     });
 });
-
 const parkourConfigInstance = new ParkourConfig();
 parkourConfigInstance.render();
-//const creepersConfigInstance = new CreepersConfig();
-//creepersConfigInstance.render()
 
 // Tabs buttons setup
 const gettingStartedBtn = document.querySelector('#getting-started-btn');
@@ -187,7 +188,7 @@ gettingStartedBtn.addEventListener('click', () => {
 })
 const parkourCustomTab = document.querySelector('#parkour-custom-btn');
 parkourCustomTab.addEventListener('click', () => {
-    // Show the "Draw Yourself!" subtab when opening the "Parkour Customization" tab
+    // Shows the "Draw Yourself!" subtab when opening the "Parkour Customization" tab
     if(store.state.activeTab != 'parkour_custom'){
         let drawTabBtn = document.querySelector('#draw-tab-btn');
         let drawYourselfTab = new bootstrap.Tab(drawTabBtn);
@@ -212,7 +213,7 @@ aboutDRLBtn.addEventListener('click', () => {
     store.dispatch('switchTab', 'about_drl');
 });
 
-// Drawing Mode setup
+// Drawing Mode buttons setup
 const drawGroundButton = document.querySelector('#drawGroundButton');
 drawGroundButton.addEventListener('click', () => {
     store.dispatch('drawGround', !store.state.drawingModeState.drawing_ground);
@@ -258,7 +259,9 @@ circleAssetButton.addEventListener('click', () => {
 const advancedOptionsInstance = new AdvancedOptions();
 advancedOptionsInstance.render();
 
-// fetch morphologies
+/*
+ * Fetches the available morphologies and policies from the JSON file
+ */
 fetch('./policies.json')
     .then(resp => resp.text().then(body => {
         window.agent_policies = JSON.parse(body);
@@ -267,6 +270,8 @@ fetch('./policies.json')
     .then(types => {
         types.forEach(type => {
             type["morphologies"].forEach(morphology => {
+
+                // Adds the morphology with its compatible policies to the list of morphologies
                 store.dispatch('addMorphology', {
                     morphology: morphology["morphology"],
                     seeds: morphology["seeds"].map((seed, index) => {
@@ -277,93 +282,103 @@ fetch('./policies.json')
             });
         });
     });
-    /*.then(done => {
-        store.dispatch('addDefaultAgent', {});
-    });*/
 
-// fetch environments set
+/*
+ * Fetches the base environments from the JSON file.
+ * The JSON file must contain a list of the names of all the files contained in the 'base_envs_set' folder.
+ */
 fetch('./base_envs_set.json')
     .then(resp => resp.text().then(body => {
         return JSON.parse(body);
     }))
     .then(data => data['filenames'].forEach(filename => {
+
+        // Fetches each JSON env file and parses them to get the corresponding environment
         fetch('./base_envs_set/' + filename)
             .then(resp => resp.text().then(body => {
                 let env = JSON.parse(body);
+
+                // Adds the environment contained in the JSON file to the base set
                 store.dispatch('addEnv',{set: 'base', env: env});
             }))
     }));
 
-// interaction with index.js
+/* Utility functions that require access to 'store' */
+
+/**
+ * Stops the agent following.
+ */
 window.cancelAgentFollow = () => {
     store.dispatch('followAgent', {index: -1, value: false});
 }
-
-window.is_drawing = function() {
+/**
+ * Indicates whether the drawing is active.
+ * @returns {boolean}
+ */
+window.is_drawing = () => {
     return store.state.drawingModeState.drawing;
 }
 
+/**
+ * Indicates whether the drawing_ground is active.
+ * @returns {boolean}
+ */
 window.is_drawing_ground = () => {
     return store.state.drawingModeState.drawing_ground;
 }
 
+/**
+ * Indicates whether the drawing_ceiling is active.
+ * @returns {boolean}
+ */
 window.is_drawing_ceiling = () => {
     return store.state.drawingModeState.drawing_ceiling;
 }
 
+/**
+ * Indicates whether the erasing is active.
+ * @returns {boolean}
+ */
 window.is_erasing = () => {
     return store.state.drawingModeState.erasing;
 }
 
+/**
+ * Indicates whether the drawing_circle is active.
+ * @returns {boolean}
+ */
 window.is_drawing_circle = () => {
     return store.state.advancedOptionsState.assets.circle;
 }
 
+/**
+ * Loads the default environment (Flat Parkour).
+ */
 window.loadDefaultEnv = () => {
-    // Load the Flat Parkour by default
-    store.dispatch('loadEnv', store.state.envsSets.baseEnvsSet.find(env => env.description.name.split(" ")[0] == "Flat"));
+    let defaultEnv = store.state.envsSets.baseEnvsSet.find(env => env.description.name.split(" ")[0] == "Flat");
+    store.dispatch('loadEnv', defaultEnv != null ? defaultEnv : store.state.envsSets.baseEnvsSet[0]);
 }
 
-window.addDefaultAgent = () => {
-    store.dispatch('addDefaultAgent', 'bipedal'); // 'bipedal', 'chimpanzee', 'fish
-}
-
-/*window.markCppnInitialized = () => {
-    store.dispatch('markCppnInitialized', {});
-}*/
-
+/**
+ * Handles mouse clicks outside the canvas.
+ */
 window.clickOutsideCanvas = () => {
     store.dispatch('clickOutsideCanvas', {});
 }
 
+/**
+ * Handles agent selection according to the given index.
+ * @param index {number} - Index of the agent to select in the list of agents
+ */
 window.set_agent_selected = (index) => {
     let payload = {value: index != null, index: index}
     store.dispatch('selectAgent', payload);
 }
 
+/**
+ * Handles agent deletion.
+ * @param agent {Object} - Agent to delete
+ */
 window.delete_agent = (agent) => {
     store.dispatch('deleteAgent', {index: window.game.env.agents.indexOf(agent)});
-}
-
-window.downloadObjectAsJson = (exportObj, exportName) => {
-    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
-    let downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href",     dataStr);
-    downloadAnchorNode.setAttribute("download", exportName + ".json");
-    document.body.appendChild(downloadAnchorNode); // required for firefox
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
-}
-
-window.strUcFirst = (a) => {
-    return (a+'').charAt(0).toUpperCase()+a.substr(1);
-}
-
-window.draw_forbidden_area = () => {
-    forbidden_canvas.clear();
-    forbidden_canvas.stroke("#FF0000");
-    forbidden_canvas.strokeWeight(3);
-    forbidden_canvas.fill(255, 50, 0, 75);
-    let w = convertPosEnvToCanvas((INITIAL_TERRAIN_STARTPAD - 1) * TERRAIN_STEP, 0).x;
-    forbidden_canvas.rect(0, 0, w, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
 }

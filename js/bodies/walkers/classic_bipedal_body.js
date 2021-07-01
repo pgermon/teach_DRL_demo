@@ -2,10 +2,20 @@ HULL_POLYGONS = [
     [[-30, +9], [+6, +9], [+34, +1], [+34, -8], [-30, -8]]
 ];
 HULL_BOTTOM_WIDTH = 64;
-SPEED_HIP = 4;
-SPEED_KNEE = 6;
+const SPEED_HIP = 4;
+const SPEED_KNEE = 6;
 
+/**
+ * @classdesc Bipedal Walker morphology.
+ */
 class ClassicBipedalBody extends WalkerAbstractBody {
+    /**
+     * @constructor
+     * @param scale {number} - Scale of the environment
+     * @param motors_torque {number}
+     * @param nb_steps_under_water {number}
+     * @param reset_on_hull_critical_contact {boolean}
+     */
     constructor(scale, motors_torque=80, nb_steps_under_water=600, reset_on_hull_critical_contact=false) {
         super(scale, motors_torque, nb_steps_under_water);
 
