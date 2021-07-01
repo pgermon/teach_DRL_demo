@@ -1,3 +1,6 @@
+/**
+ * @classdesc Class that handles the water dynamics.
+ */
 class WaterDynamics {
     constructor(gravity, drag_mod=0.25, lift_mod=0.25, push_mod=0.05,
                 max_drag=2000, max_lift=500, max_push=13){
@@ -196,6 +199,10 @@ class WaterDynamics {
     }
 }
 
+/**
+ * @classdesc Stores fixtures of objects in contact with water.
+ * @constructor
+ */
 function WaterContactDetector() {
     b2.ContactListener.call(this);
     this.fixture_pairs = [];

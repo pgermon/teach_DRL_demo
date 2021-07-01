@@ -1,6 +1,15 @@
+/**
+ * @classdesc Abstract class for climber morphologies.
+ */
 class ClimberAbstractBody extends WalkerAbstractBody {
-    constructor(scale, motor_torque, nb_steps_under_water){
-        super(scale, motor_torque, nb_steps_under_water);
+    /**
+     * @constructor
+     * @param scale {number} - Scale of the environment
+     * @param motors_torque {number}
+     * @param nb_steps_under_water {number}
+     */
+    constructor(scale, motors_torque, nb_steps_under_water){
+        super(scale, motors_torque, nb_steps_under_water);
 
         this.body_type = BodyTypesEnum.CLIMBER;
         this.sensors = [];

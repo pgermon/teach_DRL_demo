@@ -29,7 +29,17 @@ FIN = [
 HULL_BOTTOM_WIDTH = 35;
 const SPEED = 6;
 
+/**
+ * @classdesc Fish morphology.
+ */
 class FishBody extends SwimmerAbstractBody {
+    /**
+     * @constructor
+     * @param scale {number} - Scale of the environment
+     * @param motors_torque {number}
+     * @param density {number} - Density of the agent's body.
+     * @param nb_steps_outside_water {number}
+     */
     constructor(scale, motors_torque=80, density, nb_steps_outside_water=600) {
         super(scale, motors_torque, density, nb_steps_outside_water);
         this.TORQUE_PENALTY = 0.00035;

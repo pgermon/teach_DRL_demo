@@ -1,6 +1,13 @@
 import PubSub from '../lib/pubsub.js';
 
+/**
+ * @classdesc Class that handles UI state modifications.
+ */
 export default class Store {
+    /**
+     * @constructor
+     * @param params {{actions: {}, mutations: {}, state: {}}}
+     */
     constructor(params) {
         let self = this;
         self.actions = {};
@@ -14,7 +21,17 @@ export default class Store {
         if (params.hasOwnProperty('mutations')) {
             self.mutations = params.mutations;
         }
+
+        // Creates a Proxy to handles the state modifications
         self.state = new Proxy((params.state || {}), {
+
+            /**
+             * Function called when a key of the state is changed.
+             * @param state {Object}
+             * @param key {string}
+             * @param value {}
+             * @return {boolean}
+             */
             set: function (state, key, value) {
                 state[key] = value;
                 console.log(`stateChange: ${key}: ${value}`);
@@ -42,7 +59,6 @@ export default class Store {
                     self.events.publish('advancedOptionsChange', self.state);
                 }
 
-                //self.events.publish('stateChange', self.state);
                 if (self.status !== 'mutation') {
                     console.warn(`You should use a mutation to set ${key}`);
                 }
@@ -50,6 +66,13 @@ export default class Store {
             }
         });
     }
+
+    /**
+     * Triggers the action specified by actionKey with the given payload.
+     * @param actionKey {string}
+     * @param payload {{}}
+     * @return {boolean}
+     */
     dispatch(actionKey, payload) {
         let self = this;
         if (typeof self.actions[actionKey] !== 'function') {
@@ -62,6 +85,13 @@ export default class Store {
         console.groupEnd();
         return true;
     }
+
+    /**
+     * Triggers the mutation specified by mutationKey with the given payload.
+     * @param mutationKey
+     * @param payload
+     * @return {boolean}
+     */
     commit(mutationKey, payload) {
         let self = this;
         if (typeof self.mutations[mutationKey] !== 'function') {

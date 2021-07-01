@@ -1,3 +1,4 @@
+// All available UI state mutations
 export default {
     addEnv(state, payload){
         if(payload.set == 'base'){
@@ -7,7 +8,7 @@ export default {
             state.envsSets.customEnvsSet.push(payload.env);
         }
 
-        // Sort the set in the lexicographic order according to the name of the envs
+        // Sorts the set in the lexicographic order according to the name of the envs
         state.envsSets.baseEnvsSet.sort(function(a, b){
             return a.description.name.localeCompare(b.description.name);
         });
@@ -72,34 +73,35 @@ export default {
     },
     resetSimulation(state, payload) {
         state.simulationState.status = 'init';
-        const morphologies = state.agents.map(a => a.morphology);
-        const policies = state.agents.map(a => { 
-            return {
-                name: a.name, 
-                path: a.path
-            };
-        });
-        let positions;
+        const agents = {
+            morphologies: state.agents.map(a => a.morphology),
+            policies: state.agents.map(a => {
+                return {
+                    name: a.name,
+                    path: a.path
+                };
+            }),
+            positions: []
+        }
+
         if (payload.keepPositions) {
-            positions = [...state.agents.map((agent, index) => window.game.env.agents[index].agent_body.reference_head_object.GetPosition())];
+            agents.positions = [...state.agents.map((agent, index) => window.game.env.agents[index].agent_body.reference_head_object.GetPosition())];
         } else {
-            positions = [...state.agents.map((agent, index) => window.game.env.agents[index].init_pos)];
+            agents.positions = [...state.agents.map((agent, index) => window.game.env.agents[index].init_pos)];
         }
 
         const terrainConfig = state.parkourConfig.terrain;
         const creepersConfig = state.parkourConfig.creepers;
 
         window.align_terrain = {
-            align: true, // align the terrain with the startpad
-            ceiling_offset: window.align_terrain.ceiling_offset, // keep the same
-            ground_offset: window.align_terrain.ground_offset, // keep the same
+            align: true, // aligns the terrain with the startpad
+            ceiling_offset: window.align_terrain.ceiling_offset, // keeps the same
+            ground_offset: window.align_terrain.ground_offset, // keeps the same
             smoothing: window.game.env.TERRAIN_CPPN_SCALE // smoothing of the current terrain
         };
 
         window.game.reset(
-            morphologies,
-            policies,
-            positions,
+            agents,
             [terrainConfig.dim1,terrainConfig.dim2,terrainConfig.dim3],
             terrainConfig.waterLevel,
             creepersConfig.width,
@@ -173,7 +175,7 @@ export default {
     },
     addMorphology(state, payload) {
         state.morphologies.push(payload);
-        // Sort the list of morphologies in the lexicographic order according to the name of the morphology
+        // Sorts the list of morphologies in the lexicographic order according to the name of the morphology
         state.morphologies.sort(function(a, b){
             return a.morphology.localeCompare(b.morphology);
         });
@@ -235,7 +237,7 @@ export default {
         window.game.env.set_zoom(INIT_ZOOM);
         window.game.env.set_scroll(null, -0.05 * RENDERING_VIEWER_W, 0);
 
-        // Generate the terrain from the shapes drawn
+        // Generates the terrain from the shapes drawn
         if(payload) {
 
             state.drawingModeState.drawing_ground = false;
@@ -268,7 +270,7 @@ export default {
 
             window.draw_forbidden_area();
 
-            // Case no ground has been drawn yet
+            // If ground has been drawn yet, draws the shape of the current ground
             if(window.terrain.ground.length == 0 && window.ground.length > 0){
 
                 for(let i = 0; i < window.ground.length - 1; i++){
@@ -292,7 +294,7 @@ export default {
                 window.terrain.ground.push({x: p.x, y: p.y});
             }
 
-            // Case no ceiling has been drawn yet
+            // If no ceiling has been drawn yet, draws the shape of the current ceiling
             if(window.terrain.ceiling.length == 0 && window.ceiling.length > 0){
 
                 for(let i = 0; i < window.ceiling.length - 1; i++){

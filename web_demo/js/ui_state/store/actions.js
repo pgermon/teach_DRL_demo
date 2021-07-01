@@ -1,3 +1,4 @@
+// Mapping for the morphology names
 const bodyTypeMapping = new Map();
 bodyTypeMapping.set("bipedal", "classic_bipedal");
 bodyTypeMapping.set("classic_bipedal", "classic_bipedal");
@@ -5,12 +6,14 @@ bodyTypeMapping.set("chimpanzee", "climbing_profile_chimpanzee");
 bodyTypeMapping.set("climbing_profile_chimpanzee", "climbing_profile_chimpanzee");
 bodyTypeMapping.set("fish", "fish");
 
+// Names for the different policies of each morphology
 const seed_names = {
     bipedal: ['Joe', 'Alice', 'Bob', 'Susan'],
     chimpanzee: ['Tarzan', 'Kong', 'Caesar', 'Rafiki'],
     fish: ['Nemo', 'Dory', 'Oscar', 'Bubbles']
 };
 
+// All available actions
 export default {
     addEnv(context, payload){
         context.commit('addEnv', payload);
@@ -27,7 +30,7 @@ export default {
         window.ground = [...payload.terrain.ground];
         window.ceiling = [...payload.terrain.ceiling];
 
-        // Update the values of the terrain sliders
+        // Updates the values of the terrain sliders
         for(let param in payload.terrain.parkourConfig){
             context.commit('updateParkourConfig', {name: param, value: payload.terrain.parkourConfig[param]});
         }
@@ -35,7 +38,7 @@ export default {
             context.commit('updateParkourConfig', {name: param, value: payload.terrain.creepersConfig[param]});
         }
 
-        // Replace previous agents by the ones of the env
+        // Replaces previous agents by the ones of the env
         while (context.state.agents.length > 0){
             context.commit('deleteAgent', {index: 0});
         }
@@ -48,52 +51,28 @@ export default {
             });
         }
         context.commit('init_default', {});
-        //context.commit('resetSimulation', {keepPositions: false});
-    },
-    markCppnInitialized(context, payload) {
-        context.commit('markCppnInitialized', payload);
-    },
-    addDefaultAgent(context, payload) {
-        const state = context.state;
 
-        if (state.cppnInitialized && state.morphologies.length != 0 && !state.defaultAgentAdded) {
-            context.commit('disableDefaultAgent', payload);
-
-
-            let morphology = payload;
-            let name = seed_names[morphology][context.state.currentSeedsIdx[morphology]];
-            let path = state.morphologies.filter(m => m.morphology == morphology)
-                    .flatMap(morphology => morphology.seeds)[0].path;
-
-            context.commit('addAgent', {
-                morphology: bodyTypeMapping.get(morphology),
-                name: name,
-                path: path,
-                init_pos: null,
-            });
-
-        }
     },
     changeParkourConfig(context, payload){
 
-        // case one of the cppn dim is changed : align the terrain with the startpad
+        // Case one of the cppn dims is changed : aligns the terrain with the startpad
         if(['dim1', 'dim2', 'dim3'].indexOf(payload.name) != -1){
 
             window.ground = [];
             window.ceiling = [];
             window.align_terrain = {
                 align: true,
-                ceiling_offset: null, // align the ceiling with the startpad
-                ground_offset: null, // align the ground with the startpad
+                ceiling_offset: null, // aligns the ceiling with the startpad
+                ground_offset: null, // aligns the ground with the startpad
                 smoothing: window.game.env.TERRAIN_CPPN_SCALE // previous smoothing
             };
         }
-        // case smoothing, water_level or creepers is changed
+        // Case smoothing, water_level or creepers is changed
         else{
             window.align_terrain = {
                 align: true,
-                ceiling_offset: window.align_terrain.ceiling_offset, // keep the same
-                ground_offset: window.align_terrain.ground_offset, // keep the same
+                ceiling_offset: window.align_terrain.ceiling_offset, // keeps the same
+                ground_offset: window.align_terrain.ground_offset, // keeps the same
                 smoothing: window.game.env.TERRAIN_CPPN_SCALE // previous smoothing
             };
         }
@@ -110,50 +89,6 @@ export default {
         };
         context.commit('resetSimulation', {keepPositions: true});
     },
-    /*changeCreepersConfig(context, payload) {
-        if(context.state.drawingModeState.drawing){
-            context.commit('generateTerrain', true);
-        }
-        context.commit('updateCreepersConfig', payload);
-        context.commit('resetSimulation', {keepPositions: true});
-    },
-    changeCppnCongfig(context, payload) {
-
-        // case one of the cppn dim is changed : align the terrain with the startpad
-        if(['dim1', 'dim2', 'dim3'].indexOf(payload.name) != -1){
-
-            window.ground = [];
-            window.ceiling = [];
-            window.align_terrain = {
-                align: true,
-                ceiling_offset: null, // align the ceiling with the startpad
-                ground_offset: null, // align the ground with the startpad
-                smoothing: window.game.env.TERRAIN_CPPN_SCALE // previous smoothing
-            };
-        }
-        // case smoothing or water_level is changed
-        else{
-            window.align_terrain = {
-                align: true,
-                ceiling_offset: window.align_terrain.ceiling_offset, // keep the same
-                ground_offset: window.align_terrain.ground_offset, // keep the same
-                smoothing: window.game.env.TERRAIN_CPPN_SCALE // previous smoothing
-            };
-        }
-        context.commit('updateCppnConfig', payload);
-
-        if(context.state.drawingModeState.drawing){
-            context.commit('generateTerrain', true);
-        }
-
-        drawing_canvas.clear();
-        window.terrain = {
-            ground: [],
-            ceiling: []
-        };
-
-        context.commit('resetSimulation', {keepPositions: true});
-    },*/
     toggleSwitch(context, payload) {
         switch (payload.name) {
             case 'drawJoints':
@@ -172,10 +107,6 @@ export default {
         switch (status) {
             case 'init':
                 context.commit('startSimulation', {});
-                // read the draw switches state;
-                context.commit('drawJoints', context.state.advancedOptionsState.drawJoints);
-                context.commit('drawLidars', context.state.advancedOptionsState.drawLidars);
-                context.commit('drawNames', context.state.advancedOptionsState.drawNames);
                 break;
             case 'running':
                 context.commit('pauseSimulation', {});
@@ -187,7 +118,7 @@ export default {
     },
     resetSimulation(context, payload) {
         window.align_terrain = {
-            align: true, // align the terrain with the startpad
+            align: true, // aligns the terrain with the startpad
             ceiling_offset: window.ceiling.length > 0 ? window.game.env.ceiling_offset - window.ceiling[0].y : null,
             ground_offset: window.ground.length > 0 ? window.ground[0].y : null, // first ground y value
             smoothing: window.game.env.TERRAIN_CPPN_SCALE // smoothing of the current terrain
