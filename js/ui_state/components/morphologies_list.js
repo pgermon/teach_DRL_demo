@@ -20,7 +20,14 @@ bodyTypeMapping.set("bipedal", "classic_bipedal");
 bodyTypeMapping.set("chimpanzee", "climbing_profile_chimpanzee");
 bodyTypeMapping.set("fish", "fish");
 
+/**
+ * @classdesc UI component for the list of morphologies.
+ */
 export default class MorphologiesList extends Component {
+
+    /**
+     * @constructor
+     */
     constructor() {
         super({
             store,
@@ -28,37 +35,28 @@ export default class MorphologiesList extends Component {
             eventName: 'morphologiesChange'
         });
     }
+
+    /**
+     * Renders the list of morphologies and adds event listeners for the different elements.
+     */
     render() {
 
-        /*this.element.innerHTML = store.state.morphologies.map(m => {
-            return `<li name="morph-list-item" class="list-group-item d-flex justify-content-between align-items-center px-2 py-1">
-                        
-                        <img name="morphology_thumbnail" src=${thumbnails_path + m.morphology + "_thumbnail.png"} 
-                         alt=${m.morphology + "_thumbnail"}
-                         width="20%">
-                        <label for="morphology_thumbnail"><strong>${strUcFirst(m.morphology)}</strong></label>                 
-
-                        <div name="select_button" class="input-group mt-1 w-50">                          
-                            <select name="models" class="form-select" data-bs-toggle="tooltip" title="Select an agent"></select>
-                            <div class="input-group-append">
-                                <button name="addAgentButton" class="btn btn-warning"
-                                data-bs-toggle="tooltip" title="Add the agent to the simulation"><i class="fas fa-plus"></i></button>
-                            </div>
-                        </div>
-                    </li>`
-        }).join('');*/
-
         this.element.innerHTML = store.state.morphologies.map(m => {
+            // Creates a list item for each morphology
             return `<li name="morph-list-item" class="list-group-item d-flex justify-content-between align-items-center px-0 my-1">
 
                         <div class="row align-items-center w-100">
                             <div class="col-4">
+                                <!-- Thumbnail of the morphology -->
                                 <img name="morphology_thumbnail" src=${thumbnails_path + m.morphology + "_thumbnail.png"} 
                                  alt=${m.morphology + "_thumbnail"} data-bs-toggle="tooltip" title="${morphologies_descriptions[m.morphology]}">
                             </div>
                             
                             <div class="col px-0">
-                                <label for="morphology_thumbnail"><strong>${strUcFirst(m.morphology)}</strong></label>                              
+                                <!-- Name of the morpholgy -->
+                                <label for="morphology_thumbnail"><strong>${strUcFirst(m.morphology)}</strong></label>
+                                
+                                <!-- Dropdown policy selector and add button -->                          
                                 <div name="select_button" class="input-group mt-1">                       
                                     <select name="models" class="form-select" data-bs-toggle="tooltip" title="Select an agent"></select>
                                     <div class="input-group-append">
@@ -71,12 +69,16 @@ export default class MorphologiesList extends Component {
                     </li>`
         }).join('');
 
+        // Renders the list items differently when drawing
         if (store.state.drawingModeState.drawing) {
             this.element.querySelectorAll('li[name="morph-list-item"]').forEach((span, index) => {
                 span.classList.add('disabled');
             });
         }
 
+        /* EVENT LISTENERS */
+
+        // Adds all the compatible policies as options to the dropdown
         this.element.querySelectorAll('select[name="models"]').forEach((span, index) => {
             span.innerHTML = store.state.morphologies
                 .filter(m => m.morphology == store.state.morphologies[index].morphology)
@@ -87,6 +89,7 @@ export default class MorphologiesList extends Component {
                 })
                 .join('');
 
+            // Selects a policy option
             span.addEventListener('input', evt => {
                 store.dispatch('selectSeedIdx', {morphology: store.state.morphologies[index].morphology, index: span.selectedIndex});
             });
@@ -94,6 +97,7 @@ export default class MorphologiesList extends Component {
             span.selectedIndex = store.state.currentSeedsIdx[store.state.morphologies[index].morphology];
         });
 
+        // Adds an agent to the environment with the corresponding morphology and the current policy selected
         this.element.querySelectorAll('button[name="addAgentButton"]').forEach((span, index) => {
             span.addEventListener('click', () => {
                 let morph = store.state.morphologies[index];
@@ -106,6 +110,7 @@ export default class MorphologiesList extends Component {
             });
         });
 
+        /* Initializes tooltips */
         this.element.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el, index) => {
             return new bootstrap.Tooltip(el, {
                 trigger: 'hover'

@@ -1,7 +1,7 @@
 import store from './js/ui_state/store/index.js';
 import MorphologiesList from './js/ui_state/components/morphologies_list.js';
 import AgentsList from './js/ui_state/components/agents_list.js';
-import RunButtons from './js/ui_state/components/run_buttons.js';
+import MainButtons from './js/ui_state/components/main_buttons.js';
 import ParkourConfig from './js/ui_state/components/parkour_config.js';
 import DrawingMode from "./js/ui_state/components/drawing_mode.js";
 import AdvancedOptions from "./js/ui_state/components/advanced_options.js";
@@ -50,8 +50,8 @@ saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
             }
 
             // Adjusts the zoom and scroll to capture the thumbnail
-            let previous_zoom = window.zoom;
-            let previous_scroll = [...window.scroll];
+            let previous_zoom = window.game.env.zoom;
+            let previous_scroll = [...window.game.env.scroll];
             window.game.env.set_zoom(THUMBNAIL_ZOOM);
             window.game.env.set_scroll(null, THUMBNAIL_SCROLL_X, 0);
             window.game.env.render();
@@ -86,7 +86,7 @@ saveEnvModal.querySelectorAll('.btn').forEach((span, index) => {
     });
 });
 
-// Run/Reset/Save buttons setup
+// Main buttons setup
 const runButton = document.querySelector("#runButton");
 runButton.addEventListener('click', () => {
     store.dispatch('toggleRun', {});
@@ -99,8 +99,8 @@ const saveEnvButton = document.querySelector('#saveEnvButton');
 saveEnvButton.addEventListener('click', () => {
     openModal(saveEnvModal);
 });
-const runButtonsInstance = new RunButtons();
-runButtonsInstance.render();
+const mainButtonsInstance = new MainButtons();
+mainButtonsInstance.render();
 
 // Morphologies list setup
 const morphologiesListInstance = new MorphologiesList();
@@ -189,11 +189,11 @@ gettingStartedBtn.addEventListener('click', () => {
 const parkourCustomTab = document.querySelector('#parkour-custom-btn');
 parkourCustomTab.addEventListener('click', () => {
     // Shows the "Draw Yourself!" subtab when opening the "Parkour Customization" tab
-    if(store.state.activeTab != 'parkour_custom'){
+    if(store.state.activeTab != 'draw_yourself' && store.state.activeTab != 'proc_gen'){
         let drawTabBtn = document.querySelector('#draw-tab-btn');
         let drawYourselfTab = new bootstrap.Tab(drawTabBtn);
         drawYourselfTab.show();
-        store.dispatch('switchTab', 'parkour_custom');
+        store.dispatch('switchTab', 'draw_yourself');
     }
 });
 const drawYourselfBtn = document.querySelector('#draw-tab-btn');
@@ -306,12 +306,6 @@ fetch('./base_envs_set.json')
 /* Utility functions that require access to 'store' */
 
 /**
- * Stops the agent following.
- */
-window.cancelAgentFollow = () => {
-    store.dispatch('followAgent', {index: -1, value: false});
-}
-/**
  * Indicates whether the drawing is active.
  * @returns {boolean}
  */
@@ -371,8 +365,15 @@ window.clickOutsideCanvas = () => {
  * @param index {number} - Index of the agent to select in the list of agents
  */
 window.set_agent_selected = (index) => {
-    let payload = {value: index != null, index: index}
-    store.dispatch('selectAgent', payload);
+    store.dispatch('selectAgent', {index: index});
+}
+
+/**
+ * Handles agent following according to the given index.
+ * @param index {number} - Index of the agent to select in the list of agents
+ */
+window.set_agent_followed = (index) => {
+    store.dispatch('followAgent', {index: index});
 }
 
 /**

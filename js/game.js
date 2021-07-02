@@ -108,12 +108,14 @@ class Game {
           creepers_spacing, smoothing, creepers_type, ground, ceiling, align_terrain){
 
         this.pause();
+        let zoom = window.game.env.zoom;
+        let scroll = [...window.game.env.scroll];
         this.initWorld(agents, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing,
                         creepers_type, ground, ceiling, align_terrain);
 
         // Keeps the previous zoom and scroll
-        window.game.env.set_zoom(window.zoom);
-        window.game.env.set_scroll(window.agent_selected, window.scroll[0], window.scroll[1]);
+        window.game.env.set_zoom(zoom);
+        window.game.env.set_scroll(window.agent_selected, scroll[0], scroll[1]);
         this.env.render();
     }
 
