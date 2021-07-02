@@ -1,6 +1,14 @@
 import Component from '../lib/component.js';
 import store from '../store/index.js';
+
+/**
+ * @classdesc UI component for the parkour parameters.
+ */
 export default class ParkourConfig extends Component {
+
+    /**
+     * @constructor
+     */
     constructor() {
         super({
             store,
@@ -8,6 +16,10 @@ export default class ParkourConfig extends Component {
             eventName: 'parkourConfigChange'
         });
     }
+
+    /**
+     * Renders the parkour parameters.
+     */
     render() {
 
         // TERRAIN CONFIG

@@ -12,7 +12,7 @@ export default {
         agentFollowed: null,
         agentSelected: null,
     },
-    activeTab:'getting_started', // 'getting_started', 'parkour_custom, 'advanced_options', 'about_drl'
+    activeTab:'getting_started', // 'getting_started', 'draw_yourself', 'proc_gen', 'advanced_options', 'about_drl'
     parkourConfig: { // parkour customization parameters
         terrain:{
             dim1: 1.0,

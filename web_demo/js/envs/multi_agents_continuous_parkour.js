@@ -982,19 +982,6 @@ class MultiAgentsContinuousParkour {
         if (agent.agent_body.body_type == BodyTypesEnum.WALKER) {
             // Computes the best y position corresponding to init_x to always generate the walkers on the ground
             init_y = find_best_y(init_x, this.terrain_ground) + agent.agent_body.AGENT_CENTER_HEIGHT;
-
-            /*
-            // Computes the best y position corresponding to init_x to always generate the walkers between the ground and the ceiling
-            let y_ground = find_best_y(init_x, this.terrain_ground);
-            if(y_ground == null){
-                y_ground = -Infinity;
-            }
-            let y_ceiling = find_best_y(init_x, this.terrain_ceiling);
-            if(y_ceiling == null){
-                y_ceiling = Infinity;
-            }
-            init_y = Math.max(y_ground + agent.agent_body.AGENT_CENTER_HEIGHT, Math.min(y_ceiling - agent.agent_body.AGENT_CENTER_HEIGHT/2, init_y));
-            */
         }
 
         // Computes the best y position corresponding to init_x to always generate the swimmers between the ground and the ceiling
@@ -1024,7 +1011,7 @@ class MultiAgentsContinuousParkour {
         let terrain_length = Math.max(this.terrain_ground[this.terrain_ground.length - 1].x, this.terrain_ceiling[this.terrain_ceiling.length - 1].x);
 
         // Sets the scroll to follow the agent
-        if(window.follow_agent && agent != null){
+        if(agent != null){
             let x = agent.agent_body.reference_head_object.GetPosition().x;
             let y = agent.agent_body.reference_head_object.GetPosition().y;
 
@@ -1054,14 +1041,12 @@ class MultiAgentsContinuousParkour {
         }
 
         // Clamps the horizontal scroll
-        this.scroll[0] = Math.max(- 0.05 * RENDERING_VIEWER_W, Math.min(this.scroll[0], terrain_length * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9));
+        this.scroll[0] = Math.max(INIT_SCROLL_X, Math.min(this.scroll[0], terrain_length * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9));
 
         // Clamps the vertical scroll only when drawing
         if(window.is_drawing()){
             this.scroll[1] = Math.max(-SCROLL_MAX, Math.min(this.scroll[1], SCROLL_MAX));
         }
-
-        window.scroll = this.scroll;
     }
 
     /**
@@ -1070,7 +1055,6 @@ class MultiAgentsContinuousParkour {
      */
     set_zoom(zoom){
         this.zoom = Math.max(0.2, Math.min(parseFloat(zoom), 1.5));
-        window.zoom = this.zoom;
     }
 
     /**

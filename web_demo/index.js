@@ -54,7 +54,7 @@ function init_game(cppn_input_vector, water_level, creepers_width, creepers_heig
     }
     window.game = new Game(agents, cppn_input_vector, water_level, creepers_width, creepers_height,
                             creepers_spacing, smoothing, creepers_type, ground, ceiling, align);
-    window.set_agent_selected(null);
+    window.set_agent_selected(-1);
     window.asset_selected = null;
     window.game.env.set_zoom(INIT_ZOOM);
     window.game.env.set_scroll(window.agent_selected, INIT_SCROLL_X, 0);
@@ -213,7 +213,7 @@ function mousePressed(){
 
             // If no agent is touched, the selected agent is set to null
             if(!one_agent_touched && window.agent_selected != null){
-                window.set_agent_selected(null);
+                window.set_agent_selected(-1);
             }
 
             // Selects an asset in the canvas if the mouse is clicked over its body and no agent has been touched
@@ -328,7 +328,7 @@ function mouseDragged(){
             // Dragging to move vertically
             else{
                 cursor(MOVE);
-                window.game.env.set_scroll(null, this.scroll[0] + window.prevMouseX - mouseX, this.scroll[1] + mouseY - prevMouseY);
+                window.game.env.set_scroll(null, window.game.env.scroll[0] + window.prevMouseX - mouseX, window.game.env.scroll[1] + mouseY - prevMouseY);
                 y_offset = SCROLL_MAX - window.game.env.scroll[1];
             }
 
@@ -397,10 +397,10 @@ function mouseDragged(){
             if(!window.is_dragging_agent && !window.is_dragging_asset){
 
                 // Scrolling manually cancels agent following
-                if(window.follow_agent){
-                    window.cancelAgentFollow();
+                if(window.agent_followed != null){
+                    window.set_agent_followed(-1);
                 }
-                window.game.env.set_scroll(null, this.scroll[0] + window.prevMouseX - mouseX, this.scroll[1] + mouseY - prevMouseY);
+                window.game.env.set_scroll(null, window.game.env.scroll[0] + window.prevMouseX - mouseX, window.game.env.scroll[1] + mouseY - prevMouseY);
                 window.game.env.render();
             }
         }
@@ -543,7 +543,7 @@ function mouseWheel(event){
         else {
             window.game.env.set_zoom(window.game.env.zoom - event.delta / 2000);
             // TODO: scroll on the mouse position
-            window.game.env.set_scroll(null, this.scroll[0], this.scroll[1]);
+            window.game.env.set_scroll(null, window.game.env.scroll[0], window.game.env.scroll[1]);
             window.game.env.render();
         }
 

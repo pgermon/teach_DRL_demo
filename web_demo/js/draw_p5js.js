@@ -294,8 +294,8 @@ function drawSkyClouds(env){
  */
 function drawTerrain(env){
     // Updates scroll to stay centered on the agent position
-    if(window.follow_agent && window.agent_selected != null){
-        env.set_scroll(window.agent_selected, null, null);
+    if(window.agent_followed != null){
+        env.set_scroll(window.agent_followed, null, null);
     }
 
     // Sky & clouds

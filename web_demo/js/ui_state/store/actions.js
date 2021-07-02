@@ -15,18 +15,39 @@ const seed_names = {
 
 // All available actions
 export default {
+
+    /**
+     * Adds the given environment to the specified set.
+     * @param context {Store}
+     * @param payload {{set: string, env: Object}}
+     */
     addEnv(context, payload){
         context.commit('addEnv', payload);
     },
+
+    /**
+     * Removes the environment of the given index from the custom set.
+     * @param context {Store}
+     * @param payload {number} - Index of the environment to remove
+     */
     deleteEnv(context, payload){
         context.commit('deleteEnv', payload);
     },
+
+    /**
+     * Loads the given environment into the simulation.
+     * @param context {Store}
+     * @param payload {Object} - Environment to load
+     */
     loadEnv(context, payload){
+
+        // Resets drawing mode
         drawing_canvas.clear();
         window.terrain = {
             ground: [],
             ceiling: []
         };
+
         window.ground = [...payload.terrain.ground];
         window.ceiling = [...payload.terrain.ceiling];
 
@@ -50,9 +71,17 @@ export default {
                 init_pos: agent.init_pos
             });
         }
+
+        // Initializes the new environment
         context.commit('init_default', {});
 
     },
+
+    /**
+     * Changes the value of the given terrain parameter.
+     * @param context {Store}
+     * @param payload {{name: string, value: number}} - Name and value of the terrain parameter to change
+     */
     changeParkourConfig(context, payload){
 
         // Case one of the cppn dims is changed : aligns the terrain with the startpad
@@ -77,11 +106,15 @@ export default {
             };
         }
 
+        // Updates the parameter
         context.commit('updateParkourConfig', payload);
 
+        // Generates the terrain if drawing mode is active
         if(context.state.drawingModeState.drawing){
             context.commit('generateTerrain', true);
         }
+
+        // Resets drawing mode
         drawing_canvas.clear();
         window.terrain = {
             ground: [],
@@ -89,6 +122,12 @@ export default {
         };
         context.commit('resetSimulation', {keepPositions: true});
     },
+
+    /**
+     * Changes the value of the given switch parameter.
+     * @param context {Store}
+     * @param payload {{name: string, value: number}} - Name and value of the switch to toggle
+     */
     toggleSwitch(context, payload) {
         switch (payload.name) {
             case 'drawJoints':
@@ -102,6 +141,12 @@ export default {
                 break;
         }
     },
+
+    /**
+     * Changes the status of the simulation.
+     * @param context {Store}
+     * @param payload {}
+     */
     toggleRun(context, payload) {
         const status = context.state.simulationState.status;
         switch (status) {
@@ -116,87 +161,191 @@ export default {
                 break;
         }
     },
+
+    /**
+     * Resets the simulation.
+     * @param context {Store}
+     * @param payload {}
+     */
     resetSimulation(context, payload) {
+        // Updates the terrain alignment
         window.align_terrain = {
             align: true, // aligns the terrain with the startpad
             ceiling_offset: window.ceiling.length > 0 ? window.game.env.ceiling_offset - window.ceiling[0].y : null,
             ground_offset: window.ground.length > 0 ? window.ground[0].y : null, // first ground y value
             smoothing: window.game.env.TERRAIN_CPPN_SCALE // smoothing of the current terrain
         };
+
         context.commit('resetSimulation', {keepPositions: false});
+        context.commit('selectAgent', {index: -1});
     },
+
+    /**
+     * Adds the given agent to the simulation.
+     * @param context {Store}
+     * @param payload {{morphology: string, name: string, path: string, init_pos: {x: number, y: number}}}
+     */
     addAgent(context, payload) {
+        // Pauses the simulation if it is running
         if (context.state.simulationState.status == 'running') {
             context.commit('pauseSimulation', {});
         }
         context.commit('addAgent', payload);
     },
+
+    /**
+     * Deletes the agent of the given index from the simulation.
+     * @param context {Store}
+     * @param payload {{index: number}}
+     */
     deleteAgent(context, payload) {
         context.commit('deleteAgent', payload);
     },
+
+    /**
+     * Sets the initial position of the agent of the given index.
+     * @param context {Store}
+     * @param payload {{index: number, init_pos: {x: number, y: number}}}
+     */
     setAgentInitPos(context, payload){
         context.commit('setAgentInitPos', payload);
     },
+
+    /**
+     * Selects the agent of the given index.
+     * @param context {Store}
+     * @param payload {{index: number}}
+     */
     selectAgent(context, payload){
         context.commit('selectAgent', payload);
     },
+
+    /**
+     * Follows or not the agent of the given index according to the given boolean.
+     * @param context {Store}
+     * @param payload {{index: number, value: boolean}}
+     */
     followAgent(context, payload) {
         context.commit('followAgent', payload);
     },
+
+    /**
+     * Renames the agent of the given index with the given string value.
+     * @param context {Store}
+     * @param payload {{index: number, value: string}}
+     */
     renameAgent(context, payload){
         context.commit('renameAgent', payload);
     },
+
+    /**
+     * Selects the seed option of the given index for the given morphology.
+     * @param context {Store}
+     * @param payload {{morphology: string, index: number}}
+     */
     selectSeedIdx(context, payload) {
         context.commit('selectSeedIdx', payload);
     },
+
+    /**
+     * Adds the given morphology with the given policy seeds to the list of morphologies.
+     * @param context {Store}
+     * @param payload {{morphology: string, seeds: []}}
+     */
     addMorphology(context, payload) {
         context.commit('addMorphology', payload);
+        // Selects the first seed option
+        context.commit('selectSeedIdx', {morphology: payload.morphology, index: 0});
     },
+
+    /**
+     * Changes the active tab.
+     * @param context {Store}
+     * @param payload {string} - Name of the tab to activate
+     */
     switchTab(context, payload) {
-        if(context.state.activeTab == 'parkour_custom'){
-            if(payload != 'parkour_custom'){
-                if(context.state.drawingModeState.drawing && payload != 'draw_yourself'){
-                    context.commit('generateTerrain', true);
-                }
-                else if(payload == 'draw_yourself'){
-                    drawing_canvas.clear();
-                    window.terrain = {
-                        ground: [],
-                        ceiling: []
-                    };
-                    context.commit('generateTerrain', false);
-                }
+
+        // Switch from 'Draw Yourself!' to another tab
+        if(context.state.activeTab == 'draw_yourself'){
+            if(payload != 'draw_yourself' && context.state.drawingModeState.drawing) {
+                // Generates the terrain from the drawing
+                context.commit('generateTerrain', true);
             }
         }
-        else if(payload == 'parkour_custom'){
+        // Switch to 'Draw Yourself!' from another tab
+        else if(payload == 'draw_yourself'){
+            // Generates the drawing from the terrain
             context.commit('generateTerrain', false);
-            payload = 'draw_yourself';
         }
         context.commit('switchTab', payload);
     },
+
+    /**
+     * Activates or deactivates the ground drawing mode.
+     * @param context {Store}
+     * @param payload {boolean}
+     */
     drawGround(context, payload) {
         context.commit('drawGround', payload);
     },
+
+    /**
+     * Activates or deactivates the ceiling drawing mode.
+     * @param context {Store}
+     * @param payload {boolean}
+     */
     drawCeiling(context, payload) {
         context.commit('drawCeiling', payload);
     },
+
+    /**
+     * Activates or deactivates the erasing mode.
+     * @param context {Store}
+     * @param payload {boolean}
+     */
     erase(context, payload) {
         context.commit('erase', payload);
     },
-    clear(context, payload) {
-        context.commit('clear', payload);
-    },
-    generateTerrain(context, payload){
-        context.commit('generateTerrain', payload);
-    },
-    clickOutsideCanvas(context, payload){
-      context.commit('deselectDrawingTools', payload);
-    },
+
+    /**
+     * Activates or deactivates the drawing mode of the given asset.
+     * @param context {Store}
+     * @param payload {{name: string, value: boolean}}
+     */
     drawAsset(context, payload){
+        // Only supports circle asset for now
         switch (payload.name){
             case 'circle':
                 context.commit('drawCircle', payload.value);
                 break;
         }
+    },
+
+    /**
+     * Handles clicks outside the canvas when drawing.
+     * @param context {Store}
+     * @param payload {}
+     */
+    clickOutsideCanvas(context, payload){
+        context.commit('deselectDrawingButtons', payload);
+    },
+
+    /**
+     * Resets drawing mode.
+     * @param context {Store}
+     * @param payload {}
+     */
+    clear(context, payload) {
+        context.commit('clear', payload);
+        context.commit('generateTerrain', false);
+    },
+
+    /**
+     * Generates the terrain from the drawing (true) or vice-versa (false).
+     * @param context {Store}
+     * @param payload {boolean}
+     */
+    generateTerrain(context, payload){
+        context.commit('generateTerrain', payload);
     },
 };

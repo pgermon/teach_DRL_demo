@@ -14,7 +14,7 @@ export default class Store {
         self.mutations = {};
         self.state = {};
         self.status = 'default state';
-        self.events = new PubSub();
+        self.events = new PubSub(); // UI modifications manager
         if (params.hasOwnProperty('actions')) {
             self.actions = params.actions;
         }
@@ -26,7 +26,7 @@ export default class Store {
         self.state = new Proxy((params.state || {}), {
 
             /**
-             * Function called when a key of the state is changed.
+             * Function called when a key of the state is changed. Publish an event corresponding to the key that has been changed.
              * @param state {Object}
              * @param key {string}
              * @param value {}
@@ -70,7 +70,7 @@ export default class Store {
     /**
      * Triggers the action specified by actionKey with the given payload.
      * @param actionKey {string}
-     * @param payload {{}}
+     * @param payload
      * @return {boolean}
      */
     dispatch(actionKey, payload) {
