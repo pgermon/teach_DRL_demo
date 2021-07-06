@@ -12,8 +12,8 @@ export default class MainButtons extends Component {
     constructor() {
         super({
             store,
-            element: document.querySelector('#runButtons'),
-            eventName: 'runButtonsChange'
+            element: document.querySelector('#mainButtons'),
+            eventName: 'mainButtonsChange'
         });
     }
 
@@ -27,8 +27,13 @@ export default class MainButtons extends Component {
         let resetButton = this.element.querySelector("#resetButton");
         let saveEnvButton = this.element.querySelector('#saveEnvButton');
 
+        // Disables save button during intro tour
+        if(store.state.simulationState.intro_tour){
+            saveEnvButton.className = "btn btn-primary mx-3 disabled";
+        }
+
         // Disables buttons while drawing
-        if(store.state.drawingModeState.drawing){
+        else if(store.state.drawingModeState.drawing){
             runButton.className = "btn btn-success disabled";
             runButton.title = "Run the simulation";
             resetButton.className = "btn btn-danger disabled";

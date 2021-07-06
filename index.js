@@ -79,15 +79,70 @@ function init_default() {
 
 /**
  * First function called after the code is entirely loaded.
- * Loads the model of the CPPN, initializes the game by default and then load the default environmnent.
+ * Loads the model of the CPPN, initializes the game by default, loads the default environmnent and start the guidde tour.
  * @returns {Promise<void>}
  */
-async function loadCPPNModel() {
+async function onLoadInit() {
     window.cppn_model = await tf.loadGraphModel('./js/CPPN/weights/same_ground_ceiling_cppn/tfjs_model/model.json');
     init_default();
     window.loadDefaultEnv();
+
+    // Set up and start the intro guide tour
+    introJs().onexit(function (){
+        window.exit_intro_tour();
+    });
+    introJs().oncomplete(function (){
+        window.exit_intro_tour();
+    });
+    introJs().setOptions({
+        showProgress: true,
+        disableInteraction: true,
+        steps: [
+            {
+                title: "Welcome to the Deep Reinforcement Learning Interactive Demo!",
+                intro: "Here you can play with a simulation where autonomously trained agents are trying to navigate through a 2D environment."
+            },
+            {
+                element: document.querySelector('#canvas_container'),
+                title: "Viewport simulation",
+                intro: "Here is the viewport where the simulation is rendered. It will allow you to see the environment and visualize live how the agents are dealing with it.<br> You can also interact with the simulation using the mouse in order to scroll, zoom or even drag and drop the agents.",
+                position: "bottom"
+            },
+            {
+                element: document.querySelector('#canvas-and-main-buttons'),
+                disableInteraction: false,
+                title: "Run the simulation",
+                intro: 'Click the <span style="color: green"><i class="fas fa-play"></i></span> button to run the simulation. <br> Then, click the <span style="color: #FFC700"><i class="fas fa-pause"></i></span> button to pause it or the <span style="color: red"><i class="fas fa-undo-alt"></i></span> to reset it.'
+            },
+            {
+                element: document.querySelector('#baseEnvsSet'),
+                title: "Some environments ",
+                intro: "Here are some basic environments that will let you become familiar with the different morphologies of agents. <br> Try to load one of them into the simulation to visualize the behaviour of the different agents."
+            },
+            {
+                element: document.querySelector('#agent-sel-config'),
+                title: "Agents morphologies",
+                intro: "Here are all the morphologies available for the agents. You can select one of several agents for each morphology and add it to the simulation. <br> Each agent has been trained to learn an optimal behaviour to navigate through the environment according to its morphology. Try to compare them!"
+            },
+            {
+                element: document.querySelector('#agents_list_container'),
+                title: "List of agents",
+                intro: "In this section you can find all the agents that are currently running in the simulation."
+            },
+            {
+                element: document.querySelector('#customSetSection'),
+                title: "Custom environments",
+                intro: "Here you can upload environments from JSON files or save your custom environments."
+            },
+            {
+                element: document.querySelector('#tabs-buttons'),
+                title: "Going further...",
+                intro: "If you want to customize the environment, acces more advanced options or learn more about Deep Reinforcement Learning, open these tabs."
+            }
+        ]
+    }).start();
 }
-window.addEventListener("load", loadCPPNModel, false);
+window.addEventListener("load", onLoadInit, false);
 
 /**
  * Indicates if the creepers type is 'Swingable' or not.
@@ -476,10 +531,9 @@ function mouseReleased(){
  */
 function mouseMoved(){
 
-    trace_canvas.clear();
-
     // Draws the trace of the circle asset at the mouse position
     if(window.is_drawing_circle()){
+        trace_canvas.clear();
         if(mouseX >= 0 && mouseX <= window.canvas.width
             && mouseY >= 0 && mouseY <= window.canvas.height) {
             trace_canvas.noStroke();
@@ -488,11 +542,11 @@ function mouseMoved(){
         }
         window.game.env.render();
         image(trace_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
-
     }
 
     // Draws the trace of the eraser at the mouse position
     else if (window.is_erasing()) {
+        trace_canvas.clear();
         if (mouseX >= 0 && mouseX <= window.canvas.width
             && mouseY >= 0 && mouseY <= window.canvas.height) {
             trace_canvas.noStroke();

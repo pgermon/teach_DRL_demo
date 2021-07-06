@@ -47,7 +47,7 @@ export default class Store {
                 }
                 else if(key == 'simulationState'){
                     self.events.publish('agentsListChange', self.state);
-                    self.events.publish('runButtonsChange', self.state);
+                    self.events.publish('mainButtonsChange', self.state);
                 }
                 else if(key == 'parkourConfig'){
                     self.events.publish('parkourConfigChange', self.state);

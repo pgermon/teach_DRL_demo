@@ -348,4 +348,13 @@ export default {
     generateTerrain(context, payload){
         context.commit('generateTerrain', payload);
     },
+
+    /**
+     * Exits intro tour.
+     * @param context {Store}
+     * @param payload
+     */
+    exitIntroTour(context, payload){
+        context.commit('exitIntroTour', payload);
+    }
 };
