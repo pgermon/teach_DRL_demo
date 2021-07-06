@@ -62,19 +62,11 @@ function init_game(cppn_input_vector, water_level, creepers_width, creepers_heig
 }
 
 /**
- * Wrapper for init_game() with default parameters.
+ * Indicates if the creepers type is 'Swingable' or not.
+ * @returns {boolean}
  */
-function init_default() {
-    init_game([parseFloat(dim1Slider.value), parseFloat(dim2Slider.value), parseFloat(dim3Slider.value)],
-        parseFloat(waterSlider.value),
-        parseFloat(creepersWidthSlider.value),
-        parseFloat(creepersHeightSlider.value),
-        parseFloat(creepersSpacingSlider.value),
-        parseFloat(smoothingSlider.value),
-        getCreepersType(),
-        window.ground,
-        window.ceiling,
-        window.align_terrain);
+function getCreepersType() {
+    return document.getElementById("creepersType").value == 'Swingable';
 }
 
 /**
@@ -84,28 +76,35 @@ function init_default() {
  */
 async function onLoadInit() {
     window.cppn_model = await tf.loadGraphModel('./js/CPPN/weights/same_ground_ceiling_cppn/tfjs_model/model.json');
-    init_default();
+    window.init_default();
     window.loadDefaultEnv();
+    startIntroTour();
+}
 
-    // Set up and start the intro guide tour
-    introJs().onexit(function (){
+/**
+ * Sets the intro tour guide up and starts it
+ */
+function startIntroTour(){
+    let intro = introJs();
+
+    // Called when the tour is exited
+    intro.onexit(function (){
         window.exit_intro_tour();
     });
-    introJs().oncomplete(function (){
-        window.exit_intro_tour();
-    });
-    introJs().setOptions({
-        showProgress: true,
+
+    // Sets up the different steps of the tour
+    intro.setOptions({
         disableInteraction: true,
         steps: [
             {
-                title: "Welcome to the Deep Reinforcement Learning Interactive Demo!",
+                title: "Welcome!",
                 intro: "Here you can play with a simulation where autonomously trained agents are trying to navigate through a 2D environment."
             },
             {
                 element: document.querySelector('#canvas_container'),
+                disableInteraction: false,
                 title: "Viewport simulation",
-                intro: "Here is the viewport where the simulation is rendered. It will allow you to see the environment and visualize live how the agents are dealing with it.<br> You can also interact with the simulation using the mouse in order to scroll, zoom or even drag and drop the agents.",
+                intro: "Here is the viewport where the simulation is rendered. It will allow you to see the environment and visualize live how the agents are dealing with it.<br><br> You can also interact with the simulation using the mouse in order to scroll, zoom or even drag and drop the agents.",
                 position: "bottom"
             },
             {
@@ -117,12 +116,12 @@ async function onLoadInit() {
             {
                 element: document.querySelector('#baseEnvsSet'),
                 title: "Some environments ",
-                intro: "Here are some basic environments that will let you become familiar with the different morphologies of agents. <br> Try to load one of them into the simulation to visualize the behaviour of the different agents."
+                intro: "Here are some basic environments that will let you become more familiar with the different morphologies of agents. <br> Try to load one of them into the simulation to visualize the behaviour of the different agents."
             },
             {
                 element: document.querySelector('#agent-sel-config'),
                 title: "Agents morphologies",
-                intro: "Here are all the morphologies available for the agents. You can select one of several agents for each morphology and add it to the simulation. <br> Each agent has been trained to learn an optimal behaviour to navigate through the environment according to its morphology. Try to compare them!"
+                intro: "Here are all the morphologies available for the agents. You can select one of several agents for each morphology and add it to the simulation. <br><br> Each agent has been trained to learn an optimal behaviour to navigate through the environment according to its morphology. Try to compare them!"
             },
             {
                 element: document.querySelector('#agents_list_container'),
@@ -137,20 +136,17 @@ async function onLoadInit() {
             {
                 element: document.querySelector('#tabs-buttons'),
                 title: "Going further...",
-                intro: "If you want to customize the environment, acces more advanced options or learn more about Deep Reinforcement Learning, open these tabs."
+                intro: "If you want to customize the environment, access more advanced options or learn more about Deep Reinforcement Learning, open these tabs. <br><br> Enjoy!"
             }
         ]
-    }).start();
-}
-window.addEventListener("load", onLoadInit, false);
+    });
 
-/**
- * Indicates if the creepers type is 'Swingable' or not.
- * @returns {boolean}
- */
-function getCreepersType() {
-    return document.getElementById("creepersType").value == 'Swingable';
+    // Starts the tour
+    intro.start();
 }
+
+// Calls onLoadInit() when all the files are loaded
+window.addEventListener("load", onLoadInit, false);
 
 /* IN-CANVAS MOUSE INTERACTIONS */
 
@@ -230,6 +226,11 @@ function mousePressed(){
         if(window.is_drawing_circle()){
             let mousePos = convertPosCanvasToEnv(mouseX, mouseY);
             window.game.env.create_circle_asset(mousePos, window.asset_size * 2 / window.game.env.scale);
+
+            if(window.agent_selected != null){
+                window.agent_selected.is_selected = false;
+                window.set_agent_selected(-1);
+            }
             window.game.env.render();
         }
 

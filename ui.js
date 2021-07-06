@@ -306,6 +306,26 @@ fetch('./base_envs_set.json')
 /* Utility functions that require access to 'store' */
 
 /**
+ * Wrapper for init_game() with default parameters.
+ */
+window.init_default = () => {
+    let terrainConfig = store.state.parkourConfig.terrain;
+    let creepersConfig = store.state.parkourConfig.creepers;
+    init_game(
+        [terrainConfig.dim1, terrainConfig.dim2, terrainConfig.dim3],
+        terrainConfig.waterLevel,
+        creepersConfig.width,
+        creepersConfig.height,
+        creepersConfig.spacing,
+        terrainConfig.smoothing,
+        creepersConfig.type == 'Swingable',
+        window.ground,
+        window.ceiling,
+        window.align_terrain
+    );
+}
+
+/**
  * Indicates whether the drawing is active.
  * @returns {boolean}
  */
