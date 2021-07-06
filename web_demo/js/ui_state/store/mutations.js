@@ -87,7 +87,6 @@ export default {
             smoothing: window.game.env.TERRAIN_CPPN_SCALE // current smoothing
         };
         window.init_default();
-        return state;
     },
 
     /**

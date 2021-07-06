@@ -27,13 +27,8 @@ export default class MainButtons extends Component {
         let resetButton = this.element.querySelector("#resetButton");
         let saveEnvButton = this.element.querySelector('#saveEnvButton');
 
-        // Disables save button during intro tour
-        if(store.state.simulationState.intro_tour){
-            saveEnvButton.className = "btn btn-primary mx-3 disabled";
-        }
-
         // Disables buttons while drawing
-        else if(store.state.drawingModeState.drawing){
+        if(store.state.drawingModeState.drawing){
             runButton.className = "btn btn-success disabled";
             runButton.title = "Run the simulation";
             resetButton.className = "btn btn-danger disabled";
@@ -58,8 +53,16 @@ export default class MainButtons extends Component {
                 runButton.title = "Run the simulation";
             }
 
+            // Disables save button during intro tour
+            if(store.state.simulationState.intro_tour){
+                saveEnvButton.className = "btn btn-primary mx-3 disabled";
+            }
+            else{
+                saveEnvButton.className = "btn btn-primary mx-3";
+            }
+
             resetButton.className = "btn btn-danger";
-            saveEnvButton.className = "btn btn-primary mx-3";
+
         }
 
         /* Initializes tooltips */
