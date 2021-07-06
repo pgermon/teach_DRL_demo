@@ -527,4 +527,15 @@ export default {
         window.game.env.render();
         return state;
     },
+
+    /**
+     * Exits intro tour.
+     * @param context {Object} - UI state
+     * @param payload
+     * @return {Object} - UI state
+     */
+    exitIntroTour(state, payload){
+        state.simulationState.intro_tour = false;
+        return state;
+    }
 };

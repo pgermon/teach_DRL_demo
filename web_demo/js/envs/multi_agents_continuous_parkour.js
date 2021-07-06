@@ -707,10 +707,10 @@ class MultiAgentsContinuousParkour {
         this.water_y = this.min_ground_y + this.water_level * this.air_max_distance;
 
         let water_poly = [
-            [this.terrain_ground[0].x, this.GROUND_LIMIT],
-            [this.terrain_ground[0].x, this.water_y],
-            [this.terrain_ground[this.terrain_ground.length - 1].x, this.water_y],
-            [this.terrain_ground[this.terrain_ground.length - 1].x, this.GROUND_LIMIT]
+            [this.terrain_ground[0].x - 1000, this.GROUND_LIMIT],
+            [this.terrain_ground[0].x - 1000, this.water_y],
+            [this.terrain_ground[this.terrain_ground.length - 1].x + 1000, this.water_y],
+            [this.terrain_ground[this.terrain_ground.length - 1].x + 1000, this.GROUND_LIMIT]
         ];
 
         this.fd_water.shape.Set([new b2.Vec2(water_poly[0][0], water_poly[0][1]),

@@ -383,3 +383,10 @@ window.set_agent_followed = (index) => {
 window.delete_agent = (agent) => {
     store.dispatch('deleteAgent', {index: window.game.env.agents.indexOf(agent)});
 }
+
+/**
+ * Exits intro tour.
+ */
+window.exit_intro_tour = () => {
+    store.dispatch('exitIntroTour', {});
+}
