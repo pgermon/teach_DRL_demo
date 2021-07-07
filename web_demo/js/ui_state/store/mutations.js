@@ -536,13 +536,15 @@ export default {
     },
 
     /**
-     * Exits intro tour.
+     * Exits intro guide tour.
      * @param context {Object} - UI state
      * @param payload
      * @return {Object} - UI state
      */
     exitIntroTour(state, payload){
         state.simulationState.intro_tour = false;
+        // Shows the intro hints
+        window.intro.addHints();
         return state;
     }
 };

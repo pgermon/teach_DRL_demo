@@ -78,71 +78,103 @@ async function onLoadInit() {
     window.cppn_model = await tf.loadGraphModel('./js/CPPN/weights/same_ground_ceiling_cppn/tfjs_model/model.json');
     window.init_default();
     window.loadDefaultEnv();
-    startIntroTour();
+    introSetUp();
+
+    // Starts the guide tour
+    window.intro.start();
 }
 
 /**
- * Sets the intro tour guide up and starts it
+ * Sets up IntroJs.
  */
-function startIntroTour(){
-    let intro = introJs();
+function introSetUp(){
 
-    // Called when the tour is exited
-    intro.onexit(function (){
+    // Guide tour and hints manager
+    window.intro = introJs();
+
+    // Called when the tour is exited: enables save env button and show the hints
+    window.intro.onexit(function (){
         window.exit_intro_tour();
     });
 
-    // Sets up the different steps of the tour
-    intro.setOptions({
-        disableInteraction: true,
+    // Shows hints when a hint is closed so that they are always available
+    window.intro.onhintclose(function (){
+        intro.showHints();
+    })
+
+    // Sets up the intro options
+    window.intro.setOptions({
+
+        // Steps of the guide tour
         steps: [
             {
                 title: "Welcome!",
-                intro: "Here you can play with a simulation where autonomously trained agents are trying to navigate through a 2D environment."
+                intro: "Here you can play with a simulation where autonomously trained agents are trying to navigate through a 2D environment.",
+                disableInteraction: true,
             },
             {
-                element: document.querySelector('#canvas_container'),
-                disableInteraction: false,
                 title: "Viewport simulation",
                 intro: "Here is the viewport where the simulation is rendered. It will allow you to see the environment and visualize live how the agents are dealing with it.<br><br> You can also interact with the simulation using the mouse in order to scroll, zoom or even drag and drop the agents.",
+                element: document.querySelector('#canvas_container'),
+                disableInteraction: false,
                 position: "bottom"
             },
             {
-                element: document.querySelector('#canvas-and-main-buttons'),
-                disableInteraction: false,
                 title: "Run the simulation",
-                intro: 'Click the <span style="color: green"><i class="fas fa-play"></i></span> button to run the simulation. <br> Then, click the <span style="color: #FFC700"><i class="fas fa-pause"></i></span> button to pause it or the <span style="color: red"><i class="fas fa-undo-alt"></i></span> to reset it.'
+                intro: 'Click the <span style="color: green"><i class="fas fa-play"></i></span> button to run the simulation. <br> Then, click the <span style="color: #FFC700"><i class="fas fa-pause"></i></span> button to pause it or the <span style="color: red"><i class="fas fa-undo-alt"></i></span> to reset it.',
+                element: document.querySelector('#canvas-and-main-buttons'),
+                disableInteraction: false
             },
             {
-                element: document.querySelector('#baseEnvsSet'),
                 title: "Some environments ",
-                intro: "Here are some basic environments that will let you become more familiar with the different morphologies of agents. <br> Try to load one of them into the simulation to visualize the behaviour of the different agents."
+                intro: "Here are some basic environments that will let you become more familiar with the different morphologies of agents. <br> Try to load one of them into the simulation to visualize the behaviour of the different agents.",
+                element: document.querySelector('#baseEnvsSet'),
+                disableInteraction: true,
             },
             {
-                element: document.querySelector('#agent-sel-config'),
                 title: "Agents morphologies",
-                intro: "Here are all the morphologies available for the agents. You can select one of several agents for each morphology and add it to the simulation. <br><br> Each agent has been trained to learn an optimal behaviour to navigate through the environment according to its morphology. Try to compare them!"
+                intro: "Here are all the morphologies available for the agents. You can select one of several agents for each morphology and add it to the simulation. <br><br> Each agent has been trained to learn an optimal behaviour to navigate through the environment according to its morphology. Try to compare them!",
+                element: document.querySelector('#agent-sel-config'),
+                disableInteraction: true,
             },
             {
-                element: document.querySelector('#agents_list_container'),
                 title: "List of agents",
-                intro: "In this section you can find all the agents that are currently running in the simulation."
+                intro: "In this section you can find all the agents that are currently running in the simulation.",
+                element: document.querySelector('#agents_list_container'),
+                disableInteraction: true,
             },
             {
-                element: document.querySelector('#customSetSection'),
                 title: "Custom environments",
-                intro: "Here you can upload environments from JSON files or save your custom environments."
+                intro: "Here you can upload environments from JSON files or save your custom environments.",
+                element: document.querySelector('#customSetSection'),
+                disableInteraction: true,
             },
             {
-                element: document.querySelector('#tabs-buttons'),
                 title: "Going further...",
-                intro: "If you want to customize the environment, access more advanced options or learn more about Deep Reinforcement Learning, open these tabs. <br><br> Enjoy!"
+                intro: "If you want to customize the environment, access more advanced options or learn more about Deep Reinforcement Learning, open these tabs. <br><br> Enjoy!",
+                element: document.querySelector('#tabs-buttons'),
+                disableInteraction: true,
+            }
+        ],
+
+        // Hints buttons
+        hints: [
+            {
+                hint:
+                    `<strong>Tips</strong>
+                    <ul>
+                        <li>You can scroll horizontally and vertically in the environment by dragging the mouse.</li>
+                        <li>You can zoom in or out using the mouse wheel.</li>
+                        <li>You can select an agent or an asset by clicking on it, and then delete it by pressing the delete key of your keyboard.</li>
+                        <li>You can drag and drop an agent or an asset using the mouse.</li>
+                        <li>You can change the eraser and assets radius using the mouse wheel.</li>
+                    </ul>`,
+
+                element: document.querySelector('#canvas_container'),
+                hintPosition: 'top-right',
             }
         ]
     });
-
-    // Starts the tour
-    intro.start();
 }
 
 // Calls onLoadInit() when all the files are loaded
