@@ -366,6 +366,14 @@ window.is_drawing_circle = () => {
 }
 
 /**
+ * Generates the terrain from the drawing (true) or vice-versa (false).
+ * @param payload {boolean}
+ */
+window.generateTerrain = (payload) => {
+    store.dispatch('generateTerrain', payload);
+}
+
+/**
  * Loads the default environment (Flat Parkour).
  */
 window.loadDefaultEnv = () => {

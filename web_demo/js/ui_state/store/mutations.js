@@ -421,13 +421,21 @@ export default {
             window.init_default();
         }
 
-        // Returns to previous drawing or generates the drawing from the terrain
+        // Generates the drawing from the terrain
         else {
 
+            // Draws the forbidden red area on the forbidden canvas
             window.draw_forbidden_area();
 
-            // If no ground has been drawn yet, draws the shape of the current ground
-            if(window.terrain.ground.length == 0 && window.ground.length > 0){
+            // Clears the previous drawing
+            drawing_canvas.clear();
+            window.terrain = {
+                ground: [],
+                ceiling: []
+            };
+
+            // Draws the shape of the current ground
+            if(window.ground.length > 0){
 
                 for(let i = 0; i < window.ground.length - 1; i++){
                     let p = window.ground[i];
@@ -450,8 +458,8 @@ export default {
                 window.terrain.ground.push({x: p.x, y: p.y});
             }
 
-            // If no ceiling has been drawn yet, draws the shape of the current ceiling
-            if(window.terrain.ceiling.length == 0 && window.ceiling.length > 0){
+            // Draws the shape of the current ceiling
+            if(window.ceiling.length > 0){
 
                 for(let i = 0; i < window.ceiling.length - 1; i++){
                     let p = window.ceiling[i];

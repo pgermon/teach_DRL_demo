@@ -16,6 +16,7 @@ let JOINTS_COLORS = {
 let drawing_canvas; // Used to draw the terrain shapes
 let trace_canvas; // Used to draw the erase and assets traces following the mouse
 let forbidden_canvas; // Used to draw the forbidden red area on the terrain startpad
+let tmp_canvas;
 
 /**
  * Creates the different canvas and sets them up. Called automatically when the programs starts.
@@ -35,6 +36,7 @@ function setup() {
     drawing_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
     trace_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
     forbidden_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
+    tmp_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
 
     // Prevents automatic calls the draw() function
     noLoop();

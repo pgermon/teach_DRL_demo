@@ -634,21 +634,20 @@ function keyPressed(){
 function windowResized(){
 
     let canvas_container = document.querySelector('#canvas_container');
-    RENDERING_VIEWER_W = canvas_container.offsetWidth;
 
-    // Resizes the canvas
+    // Recomputes RENDERING_VIEWER_W, INIT_ZOOM and THUMBNAIL_ZOOM
+    RENDERING_VIEWER_W = canvas_container.offsetWidth;
+    INIT_ZOOM = RENDERING_VIEWER_W / ((TERRAIN_LENGTH + INITIAL_TERRAIN_STARTPAD) * 1.05 * TERRAIN_STEP * SCALE);
+    THUMBNAIL_ZOOM = RENDERING_VIEWER_W / ((TERRAIN_LENGTH + INITIAL_TERRAIN_STARTPAD) * 0.99 * TERRAIN_STEP * SCALE);
+
+    // Resizes the main canvas
     resizeCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H);
     drawing_canvas.resizeCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
     trace_canvas.resizeCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
     forbidden_canvas.resizeCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
 
-    image(drawing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
-    image(trace_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
-    image(forbidden_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
-
-    // Recomputes INIT_ZOOM and THUMBNAIL_ZOOM
-    INIT_ZOOM = RENDERING_VIEWER_W / ((TERRAIN_LENGTH + INITIAL_TERRAIN_STARTPAD) * 1.05 * TERRAIN_STEP * SCALE);
-    THUMBNAIL_ZOOM = RENDERING_VIEWER_W / ((TERRAIN_LENGTH + INITIAL_TERRAIN_STARTPAD) * 0.99 * TERRAIN_STEP * SCALE);
+    // Generates the terrain from the drawing
+    window.generateTerrain(true);
 }
 
 window.downloadObjectAsJson = (exportObj, exportName) => {
