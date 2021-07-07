@@ -900,19 +900,19 @@ class MultiAgentsContinuousParkour {
      */
     _generate_clouds(){
         this.cloud_polys = [];
-        for(let i = 0; i < Math.ceil(TERRAIN_LENGTH/20); i++){
-          let x = (Math.random() * 3 * TERRAIN_LENGTH - TERRAIN_LENGTH) * TERRAIN_STEP;
-          let y = Math.random() * RENDERING_VIEWER_H/SCALE + RENDERING_VIEWER_H/SCALE * 2/5;
-          let poly = [];
-          for(let a = 0; a < 10; a++){
-            poly.push([
-                x + 15 * TERRAIN_STEP * Math.sin(Math.PI * 2 * a / 5) + Math.random() * (0 - 5 * TERRAIN_STEP) + 5 * TERRAIN_STEP,
-                y + 5 * TERRAIN_STEP * Math.cos(Math.PI * 2 * a / 5) + Math.random() * (0 - 5 * TERRAIN_STEP) + 5 * TERRAIN_STEP
-            ])
-          }
-          let x1 = Math.min(...poly.map(p => p[0]));
-          let x2 = Math.max(...poly.map(p => p[0]));
-          this.cloud_polys.push({poly: poly, x1: x1, x2: x2});
+        for(let i = 0; i < Math.ceil(TERRAIN_LENGTH/10); i++){
+            let x = (Math.random() * 5 * TERRAIN_LENGTH - TERRAIN_LENGTH) * TERRAIN_STEP;
+            let y = Math.random() * RENDERING_VIEWER_H/SCALE + RENDERING_VIEWER_H/SCALE * 1/5;
+            let poly = [];
+            for(let a = 0; a < 10; a++){
+                poly.push([
+                    x + 15 * TERRAIN_STEP * Math.sin(Math.PI * 2 * a / 5) + Math.random() * (0 - 5 * TERRAIN_STEP) + 5 * TERRAIN_STEP,
+                    y + 5 * TERRAIN_STEP * Math.cos(Math.PI * 2 * a / 5) + Math.random() * (0 - 5 * TERRAIN_STEP) + 5 * TERRAIN_STEP
+                ])
+            }
+            let x1 = Math.min(...poly.map(p => p[0]));
+            let x2 = Math.max(...poly.map(p => p[0]));
+            this.cloud_polys.push({poly: poly, x1: x1, x2: x2});
         }
     }
 

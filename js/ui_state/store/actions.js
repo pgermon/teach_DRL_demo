@@ -176,8 +176,8 @@ export default {
             smoothing: window.game.env.TERRAIN_CPPN_SCALE // smoothing of the current terrain
         };
 
-        context.commit('resetSimulation', {keepPositions: false});
         context.commit('selectAgent', {index: -1});
+        context.commit('resetSimulation', {keepPositions: false});
     },
 
     /**
