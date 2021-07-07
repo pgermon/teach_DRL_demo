@@ -48,7 +48,7 @@ export default class EnvsSet extends Component{
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h1 class="card-title"><strong>Upload an environment</strong></h1>
-                                    <p class="card-text">Choose a JSON file then click on the <span style="color: orange;"><i class="fas fa-upload"></i></span> button below to save the corresponding environment in your collection.</p>
+                                    <p class="card-text">Choose a JSON file then click the <span style="color: orange;"><i class="fas fa-upload"></i></span> button below to save the corresponding environment in your collection.</p>
                                     <div class="input-group my-3">
                                         <input id="uploadEnvFile" type="file" class="custom-file-input" accept=".json">
                                     </div>
@@ -77,7 +77,7 @@ export default class EnvsSet extends Component{
                             </div>
                             
                             <!-- Download and delete buttons in the footer -->
-                            <div class="card-footer">
+                            <div class="card-footer justify-content-between">
                                 <button name="downloadEnvBtn" class="btn btn-primary mx-1" type="button" data-bs-toggle="tooltip" title="Download the environment">
                                 <i class="fas fa-download"></i></button>
                                 <button name="deleteEnvBtn" class="btn btn-danger mx-1" type="button" data-bs-toggle="tooltip" title="Delete the environment">
