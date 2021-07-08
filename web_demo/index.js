@@ -679,7 +679,13 @@ function windowResized(){
     forbidden_canvas.resizeCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
 
     // Generates the terrain from the drawing
-    window.generateTerrain(true);
+    if(is_drawing()){
+        window.generateTerrain(true);
+    }
+    // Re-initializes the environment
+    else{
+        window.init_default();
+    }
 }
 
 window.downloadObjectAsJson = (exportObj, exportName) => {
