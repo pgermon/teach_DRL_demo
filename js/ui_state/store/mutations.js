@@ -80,13 +80,30 @@ export default {
      */
     init_default(state, payload){
         state.simulationState.status = 'init';
-        window.align_terrain = {
-            align: false, // no alignment
-            ceiling_offset: window.ceiling.length > 0 ? window.game.env.ceiling_offset - window.ceiling[0].y : null,
-            ground_offset: window.ground.length > 0 ? window.ground[0].y : null, // first ground y value
-            smoothing: window.game.env.TERRAIN_CPPN_SCALE // current smoothing
-        };
-        window.init_default();
+
+        if(window.game != null){
+            window.align_terrain = {
+                align: false, // no alignment
+                ceiling_offset: window.ceiling.length > 0 ? window.game.env.ceiling_offset - window.ceiling[0].y : null,
+                ground_offset: window.ground.length > 0 ? window.ground[0].y : null, // first ground y value
+                smoothing: window.game.env.TERRAIN_CPPN_SCALE // current smoothing
+            };
+        }
+
+        let terrainConfig = state.parkourConfig.terrain;
+        let creepersConfig = state.parkourConfig.creepers;
+        init_game(
+            [terrainConfig.dim1, terrainConfig.dim2, terrainConfig.dim3],
+            terrainConfig.waterLevel,
+            creepersConfig.width,
+            creepersConfig.height,
+            creepersConfig.spacing,
+            terrainConfig.smoothing,
+            creepersConfig.type == 'Swingable',
+            window.ground,
+            window.ceiling,
+            window.align_terrain
+        );
     },
 
     /**
@@ -418,7 +435,21 @@ export default {
                 ground_offset: window.ground.length > 0 ? window.ground[0].y : null, // first ground y value
                 smoothing: window.game.env.TERRAIN_CPPN_SCALE // current smoothing
             };
-            window.init_default();
+
+            let terrainConfig = state.parkourConfig.terrain;
+            let creepersConfig = state.parkourConfig.creepers;
+            init_game(
+                [terrainConfig.dim1, terrainConfig.dim2, terrainConfig.dim3],
+                terrainConfig.waterLevel,
+                creepersConfig.width,
+                creepersConfig.height,
+                creepersConfig.spacing,
+                terrainConfig.smoothing,
+                creepersConfig.type == 'Swingable',
+                window.ground,
+                window.ceiling,
+                window.align_terrain
+            );
         }
 
         // Generates the drawing from the terrain
@@ -487,7 +518,20 @@ export default {
             window.ceiling = [];
 
             // Initializes the environment
-            window.init_default();
+            let terrainConfig = state.parkourConfig.terrain;
+            let creepersConfig = state.parkourConfig.creepers;
+            init_game(
+                [terrainConfig.dim1, terrainConfig.dim2, terrainConfig.dim3],
+                terrainConfig.waterLevel,
+                creepersConfig.width,
+                creepersConfig.height,
+                creepersConfig.spacing,
+                terrainConfig.smoothing,
+                creepersConfig.type == 'Swingable',
+                window.ground,
+                window.ceiling,
+                window.align_terrain
+            );
 
             // Displays the drawing and forbidden canvas on top of the main canvas
             image(drawing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);

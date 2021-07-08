@@ -74,7 +74,15 @@ export default {
 
         // Initializes the new environment
         context.commit('init_default', {});
+    },
 
+    /**
+     * Initializes the game with default parameters.
+     * @param context {Store}
+     * @param payload
+     */
+    init_default(context, payload) {
+        context.commit('init_default', {});
     },
 
     /**
