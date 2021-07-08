@@ -17,7 +17,17 @@ export default {
 
         // Sorts the set in the lexicographic order according to the name of the envs
         state.envsSets.baseEnvsSet.sort(function(a, b){
-            return a.description.name.localeCompare(b.description.name);
+
+            // Exception for env whose name begins with "Flat": always first
+            if(a.description.name.split(" ")[0] == "Flat"){
+                return -1;
+            }
+            else if(b.description.name.split(" ")[0] == "Flat"){
+                return 1;
+            }
+            else{
+                return a.description.name.localeCompare(b.description.name);
+            }
         });
         return state;
     },
