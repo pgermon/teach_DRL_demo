@@ -77,3 +77,13 @@ hr.solid {
     margin-left: 8px;
     list-style-type: disc;
 }
+
+.nav-link {
+    color: black;
+    font-weight: bold;
+}
+
+/*.nav-link, active {
+    color: white;
+    background-color: #0a41c9;
+}*/
