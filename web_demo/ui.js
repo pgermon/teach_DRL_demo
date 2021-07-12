@@ -441,7 +441,7 @@ window.get_intro_tour_steps = () => {
         {
             title: tour_dict['morphologiesTitle'],
             intro: tour_dict['morphologiesText'],
-            element: document.querySelector('#agent-sel-config'),
+            element: document.querySelector('#agents-selection'),
             disableInteraction: true,
         },
         {

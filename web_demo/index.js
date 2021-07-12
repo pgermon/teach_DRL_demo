@@ -172,7 +172,7 @@ window.lang_dict = {
             'welcomeTitle': "Bienvenue !",
             'welcomeText': "Ici tu peux jouer avec une simulation dans laquelle des agents entraînés de manière autonome essayent de se déplacer au travers d'un environnement 2D.",
             'viewportTitle': "Fenêtre d'affichage",
-            'viewportText': "C'est dans cet espace que la simulation est affichée en temps réel. Cela va te permettre de voir en direct comment les agents essayent de s'adapter à leur environment.<br><br> Tu peux aussi interagir avec la simulation à l'aide de la souris pour faire défiler l'environnement, zoomer ou encore déplacer les agents.",
+            'viewportText': "C'est dans cet espace que la simulation est affichée en temps réel. Cela va te permettre de visualiser en direct comment les agents essayent de s'adapter à leur environment.<br><br> Tu peux aussi interagir avec la simulation à l'aide de la souris pour faire défiler l'environnement, zoomer ou encore déplacer les agents.",
             'runTitle': "Lancer la simulation",
             'runText': 'Clique sur le bouton <span style="color: green"><i class="fas fa-play"></i></span> pour lancer la simulation. <br> Tu peux ensuite cliquer sur le bouton <span style="color: #FFC700"><i class="fas fa-pause"></i></span> pour la mettre en pause ou sur le bouton <span style="color: red"><i class="fas fa-undo-alt"></i></span> pour la réinitialiser.',
             'baseEnvsTitle': "Quelques environnements",
@@ -182,9 +182,9 @@ window.lang_dict = {
             'agentsListTitle': "List des agents actifs",
             'agentsListText': "Dans cette section sont affichés tous les agents actuellement présents dans la simulation.",
             'customEnvsTitle': "Environnements personnalisés",
-            'customEnvsText': "Ici tu peux sauvegarder et télécharger tes environnements personnalisés mais aussi en charger depuis des fichiers précédemment téléchargés. Essaye de les échanger avec tes amis !",
+            'customEnvsText': "Ici tu peux sauvegarder et télécharger tes environnements personnalisés mais aussi en importer depuis des fichiers précédemment téléchargés. Essaye de les échanger avec tes amis !",
             'furtherTitle': "Pour aller plus loin...",
-            'furtherText': "Si tu veux personnaliser ton propre environnement, accéder à des options avancées ou en apprendre davantage à propos du Deep Reinforcement Learning, ouvre ces onglets. <br><br> Amuse-toi !",
+            'furtherText': "Si tu veux personnaliser ton propre environnement, accéder à des options avancées ou en apprendre davantage à propos du Deep Reinforcement Learning, ouvre ces onglets. <br><br> Amuse-toi bien !",
         },
 
         'introHints': {
