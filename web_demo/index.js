@@ -149,12 +149,12 @@ window.lang_dict = {
 
         'globalElements': {
             'demoTitle': "Deep Reinforcement Learning Interactive Demo",
-            'gettingStarted': `<strong> Getting Started </strong>`,
-            'parkourCustomization': `<strong> Parkour Customization </strong>`,
-            'advancedOptions': `<strong> Advanced Options </strong>`,
-            'aboutDeepRL': `<i class="fas fa-info-circle fa-lg"></i> <strong>About DeepRL</strong>`,
+            'gettingStarted': "Getting Started",
+            'parkourCustomization': "Parkour Customization",
+            'advancedOptions': "Advanced Options",
+            'aboutDeepRL': "About DeepRL",
             'saveEnvModal': {
-                'title': `<strong>Please enter a name and a description for the current environment.</strong>`,
+                'title': `Please enter a name and a description for the current environment.`,
                 'text': "This environment will be saved in your collection of custom environments so that you could reload it later or download it to share it.",
                 'nameLabel': "Name",
                 'descriptionLabel': "Description",
@@ -217,7 +217,7 @@ window.lang_dict = {
         },
 
         'drawingMode': {
-            'text': `Ici tu peux dessiner ton propre environnement ! <br>
+            'text': `Ici tu peux dessiner ton propre parkour ! <br>
                     Selectionne les boutons <strong style="color: green"><i class="fas fa-pencil-alt"></i> Sol</strong> ou <strong style="color: dimgrey"><i class="fas fa-pencil-alt"></i> Plafond</strong> pour commencer à dessiner l'élément du terrain correspondant avec la souris.<br>
                     Fais attention à ne pas superposer plusieurs traits à différentes hauteurs pour obtenir un résultat optimal. <br>
                     Tu peux utiliser le bouton <strong style="color: #FFC700"><i class="fas fa-eraser"></i> Gommer</strong> pour corriger ton dessin ou le bouton <strong style="color: red"><i class="fas fa-times"></i> Effacer</strong> pour tout effacer.<br>
@@ -290,12 +290,12 @@ window.lang_dict = {
 
         'globalElements': {
             'demoTitle': "Démo Interactive de Deep Reinforcement Learning",
-            'gettingStarted': `<strong> Commencer </strong>`,
-            'parkourCustomization': `<strong> Personnalisation du terrain </strong>`,
-            'advancedOptions': `<strong> Options avancées </strong>`,
-            'aboutDeepRL': `<i class="fas fa-info-circle fa-lg"></i> <strong>À propos du DeepRL</strong>`,
+            'gettingStarted': "Commencer",
+            'parkourCustomization': "Personnalisation du parkour",
+            'advancedOptions': "Options avancées",
+            'aboutDeepRL': "À propos du DeepRL",
             'saveEnvModal': {
-                'title': `<strong>Saisis un nom et une description pour l'environnement actuel.</strong>`,
+                'title': `Saisis un nom et une description pour l'environnement actuel`,
                 'text': "Cet environnement sera sauvegardé dans ta collection d'environnements personnalisés pour que tu puisses le recharger plus tard ou le télécharger pour le partager.",
                 'nameLabel': "Nom",
                 'descriptionLabel': "Description",
