@@ -410,81 +410,136 @@ window.delete_agent = (agent) => {
     store.dispatch('deleteAgent', {index: window.game.env.agents.indexOf(agent)});
 }
 
+/**
+ * Sets up and starts language selection with IntroJs.
+ */
+window.langIntroSetUp = () => {
+    window.langIntro = introJs();
 
-window.get_intro_tour_steps = () => {
+    // Called when langIntro is exited: sets up and starts the guide tour
+    window.langIntro.onexit(function (){
+        window.introTourSetUp();
+    });
+
+    window.langIntro.setOptions({
+        exitOnOverlayClick: false,
+        showBullets: false,
+        doneLabel: "Ok",
+        steps: [
+            {
+                title: "Choose a language:",
+                intro: `<select id="langSelectIntro" class="form-select w-auto">
+                        <option value="EN">🇬🇧 English</option>
+                        <option value="FR">🇫🇷 Français</option>
+                      </select>`
+            },
+        ]
+    });
+
+    // Starts the language selection intro
+    window.langIntro.start();
+
+    // Sets the language on select input
+    const langSelectIntro = document.querySelector('#langSelectIntro');
+    langSelectIntro.addEventListener('input', () => {
+        store.dispatch('setLanguage', langSelectIntro.value);
+    });
+}
+
+/**
+ * Sets up guide tour with IntroJs.
+ */
+window.introTourSetUp = () => {
+
+    store.dispatch('setIntroTour', true);
+
+    // Guide tour and hints manager
+    window.introTour = introJs();
+
+    // Called when the tour is exited: enables save env button and show the hints
+    window.introTour.onexit(function (){
+        store.dispatch('setIntroTour', false);
+    });
+
+    // Shows hints when a hint is closed so that they are always available
+    window.introTour.onhintclose(function (){
+        window.introTour.showHints();
+    });
+
     let tour_dict = window.lang_dict[store.state.language]['introTour'];
-    let steps = [
-        {
-            title: tour_dict['welcomeTitle'],
-            intro: tour_dict['welcomeText'],
-            disableInteraction: true,
-        },
-        {
-            title: tour_dict['viewportTitle'],
-            intro: tour_dict['viewportText'],
-            element: document.querySelector('#canvas_container'),
-            disableInteraction: false,
-            position: "bottom"
-        },
-        {
-            title: tour_dict['runTitle'],
-            intro: tour_dict['runText'],
-            element: document.querySelector('#canvas-and-main-buttons'),
-            disableInteraction: false
-        },
-        {
-            title: tour_dict['baseEnvsTitle'],
-            intro: tour_dict['baseEnvsText'],
-            element: document.querySelector('#baseEnvsSet'),
-            disableInteraction: true,
-        },
-        {
-            title: tour_dict['morphologiesTitle'],
-            intro: tour_dict['morphologiesText'],
-            element: document.querySelector('#agents-selection'),
-            disableInteraction: true,
-        },
-        {
-            title: tour_dict['agentsListTitle'],
-            intro: tour_dict['agentsListText'],
-            element: document.querySelector('#agents_list_container'),
-            disableInteraction: true,
-        },
-        {
-            title: tour_dict['customEnvsTitle'],
-            intro: tour_dict['customEnvsText'],
-            element: document.querySelector('#customSetSection'),
-            disableInteraction: true,
-        },
-        {
-            title: tour_dict['furtherTitle'],
-            intro: tour_dict['furtherText'],
-            element: document.querySelector('#tabs-buttons'),
-            disableInteraction: true,
-        }
-    ];
-    return steps;
-}
 
-/**
- * Exits intro tour.
- */
-window.exit_intro_tour = () => {
-    store.dispatch('exitIntroTour', {});
-}
+    // Sets up the intro options
+    window.introTour.setOptions({
 
-/**
- * Sets the language.
- * @param lang {string}
- */
-window.set_language = (lang) => {
-    store.dispatch('setLanguage', lang);
-}
+        hidePrev: true,
+        exitOnOverlayClick: false,
+        nextLabel: tour_dict['nextLabel'],
+        prevLabel: tour_dict['prevLabel'],
+        doneLabel: tour_dict['doneLabel'],
 
-/**
- * Gets the language.
- * @return {string}
- */
-window.get_language = () => {
-    return store.state.language;
+        // Steps of the guide tour
+        steps: [
+            {
+                title: tour_dict['welcomeTitle'],
+                intro: tour_dict['welcomeText'],
+                disableInteraction: true,
+            },
+            {
+                title: tour_dict['viewportTitle'],
+                intro: tour_dict['viewportText'],
+                element: document.querySelector('#canvas_container'),
+                disableInteraction: false,
+                position: "bottom"
+            },
+            {
+                title: tour_dict['runTitle'],
+                intro: tour_dict['runText'],
+                element: document.querySelector('#canvas-and-main-buttons'),
+                disableInteraction: false
+            },
+            {
+                title: tour_dict['baseEnvsTitle'],
+                intro: tour_dict['baseEnvsText'],
+                element: document.querySelector('#baseEnvsSet'),
+                disableInteraction: true,
+            },
+            {
+                title: tour_dict['morphologiesTitle'],
+                intro: tour_dict['morphologiesText'],
+                element: document.querySelector('#agents-selection'),
+                disableInteraction: true,
+            },
+            {
+                title: tour_dict['agentsListTitle'],
+                intro: tour_dict['agentsListText'],
+                element: document.querySelector('#agents_list_container'),
+                disableInteraction: true,
+            },
+            {
+                title: tour_dict['customEnvsTitle'],
+                intro: tour_dict['customEnvsText'],
+                element: document.querySelector('#customSetSection'),
+                disableInteraction: true,
+            },
+            {
+                title: tour_dict['furtherTitle'],
+                intro: tour_dict['furtherText'],
+                element: document.querySelector('#tabs-buttons'),
+                disableInteraction: true,
+            }
+        ],
+
+        // Hints buttons
+        hintButtonLabel: window.lang_dict[store.state.language]['introHints']['buttonLabel'],
+        hints: [
+            {
+                hint: window.lang_dict[store.state.language]['introHints']['tips'],
+                element: document.querySelector('#canvas_container'),
+                hintPosition: 'top-right',
+            }
+        ]
+    });
+
+    // Starts the guide tour
+    window.introTour.start();
 }

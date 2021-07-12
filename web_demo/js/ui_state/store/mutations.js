@@ -590,15 +590,18 @@ export default {
     },
 
     /**
-     * Exits intro guide tour.
+     * Starts (true) or exits (false) intro tour.
      * @param state {Object} - UI state
-     * @param payload
+     * @param payload {boolean}
      * @return {Object} - UI state
      */
-    exitIntroTour(state, payload){
-        state.simulationState.intro_tour = false;
-        // Shows the intro hints
-        //window.intro.addHints();
+    setIntroTour(state, payload){
+        state.simulationState.intro_tour = payload;
+
+        // Shows the intro hints when exiting the guide tour
+        if(!payload){
+            window.introTour.addHints();
+        }
         return state;
     },
 
