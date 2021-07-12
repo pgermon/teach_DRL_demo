@@ -374,6 +374,7 @@ export default {
     setLanguage(context, payload){
         context.commit('setLanguage', payload);
 
+        // Resets the hints options of the intro
         if(window.introTour != null){
             window.introTour.setOptions({
                 hintButtonLabel: window.lang_dict[context.state.language]['introHints']['buttonLabel'],
@@ -385,6 +386,12 @@ export default {
                     }
                 ]
             });
+
+            // Removes the div element of the hints
+            let introDiv = document.getElementsByClassName("introjs-hints")[0];
+            introDiv.parentNode.removeChild(introDiv);
+
+            // Recreates the hints
             window.introTour.addHints();
         }
     }
