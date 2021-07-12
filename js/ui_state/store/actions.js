@@ -364,5 +364,32 @@ export default {
      */
     exitIntroTour(context, payload){
         context.commit('exitIntroTour', payload);
+    },
+
+    /**
+     * Sets the language.
+     * @param context {Store}
+     * @param payload {string}
+     */
+    setLanguage(context, payload){
+        context.commit('setLanguage', payload);
+
+        /*if(window.intro != null){
+            window.intro.setOptions({
+                //steps: window.get_intro_tour_steps(),
+
+                hintButtonLabel: window.lang_dict[context.state.language]['introHints']['buttonLabel'],
+                hints: [
+                    {
+                        hint: window.lang_dict[context.state.language]['introHints']['tips'],
+                        element: document.querySelector('#canvas_container'),
+                        hintPosition: 'top-right',
+                    }
+                ]
+            });
+            //window.intro.hideHints();
+            window.intro.addHints();
+            //window.intro.refresh();
+        }*/
     }
 };

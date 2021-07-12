@@ -31,7 +31,7 @@ export default class MorphologiesList extends Component {
     constructor() {
         super({
             store,
-            element: document.querySelector('#agentsSelection'),
+            element: document.querySelector('#agents-selection'),
             eventName: 'morphologiesChange'
         });
     }
@@ -41,7 +41,12 @@ export default class MorphologiesList extends Component {
      */
     render() {
 
-        this.element.innerHTML = store.state.morphologies.map(m => {
+        let dict = window.lang_dict[store.state.language]['morphologies'];
+
+        this.element.querySelector('#agents-selection-title').innerHTML = dict['title'];
+        this.element.querySelector('#agents-selection-text').innerText = dict['text'];
+
+        this.element.querySelector('#morphologies-list').innerHTML = store.state.morphologies.map(m => {
             // Creates a list item for each morphology
             return `<li name="morph-list-item" class="list-group-item d-flex justify-content-between align-items-center px-0 my-1">
 
@@ -49,19 +54,19 @@ export default class MorphologiesList extends Component {
                             <div class="col-4">
                                 <!-- Thumbnail of the morphology -->
                                 <img name="morphology_thumbnail" src=${thumbnails_path + m.morphology + "_thumbnail.png"} 
-                                 alt=${m.morphology + "_thumbnail"} data-bs-toggle="tooltip" title="${morphologies_descriptions[m.morphology]}">
+                                 alt=${m.morphology + "_thumbnail"} data-bs-toggle="tooltip" title="${dict[m.morphology]['description']}">
                             </div>
                             
                             <div class="col px-0">
                                 <!-- Name of the morpholgy -->
-                                <label for="morphology_thumbnail"><strong>${strUcFirst(m.morphology)}</strong></label>
+                                <label for="morphology_thumbnail"><strong>${dict[m.morphology]['title']}</strong></label>
                                 
                                 <!-- Dropdown policy selector and add button -->                          
                                 <div name="select_button" class="input-group mt-1">                       
-                                    <select name="models" class="form-select" data-bs-toggle="tooltip" title="Select an agent"></select>
+                                    <select name="models" class="form-select" data-bs-toggle="tooltip" title="${dict['policySelectTooltip']}"></select>
                                     <div class="input-group-append">
                                         <button name="addAgentButton" class="btn btn-warning"
-                                        data-bs-toggle="tooltip" title="Add the agent to the simulation"><i class="fas fa-plus"></i></button>
+                                        data-bs-toggle="tooltip" title="${dict['addBtnTooltip']}"><i class="fas fa-plus"></i></button>
                                     </div>
                                 </div>
                             </div>

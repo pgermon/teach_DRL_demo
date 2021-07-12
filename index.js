@@ -21,6 +21,291 @@ window.align_terrain = {
     smoothing: null
 };
 
+// Internationalization dictionary
+window.lang_dict = {
+    'EN': {
+        'introTour': {
+            'nextLabel': "Next",
+            'prevLabel': "Back",
+            'doneLabel': "Done",
+            'welcomeTitle': "Welcome!",
+            'welcomeText': "Here you can play with a simulation where autonomously trained agents are trying to navigate through a 2D environment.",
+            'viewportTitle': "Viewport simulation",
+            'viewportText': "Here is the viewport where the simulation is rendered in real time. It allows you to see the environment and visualize live how the agents are dealing with it.<br><br> You can also interact with the simulation using the mouse in order to scroll, zoom or even drag and drop the agents.",
+            'runTitle': "Run the simulation",
+            'runText': 'Click the <span style="color: green"><i class="fas fa-play"></i></span> button to run the simulation. <br> Then, click the <span style="color: #FFC700"><i class="fas fa-pause"></i></span> button to pause it or the <span style="color: red"><i class="fas fa-undo-alt"></i></span> to reset it.',
+            'baseEnvsTitle': "Some environments",
+            'baseEnvsText': "Here are some basic environments that will let you become more familiar with the different morphologies of agents. <br> Try to load one of them into the simulation to visualize the behaviour of the different agents.",
+            'morphologiesTitle': "Agents morphologies",
+            'morphologiesText': "Here are all the morphologies available for the agents. You can select one of several agents for each morphology and add it to the simulation. <br><br> Each agent has been trained to learn an optimal behaviour to navigate through the environment according to its morphology. Try to compare them!",
+            'agentsListTitle': "List of running agents",
+            'agentsListText': "In this section you can find all the agents that are currently running in the simulation.",
+            'customEnvsTitle': "Custom environments",
+            'customEnvsText': "Here you can save and download your custom environments but also upload them from previously downloaded files. Try to share them with your friends!",
+            'furtherTitle': "Going further...",
+            'furtherText': "If you want to customize the environment, access more advanced options or learn more about Deep Reinforcement Learning, open these tabs. <br><br> Enjoy!",
+        },
+
+        'introHints': {
+            'buttonLabel': "Got it",
+            'tips': `<strong>Tips</strong>
+                    <ul>
+                        <li>You can scroll horizontally and vertically in the environment by dragging the mouse.</li>
+                        <li>You can zoom in or out using the mouse wheel.</li>
+                        <li>You can select an agent or an asset by clicking on it, and then delete it by pressing the delete key of your keyboard.</li>
+                        <li>You can drag and drop an agent or an asset using the mouse.</li>
+                        <li>You can change the eraser and assets radius using the mouse wheel.</li>
+                    </ul>
+                    <br>`
+        },
+
+        'agentsList': {
+            'title': "List of running agents",
+            'follow': "Follow",
+            'followTooltip' : "Center the viewport on the agent",
+            'savePosTooltip': "Save the agent's position",
+            'resetPosTooltip': "Reset the agent's position",
+            'deleteAgentTooltip': "Delete the agent",
+        },
+
+        'mainButtons':{
+            'runBtnTooltip': "Run the simulation",
+            'pauseBtnTooltip': "Pause the simulation",
+            'resetBtnTooltip': "Reset the simulation",
+            'saveBtnTooltip': "Save the current environment"
+        },
+
+        'drawingMode': {
+            'text': `Here you can draw your own parkour! <br>
+                    Select the <strong style="color: green"><i class="fas fa-pencil-alt"></i> Ground</strong> or <strong style="color: dimgrey"><i class="fas fa-pencil-alt"></i> Ceiling</strong> button to start drawing the corresponding terrain shape with the mouse.<br>
+                    Be careful not to draw more than one line at different heights if you want the result to be optimal. <br>
+                    You can use the <strong style="color: #FFC700"><i class="fas fa-eraser"></i> Erase</strong> button if you need to correct your drawing or the <strong style="color: red"><i class="fas fa-times"></i> Clear</strong> one to clear all your drawing.<br>
+                    When you are satisfied with the result, just click the <strong style="color: green">Generate Terrain</strong> button.`,
+            'ground': "Ground",
+            'ceiling': "Ceiling",
+            'erase': "Erase",
+            'clear': "Clear",
+            'generateTerrain': "Generate Terrain",
+            'draw': "Draw",
+        },
+
+        'parkourConfig': {
+            'terrainGeneration': "<strong>Terrain Generation</strong>",
+            'generalParameters': "General Parameters",
+            'creepers': "Creepers",
+            'drawTabBtn': "Draw Yourself!",
+            'procGenTabBtn': "Procedural Generation",
+            'procGenText': `You can also use these three sliders to generate the <strong>terrain shapes</strong> automatically.`,
+            'smoothing': "Smoothing",
+            'waterLevel': "Water level",
+            'creepersWidth': "Width",
+            'creepersHeight': "Height",
+            'creepersSpacing': "Spacing",
+            'creepersType': "Type",
+            'rigid': "Rigid",
+            'swingable': "Swingable",
+        },
+
+        'morphologies': {
+            'title': "<strong>Add an agent</strong>",
+            'text': "Here you can add an agent to the simulation with the morphology of your choice.",
+            'policySelectTooltip': "Select an agent",
+            'addBtnTooltip': "Add the agent to the simulation",
+            'bipedal': {
+                'title': "Bipedal Walker",
+                'description': "This morphology is composed of a head and two legs which allow it to walk on the floor."
+            },
+            'chimpanzee': {
+                'title': "Chimpanzee",
+                'description': "This morphology is composed of a head, a torso and two arms and legs. It can only move by climbing the ceiling and grasping the creepers.",
+            },
+            'fish': {
+                'title': "Fish",
+                'description': "This morphology is composed of a head, a tail and a fin, allowing it to swim in the water.",
+            },
+        },
+
+        'envsSets': {
+            'baseSetText': "To begin you can select one of the following environments to load it into the simulation.",
+            'customSetText': `In this section you can store your own custom environments by saving them thanks to the <span style="color: blue"><i class="far fa-save fa-lg"></i></span> button above or by uploading them from a JSON file.`,
+            'uploadCard': {
+                'title': "Uplaod an environment",
+                'text': `Choose a JSON file then click the <span style="color: orange;"><i class="fas fa-upload"></i></span> button below to save the corresponding environment in your collection.`,
+                'uploadBtnTooltip': "Upload the environment from the selected file",
+            },
+            'downloadBtnTooltip': "Download the environment",
+            'deleteBtnTooltip': "Delete the environment",
+        },
+
+        'advancedOptions': {
+            'renderingOptions': `<strong> Rendering Options </strong>`,
+            'drawJoints': "Draw joints",
+            'drawLidars': "Draw lidars",
+            'drawNames': "Draw names",
+            'assetsTitle': `<strong> Assets </strong>`,
+            'assetsText': "Here you can find several types of assets, which are objects that you can add to the simulation using the mouse.",
+            'circle': `<i class="fas fa-circle"></i> Ball`,
+        },
+
+        'globalElements': {
+            'demoTitle': "Deep Reinforcement Learning Interactive Demo",
+            'gettingStarted': `<strong> Getting Started </strong>`,
+            'parkourCustomization': `<strong> Parkour Customization </strong>`,
+            'advancedOptions': `<strong> Advanced Options </strong>`,
+            'aboutDeepRL': `<i class="fas fa-info-circle fa-lg"></i> <strong>About DeepRL</strong>`,
+            'saveEnvModal': {
+                'title': `<strong>Please enter a name and a description for the current environment.</strong>`,
+                'text': "This environment will be saved in your collection of custom environments so that you could reload it later or download it to share it.",
+                'nameLabel': "Name",
+                'descriptionLabel': "Description",
+                'cancelBtn': "Cancel",
+                'confirmBtn': "Save",
+            },
+        }
+    },
+
+    'FR': {
+        'introTour': {
+            'nextLabel': "Suivant",
+            'prevLabel': "Précédent",
+            'doneLabel': "Fermer",
+            'welcomeTitle': "Bienvenue !",
+            'welcomeText': "Ici tu peux jouer avec une simulation dans laquelle des agents entraînés de manière autonome essayent de se déplacer au travers d'un environnement 2D.",
+            'viewportTitle': "Fenêtre d'affichage",
+            'viewportText': "C'est dans cet espace que la simulation est affichée en temps réel. Cela va te permettre de voir en direct comment les agents essayent de s'adapter à leur environment.<br><br> Tu peux aussi interagir avec la simulation à l'aide de la souris pour faire défiler l'environnement, zoomer ou encore déplacer les agents.",
+            'runTitle': "Lancer la simulation",
+            'runText': 'Clique sur le bouton <span style="color: green"><i class="fas fa-play"></i></span> pour lancer la simulation. <br> Tu peux ensuite cliquer sur le bouton <span style="color: #FFC700"><i class="fas fa-pause"></i></span> pour la mettre en pause ou sur le bouton <span style="color: red"><i class="fas fa-undo-alt"></i></span> pour la réinitialiser.',
+            'baseEnvsTitle': "Quelques environnements",
+            'baseEnvsText': "Voici quelques environnements de base qui t'aideront à te familiariser avec les différentes morphologies d'agents. <br> Essaye de les charger dans la simulation pour voir les comportements des différents agents.",
+            'morphologiesTitle': "Les différentes morphologies d'agents",
+            'morphologiesText': "Voici toutes les morphologies disponibles pour les agents. Tu peux choisir parmi plusieurs agents différents pour chaque morphologie et l'ajouter à la simulation. <br><br> Chaque agent a été entraîné pour apprendre un comportement efficace pour se déplacer à travers l'environnement en fonction de sa morphologie. Essaye de les comparer !",
+            'agentsListTitle': "List des agents actifs",
+            'agentsListText': "Dans cette section sont affichés tous les agents actuellement présents dans la simulation.",
+            'customEnvsTitle': "Environnements personnalisés",
+            'customEnvsText': "Ici tu peux sauvegarder et télécharger tes environnements personnalisés mais aussi en charger depuis des fichiers précédemment téléchargés. Essaye de les échanger avec tes amis !",
+            'furtherTitle': "Pour aller plus loin...",
+            'furtherText': "Si tu veux personnaliser ton propre environnement, accéder à des options avancées ou en apprendre davantage à propos du Deep Reinforcement Learning, ouvre ces onglets. <br><br> Amuse-toi !",
+        },
+
+        'introHints': {
+            'buttonLabel': "Ok",
+            'tips': `<strong>Astuces</strong>
+                    <ul>
+                        <li>Tu peux faire défiler l'environnement horizontalement et verticalement à l'aide de la souris.</li>
+                        <li>Tu peux zoomer ou dézoomer avec la molette de la souris.</li>
+                        <li>Tu peux sélectionner un agent ou un objet en cliquant dessus, puis le supprimer en appuyant sur la touche suppr de ton clavier.</li>
+                        <li>Tu peux déplacer un agent ou un objet en le faisant glisser avec la souris.</li>
+                        <li>Tu peux changer le rayon de la gomme ou la taille des objets avec la molette de la souris.</li>
+                    </ul>
+                    <br>`
+        },
+
+        'agentsList': {
+            'title': "Liste des agents actifs",
+            'follow': "Suivre",
+            'followTooltip' : "Centrer la fenêtre d'affichage sur l'agent",
+            'savePosTooltip': "Sauvegarder la position de l'agent",
+            'resetPosTooltip': "Réinitiliaser la position de l'agent",
+            'deleteAgentTooltip': "Supprimer l'agent",
+        },
+
+        'mainButtons':{
+            'runBtnTooltip': "Lancer la simulation",
+            'pauseBtnTooltip': "Mettre la simulation en pause",
+            'resetBtnTooltip': "Réinitialiser la simulation",
+            'saveBtnTooltip': "Sauvegarder l'environnement actuel"
+        },
+
+        'drawingMode': {
+            'text': `Ici tu peux dessiner ton propre environnement ! <br>
+                    Selectionne les boutons <strong style="color: green"><i class="fas fa-pencil-alt"></i> Sol</strong> ou <strong style="color: dimgrey"><i class="fas fa-pencil-alt"></i> Plafond</strong> pour commencer à dessiner l'élément du terrain correspondant avec la souris.<br>
+                    Fais attention à ne pas superposer plusieurs traits à différentes hauteurs pour obtenir un résultat optimal. <br>
+                    Tu peux utiliser le bouton <strong style="color: #FFC700"><i class="fas fa-eraser"></i> Gommer</strong> pour corriger ton dessin ou le bouton <strong style="color: red"><i class="fas fa-times"></i> Effacer</strong> pour tout effacer.<br>
+                    Une fois que tu es satisfait du résultat, clique sur le bouton <strong style="color: green"> Générer le terrain</strong>.`,
+            'ground': "Sol",
+            'ceiling': "Plafond",
+            'erase': "Gommer",
+            'clear': "Effacer",
+            'generateTerrain': "Générer le terrain",
+            'draw': "Dessiner",
+        },
+
+        'parkourConfig': {
+            'terrainGeneration': "<strong>Génération du terrain</strong>",
+            'generalParameters': "Paramètres Généraux",
+            'creepers': "Lianes",
+            'drawTabBtn': "Dessine par toi-même !",
+            'procGenTabBtn': "Génération procédurale",
+            'procGenText': `Tu peux aussi utiliser ces trois curseurs pour générer <strong>les formes du terrain</strong> de manière automatique.`,
+            'smoothing': "Lissage",
+            'waterLevel': "Niveau d'eau",
+            'creepersWidth': "Largeur",
+            'creepersHeight': "Hauteur",
+            'creepersSpacing': "Espacement",
+            'creepersType': "Type",
+            'rigid': "Rigide",
+            'swingable': "Flexible",
+        },
+
+        'morphologies': {
+            'title': "<strong>Ajouter un agent</strong>",
+            'text': "Ici tu peux ajouter un agent à la simulation avec la morphologie de ton choix.",
+            'policySelectTooltip': "Sélectionner un agent",
+            'addBtnTooltip': "Ajouter l'agent à la simulation",
+            'bipedal': {
+                'title': "Bipède",
+                'description': "Cette morphologie est composée d'une tête et de deux jambes qui lui permettent de marcher sur le sol."
+            },
+            'chimpanzee': {
+                'title': "Chimpanzé",
+                'description': "Cette morphologie est composée d'une tête, d'un corps ainsi que de deux bras et deux jambes. Elle peut uniquement se déplacer en s'accrochant au plafond ou en se balançant de lianes en lianes.",
+            },
+            'fish': {
+                'title': "Poisson",
+                'description': "Cette morphologie est composée d'une tête, d'une queue et d'une nageoire, ce qui lui permet de nager dans l'eau.",
+            },
+        },
+
+        'envsSets': {
+            'baseSetText': "Pour commencer tu peux sélectionner un des environnments suivants en cliquant dessus pour le charger dans la simulation.",
+            'customSetText': `Dans cette section tu peux stocker tes propres environnements personnalisés en les sauvegardant grâce au bouton <span style="color: blue"><i class="far fa-save fa-lg"></i></span> ci-dessus ou en les important depuis un fichier JSON.`,
+            'uploadCard': {
+                'title': "Importer un environnement",
+                'text': `Choisis un fichier JSON puis clique sur le bouton <span style="color: orange;"><i class="fas fa-upload"></i></span> ci-dessous pour importer l'environnement correspondant dans ta collection.`,
+                'uploadBtnTooltip': "Importer l'environnement depuis le fichier sélectionné",
+            },
+            'downloadBtnTooltip': "Télécharger l'environnement",
+            'deleteBtnTooltip': "Supprimer l'environnement",
+        },
+
+        'advancedOptions': {
+            'renderingOptions': `<strong> Options d'affichage </strong>`,
+            'drawJoints': "Afficher les joints",
+            'drawLidars': "Afficher les lidars",
+            'drawNames': "Afficher les noms",
+            'assetsTitle': `<strong> Objets </strong>`,
+            'assetsText': "Ici tu peux trouver plusieurs types d'objets que tu peux ajouter à la simulation avec la souris.",
+            'circle': `<i class="fas fa-circle"></i> Boule`,
+        },
+
+        'globalElements': {
+            'demoTitle': "Démo Interactive de Deep Reinforcement Learning",
+            'gettingStarted': `<strong> Commencer </strong>`,
+            'parkourCustomization': `<strong> Personnalisation du terrain </strong>`,
+            'advancedOptions': `<strong> Options avancées </strong>`,
+            'aboutDeepRL': `<i class="fas fa-info-circle fa-lg"></i> <strong>À propos du DeepRL</strong>`,
+            'saveEnvModal': {
+                'title': `<strong>Saisis un nom et une description pour l'environnement actuel.</strong>`,
+                'text': "Cet environnement sera sauvegardé dans ta collection d'environnements personnalisés pour que tu puisses le recharger plus tard ou le télécharger pour le partager.",
+                'nameLabel': "Nom",
+                'descriptionLabel': "Description",
+                'cancelBtn': "Annuler",
+                'confirmBtn': "Sauvegarder",
+            },
+        }
+    }
+}
+
 /* INIT FUNCTIONS */
 
 /**
@@ -71,21 +356,54 @@ function getCreepersType() {
 
 /**
  * First function called after the code is entirely loaded.
- * Loads the model of the CPPN, initializes the game by default, loads the default environmnent and start the guidde tour.
+ * Loads the model of the CPPN, initializes the game by default, loads the default environmnent and starts the language selection.
  * @returns {Promise<void>}
  */
 async function onLoadInit() {
     window.cppn_model = await tf.loadGraphModel('./js/CPPN/weights/same_ground_ceiling_cppn/tfjs_model/model.json');
     window.init_default();
     window.loadDefaultEnv();
-    introSetUp();
-
-    // Starts the guide tour
-    window.intro.start();
+    langIntroSetUp();
 }
 
 /**
- * Sets up IntroJs.
+ * Sets up and starts language selection with IntroJs.
+ */
+function  langIntroSetUp(){
+    window.langIntro = introJs();
+
+    // Called when langIntro is exited: sets up and starts the guide tour
+    window.langIntro.onexit(function (){
+        introSetUp();
+    });
+
+    window.langIntro.setOptions({
+        exitOnOverlayClick: false,
+        showBullets: false,
+        doneLabel: "Ok",
+        steps: [
+            {
+                title: "Choose a language:",
+                intro: `<select id="langSelectIntro" class="form-select w-auto">
+                        <option value="EN">🇬🇧 English</option>
+                        <option value="FR">🇫🇷 Français</option>
+                      </select>`
+            },
+        ]
+    });
+
+    // Starts the language selection intro
+    window.langIntro.start();
+
+    // Sets the language on select input
+    const langSelectIntro = document.querySelector('#langSelectIntro');
+    langSelectIntro.addEventListener('input', () => {
+        window.set_language(langSelectIntro.value);
+    });
+}
+
+/**
+ * Sets up guide tour with IntroJs.
  */
 function introSetUp(){
 
@@ -100,81 +418,35 @@ function introSetUp(){
     // Shows hints when a hint is closed so that they are always available
     window.intro.onhintclose(function (){
         intro.showHints();
-    })
+    });
+
+    let tour_dict = window.lang_dict[window.get_language()]['introTour'];
 
     // Sets up the intro options
     window.intro.setOptions({
 
+        hidePrev: true,
+        exitOnOverlayClick: false,
+        nextLabel: tour_dict['nextLabel'],
+        prevLabel: tour_dict['prevLabel'],
+        doneLabel: tour_dict['doneLabel'],
+
         // Steps of the guide tour
-        steps: [
-            {
-                title: "Welcome!",
-                intro: "Here you can play with a simulation where autonomously trained agents are trying to navigate through a 2D environment.",
-                disableInteraction: true,
-            },
-            {
-                title: "Viewport simulation",
-                intro: "Here is the viewport where the simulation is rendered. It will allow you to see the environment and visualize live how the agents are dealing with it.<br><br> You can also interact with the simulation using the mouse in order to scroll, zoom or even drag and drop the agents.",
-                element: document.querySelector('#canvas_container'),
-                disableInteraction: false,
-                position: "bottom"
-            },
-            {
-                title: "Run the simulation",
-                intro: 'Click the <span style="color: green"><i class="fas fa-play"></i></span> button to run the simulation. <br> Then, click the <span style="color: #FFC700"><i class="fas fa-pause"></i></span> button to pause it or the <span style="color: red"><i class="fas fa-undo-alt"></i></span> to reset it.',
-                element: document.querySelector('#canvas-and-main-buttons'),
-                disableInteraction: false
-            },
-            {
-                title: "Some environments ",
-                intro: "Here are some basic environments that will let you become more familiar with the different morphologies of agents. <br> Try to load one of them into the simulation to visualize the behaviour of the different agents.",
-                element: document.querySelector('#baseEnvsSet'),
-                disableInteraction: true,
-            },
-            {
-                title: "Agents morphologies",
-                intro: "Here are all the morphologies available for the agents. You can select one of several agents for each morphology and add it to the simulation. <br><br> Each agent has been trained to learn an optimal behaviour to navigate through the environment according to its morphology. Try to compare them!",
-                element: document.querySelector('#agent-sel-config'),
-                disableInteraction: true,
-            },
-            {
-                title: "List of agents",
-                intro: "In this section you can find all the agents that are currently running in the simulation.",
-                element: document.querySelector('#agents_list_container'),
-                disableInteraction: true,
-            },
-            {
-                title: "Custom environments",
-                intro: "Here you can upload environments from JSON files or save your custom environments.",
-                element: document.querySelector('#customSetSection'),
-                disableInteraction: true,
-            },
-            {
-                title: "Going further...",
-                intro: "If you want to customize the environment, access more advanced options or learn more about Deep Reinforcement Learning, open these tabs. <br><br> Enjoy!",
-                element: document.querySelector('#tabs-buttons'),
-                disableInteraction: true,
-            }
-        ],
+        steps: window.get_intro_tour_steps(),
 
         // Hints buttons
+        /*hintButtonLabel: window.lang_dict[window.get_language()]['introHints']['buttonLabel'],
         hints: [
             {
-                hint:
-                    `<strong>Tips</strong>
-                    <ul>
-                        <li>You can scroll horizontally and vertically in the environment by dragging the mouse.</li>
-                        <li>You can zoom in or out using the mouse wheel.</li>
-                        <li>You can select an agent or an asset by clicking on it, and then delete it by pressing the delete key of your keyboard.</li>
-                        <li>You can drag and drop an agent or an asset using the mouse.</li>
-                        <li>You can change the eraser and assets radius using the mouse wheel.</li>
-                    </ul>`,
-
+                hint: window.lang_dict[window.get_language()]['introHints']['tips'],
                 element: document.querySelector('#canvas_container'),
                 hintPosition: 'top-right',
             }
-        ]
+        ]*/
     });
+
+    // Starts the guide tour
+    window.intro.start();
 }
 
 // Calls onLoadInit() when all the files are loaded

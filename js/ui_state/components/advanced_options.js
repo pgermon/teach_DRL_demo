@@ -24,13 +24,29 @@ export default class AdvancedOptions extends Component {
 
         const state = store.state.advancedOptionsState;
 
+        let dict = window.lang_dict[store.state.language]['advancedOptions'];
+
+        /* Rendering Options */
+        this.element.querySelector('#renderingOptionsTitle').innerHTML = dict['renderingOptions'];
+
         // Checks the draw switches
         this.element.querySelector('#drawJointsSwitch').checked = state.drawJoints;
         this.element.querySelector('#drawLidarsSwitch').checked = state.drawLidars;
         this.element.querySelector('#drawNamesSwitch').checked = state.drawNames;
 
+        // Switches labels
+        this.element.querySelector('#drawJointsLabel').innerText = dict['drawJoints'];
+        this.element.querySelector('#drawLidarsLabel').innerText = dict['drawLidars'];
+        this.element.querySelector('#drawNamesLabel').innerText = dict['drawNames'];
+
+        /* Assets */
+
+        this.element.querySelector('#assetsTitle').innerHTML = dict['assetsTitle'];
+        this.element.querySelector('#assetsText').innerText = dict['assetsText'];
+
         // Renders the assets buttons
         let circleAssetButton = this.element.querySelector('#circleAssetButton');
+        circleAssetButton.innerHTML = dict['circle'];
         if(state.assets.circle){
             circleAssetButton.className = "btn btn-asset";
         }

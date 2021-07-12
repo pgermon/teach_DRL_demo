@@ -11,7 +11,7 @@ export default class DrawingMode extends Component {
     constructor() {
         super({
             store,
-            element: document.querySelector('#drawingMode'),
+            element: document.querySelector('#draw-tab'),
             eventName: 'drawingModeChange'
         });
     }
@@ -21,11 +21,20 @@ export default class DrawingMode extends Component {
      */
     render() {
         const state = store.state.drawingModeState;
+        let drawingText = this.element.querySelector('#drawingText');
         let drawGroundButton = this.element.querySelector('#drawGroundButton');
         let drawCeilingButton = this.element.querySelector('#drawCeilingButton');
         let eraseButton = this.element.querySelector('#eraseButton');
         let clearButton = this.element.querySelector('#clearButton');
         let generateTerrainButton = this.element.querySelector('#generateTerrainButton');
+
+        let dict = window.lang_dict[store.state.language]['drawingMode'];
+
+        drawingText.innerHTML = dict['text'];
+        drawGroundButton.innerHTML = `<i class="fas fa-pencil-alt"></i> ${dict['ground']}`;
+        drawCeilingButton.innerHTML = `<i class="fas fa-pencil-alt"></i> ${dict['ceiling']}`;
+        eraseButton.innerHTML = `<i class="fas fa-eraser"></i> ${dict['erase']}`;
+        clearButton.innerHTML = `<i class="fas fa-times"></i> ${dict['clear']}`;
 
         // Enables the buttons when drawing mode is active
         if(state.drawing){
@@ -46,7 +55,7 @@ export default class DrawingMode extends Component {
             }
 
             generateTerrainButton.className = "btn btn-success";
-            generateTerrainButton.innerText = "Generate Terrain";
+            generateTerrainButton.innerText = dict['generateTerrain'];
         }
 
         // Disables drawing buttons when drawing mode is inactive
@@ -56,7 +65,7 @@ export default class DrawingMode extends Component {
             eraseButton.className = "btn btn-outline-warning disabled";
 
             generateTerrainButton.className = "btn btn-primary";
-            generateTerrainButton.innerText = "Draw";
+            generateTerrainButton.innerText = dict['draw'];
         }
     }
 };

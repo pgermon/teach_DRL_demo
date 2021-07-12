@@ -27,10 +27,12 @@ export default class MainButtons extends Component {
         let resetButton = this.element.querySelector("#resetButton");
         let saveEnvButton = this.element.querySelector('#saveEnvButton');
 
+        let dict = window.lang_dict[store.state.language]['mainButtons'];
+
         // Disables buttons while drawing
         if(store.state.drawingModeState.drawing){
             runButton.className = "btn btn-success disabled";
-            runButton.title = "Run the simulation";
+            runButton.title = dict['runBtnTooltip'];
             resetButton.className = "btn btn-danger disabled";
             saveEnvButton.className = "btn btn-primary mx-3 disabled";
         }
@@ -42,7 +44,7 @@ export default class MainButtons extends Component {
                 runButton.className = "btn btn-warning";
                 runButton.childNodes[0].classList.add("fa-pause");
                 runButton.childNodes[0].classList.remove("fa-play");
-                runButton.title = "Pause the simulation";
+                runButton.title = dict['pauseBtnTooltip'];
             }
 
             // Turns pause button into run button when not running
@@ -50,7 +52,7 @@ export default class MainButtons extends Component {
                 runButton.className = "btn btn-success";
                 runButton.childNodes[0].classList.remove("fa-pause");
                 runButton.childNodes[0].classList.add("fa-play");
-                runButton.title = "Run the simulation";
+                runButton.title = dict['runBtnTooltip'];
             }
 
             // Disables save button during intro tour
@@ -59,10 +61,11 @@ export default class MainButtons extends Component {
             }
             else{
                 saveEnvButton.className = "btn btn-primary mx-3";
+                saveEnvButton.title = dict['saveBtnTooltip'];
             }
 
             resetButton.className = "btn btn-danger";
-
+            resetButton.title = dict['resetBtnTooltip'];
         }
 
         /* Initializes tooltips */

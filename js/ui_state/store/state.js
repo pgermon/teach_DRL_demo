@@ -1,5 +1,6 @@
 // State of all UI elements
 export default {
+    language: 'EN', // 'FR'
     envsSets: {
         baseEnvsSet: [], // list of environments of the base set
         customEnvsSet: [] // list of environments of the custom set

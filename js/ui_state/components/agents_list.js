@@ -15,7 +15,7 @@ export default class AgentsList extends Component {
     constructor() {
         super({
             store,
-            element: document.querySelector('#agentsList'),
+            element: document.querySelector('#agents_list_container'),
             eventName: 'agentsListChange'
         });
     }
@@ -24,7 +24,9 @@ export default class AgentsList extends Component {
      * Renders the list of running agents and adds event listeners to the different elements.
      */
     render() {
-        this.element.innerHTML = store.state.agents.map(agent => {
+        let dict = window.lang_dict[store.state.language]['agentsList'];
+        this.element.querySelector('#agents_list_title').innerHTML = `<strong>${dict['title']}</strong>`;
+        this.element.querySelector('#agents_list').innerHTML = store.state.agents.map(agent => {
             // Creates a list item for each agent
             return `<li name="agent-list-item" class="list-group-item d-flex justify-content-between align-items-center px-0 py-1">
 
@@ -33,7 +35,7 @@ export default class AgentsList extends Component {
                              alt=${agent.morphology + "_thumbnail"}
                              width="8%"
                              class="mx-1"
-                             data-bs-toggle="tooltip" title=${strUcFirst(bodyTypeMapping.get(agent.morphology))}>
+                             data-bs-toggle="tooltip" title=${window.lang_dict[store.state.language]['morphologies'][bodyTypeMapping.get(agent.morphology)]['title']}>
                              
                     <!-- Text field of the name of the agent -->
                     <div class="form-group">
@@ -41,26 +43,26 @@ export default class AgentsList extends Component {
                     </div>
                     
                     <!-- Follow switch -->         
-                    <label class="form-check-label" for="followSwitch">Follow</label>         
+                    <label class="form-check-label" for="followSwitch">${dict['follow']}</label>         
                     <div class="form-check form-switch mx-1">
-                        <input name="followSwitch" class="form-check-input" type="checkbox" data-bs-toggle="tooltip" title="Center the viewport on the agent">
+                        <input name="followSwitch" class="form-check-input" type="checkbox" data-bs-toggle="tooltip" title="${dict['followTooltip']}">
                     </div>
 
                     <!-- Save and reset position buttons -->
                     <div name="positionButtonsGroup" class="btn-group" role="group">
                         <button name="savePositionButton" type="button" class="btn btn-primary btn-sm" 
-                        data-bs-toggle="tooltip" title="Save the agent's position">
+                        data-bs-toggle="tooltip" title="${dict['savePosTooltip']}">
                             <i class="far fa-save fa-lg"></i>
                         </button>
                         <button name="resetPositionButton" type="button" class="btn btn-primary btn-sm"
-                        data-bs-toggle="tooltip" title="Reset the agent's position">
+                        data-bs-toggle="tooltip" title="${dict['resetPosTooltip']}">
                             <i class="fas fa-undo-alt"></i>
                         </button> 
                     </div>
                     
                     <!-- Delete button -->
                     <button name="deleteButton" type="button" class="btn btn-danger btn-sm mx-1"
-                    data-bs-toggle="tooltip" title="Delete the agent">
+                    data-bs-toggle="tooltip" title="${dict['deleteAgentTooltip']}">
                         <i class="fa fa-trash"></i>
                     </button>
                 </li>`;
