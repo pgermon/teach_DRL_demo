@@ -10,7 +10,7 @@ export default {
     agents: [], // list of running agents
     simulationState: {
         status: 'init', // 'running', 'paused'
-        intro_tour: true,
+        intro_tour: false,
         agentFollowed: null,
         agentSelected: null,
     },

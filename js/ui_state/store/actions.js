@@ -358,12 +358,12 @@ export default {
     },
 
     /**
-     * Exits intro tour.
+     * Starts (true) or exits (false) intro tour.
      * @param context {Store}
-     * @param payload
+     * @param payload {boolean}
      */
-    exitIntroTour(context, payload){
-        context.commit('exitIntroTour', payload);
+    setIntroTour(context, payload){
+        context.commit('setIntroTour', payload);
     },
 
     /**
@@ -374,10 +374,8 @@ export default {
     setLanguage(context, payload){
         context.commit('setLanguage', payload);
 
-        /*if(window.intro != null){
-            window.intro.setOptions({
-                //steps: window.get_intro_tour_steps(),
-
+        if(window.introTour != null){
+            window.introTour.setOptions({
                 hintButtonLabel: window.lang_dict[context.state.language]['introHints']['buttonLabel'],
                 hints: [
                     {
@@ -387,9 +385,7 @@ export default {
                     }
                 ]
             });
-            //window.intro.hideHints();
-            window.intro.addHints();
-            //window.intro.refresh();
-        }*/
+            window.introTour.addHints();
+        }
     }
 };
