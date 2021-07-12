@@ -19,14 +19,14 @@ export default {
         state.envsSets.baseEnvsSet.sort(function(a, b){
 
             // Exception for env whose name begins with "Flat": always first
-            if(a.description.name.split(" ")[0] == "Flat"){
+            if(a.description["EN"].name.split(" ")[0] == "Flat"){
                 return -1;
             }
-            else if(b.description.name.split(" ")[0] == "Flat"){
+            else if(b.description["EN"].name.split(" ")[0] == "Flat"){
                 return 1;
             }
             else{
-                return a.description.name.localeCompare(b.description.name);
+                return a.description["EN"].name.localeCompare(b.description["EN"].name);
             }
         });
         return state;
@@ -591,14 +591,25 @@ export default {
 
     /**
      * Exits intro guide tour.
-     * @param context {Object} - UI state
+     * @param state {Object} - UI state
      * @param payload
      * @return {Object} - UI state
      */
     exitIntroTour(state, payload){
         state.simulationState.intro_tour = false;
         // Shows the intro hints
-        window.intro.addHints();
+        //window.intro.addHints();
+        return state;
+    },
+
+    /**
+     * Sets the language.
+     * @param state {Object} - UI state
+     * @param payload {string}
+     * @return {Object} - UI state
+     */
+    setLanguage(state, payload) {
+        state.language = payload;
         return state;
     }
 };

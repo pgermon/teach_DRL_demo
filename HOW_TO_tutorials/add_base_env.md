@@ -9,9 +9,25 @@ The first thing you need to do is to get a JSON file containing the data of the 
 
 ![Save and download an environment](graphics/save_dl_env.gif)
 
-**2. Add the downloaded JSON file to the [`base_envs_set`] folder**
+**2. Modify the description of the environment**  
+In order to have the name and text description of the environment available in all languages for the base environments, it is necessary to modify the description part in the JSON file.  
+To do that, you just need to change the description object according to the following format:
+```
+"description": {
+  "EN": {
+    "name": "Name in English",
+    "text": "Description in English."
+  }, 
+  "FR": {
+    "name": "Name in French",
+    "text": "Description in French."
+  }
+},
+```
 
-**3. [Optional] Set up for local launch**  
+**3. Add the downloaded JSON file to the [`base_envs_set`] folder**
+
+**4. [Optional] Set up for local launch**  
 Generate the list of files in [`base_envs_set`]  
 ```
 python3 list_base_envs.py

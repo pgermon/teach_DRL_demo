@@ -6,6 +6,7 @@ import ParkourConfig from './js/ui_state/components/parkour_config.js';
 import DrawingMode from "./js/ui_state/components/drawing_mode.js";
 import AdvancedOptions from "./js/ui_state/components/advanced_options.js";
 import EnvsSet from "./js/ui_state/components/envs_set.js";
+import GlobalElements from "./js/ui_state/components/global_elements.js";
 
 /**
  * Opens the given modal.
@@ -259,6 +260,16 @@ circleAssetButton.addEventListener('click', () => {
 const advancedOptionsInstance = new AdvancedOptions();
 advancedOptionsInstance.render();
 
+// Language set up
+const langSelect = document.querySelector("#langSelect");
+langSelect.addEventListener('input', () => {
+    store.dispatch('setLanguage', langSelect.value);
+});
+
+// Global elements
+const globalElementsInstance = new GlobalElements();
+globalElementsInstance.render();
+
 /*
  * Fetches the available morphologies and policies from the JSON file
  */
@@ -364,7 +375,7 @@ window.generateTerrain = (payload) => {
  * Loads the default environment (Flat Parkour).
  */
 window.loadDefaultEnv = () => {
-    let defaultEnv = store.state.envsSets.baseEnvsSet.find(env => env.description.name.split(" ")[0] == "Flat");
+    let defaultEnv = store.state.envsSets.baseEnvsSet.find(env => env.description["EN"].name.split(" ")[0] == "Flat");
     store.dispatch('loadEnv', defaultEnv != null ? defaultEnv : store.state.envsSets.baseEnvsSet[0]);
 }
 
@@ -399,9 +410,81 @@ window.delete_agent = (agent) => {
     store.dispatch('deleteAgent', {index: window.game.env.agents.indexOf(agent)});
 }
 
+
+window.get_intro_tour_steps = () => {
+    let tour_dict = window.lang_dict[store.state.language]['introTour'];
+    let steps = [
+        {
+            title: tour_dict['welcomeTitle'],
+            intro: tour_dict['welcomeText'],
+            disableInteraction: true,
+        },
+        {
+            title: tour_dict['viewportTitle'],
+            intro: tour_dict['viewportText'],
+            element: document.querySelector('#canvas_container'),
+            disableInteraction: false,
+            position: "bottom"
+        },
+        {
+            title: tour_dict['runTitle'],
+            intro: tour_dict['runText'],
+            element: document.querySelector('#canvas-and-main-buttons'),
+            disableInteraction: false
+        },
+        {
+            title: tour_dict['baseEnvsTitle'],
+            intro: tour_dict['baseEnvsText'],
+            element: document.querySelector('#baseEnvsSet'),
+            disableInteraction: true,
+        },
+        {
+            title: tour_dict['morphologiesTitle'],
+            intro: tour_dict['morphologiesText'],
+            element: document.querySelector('#agent-sel-config'),
+            disableInteraction: true,
+        },
+        {
+            title: tour_dict['agentsListTitle'],
+            intro: tour_dict['agentsListText'],
+            element: document.querySelector('#agents_list_container'),
+            disableInteraction: true,
+        },
+        {
+            title: tour_dict['customEnvsTitle'],
+            intro: tour_dict['customEnvsText'],
+            element: document.querySelector('#customSetSection'),
+            disableInteraction: true,
+        },
+        {
+            title: tour_dict['furtherTitle'],
+            intro: tour_dict['furtherText'],
+            element: document.querySelector('#tabs-buttons'),
+            disableInteraction: true,
+        }
+    ];
+    return steps;
+}
+
 /**
  * Exits intro tour.
  */
 window.exit_intro_tour = () => {
     store.dispatch('exitIntroTour', {});
+}
+
+/**
+ * Sets the language.
+ * @param lang {string}
+ */
+window.set_language = (lang) => {
+    store.dispatch('setLanguage', lang);
+}
+
+/**
+ * Gets the language.
+ * @return {string}
+ */
+window.get_language = () => {
+    return store.state.language;
 }

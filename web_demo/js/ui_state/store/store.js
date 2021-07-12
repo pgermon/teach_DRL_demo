@@ -58,6 +58,9 @@ export default class Store {
                 else if(key == 'advancedOptionsState'){
                     self.events.publish('advancedOptionsChange', self.state);
                 }
+                else if(key == 'language'){
+                    self.events.publish('globalElementsChange', self.state);
+                }
 
                 if (self.status !== 'mutation') {
                     console.warn(`You should use a mutation to set ${key}`);

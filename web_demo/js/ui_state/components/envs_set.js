@@ -21,6 +21,11 @@ export default class EnvsSet extends Component{
      * Renders the sets of environments and adds event listeners to the different elements.
      */
     render(){
+        let dict = window.lang_dict[store.state.language]['envsSets'];
+
+        this.element.querySelector('#baseSetText').innerText = dict['baseSetText'];
+        this.element.querySelector('#customSetText').innerHTML = dict['customSetText'];
+
         /* Base envs set */
         let baseEnvs = this.element.querySelector('#baseEnvsSet');
 
@@ -34,8 +39,8 @@ export default class EnvsSet extends Component{
                             
                             <!-- Name and description of the environment -->
                             <div class="card-body">
-                                <h1 class="card-title"><strong>${e.description.name}</strong></h1>
-                                <p class="card-text">${e.description.text}</p>
+                                <h1 class="card-title"><strong>${e.description[store.state.language]['name']}</strong></h1>
+                                <p class="card-text">${e.description[store.state.language]['text']}</p>
                             </div>
                         </div>
                     </div>`
@@ -43,19 +48,20 @@ export default class EnvsSet extends Component{
 
         /* Custom envs set */
         let customEnvs = this.element.querySelector('#customEnvsSet');
+
         // Creates a special card for uploading files
         let uploadCard = `<div class="col mb-3">
                             <div class="card h-100">
                                 <div class="card-body">
-                                    <h1 class="card-title"><strong>Upload an environment</strong></h1>
-                                    <p class="card-text">Choose a JSON file then click the <span style="color: orange;"><i class="fas fa-upload"></i></span> button below to save the corresponding environment in your collection.</p>
+                                    <h1 class="card-title"><strong>${dict['uploadCard']['title']}</strong></h1>
+                                    <p class="card-text">${dict['uploadCard']['text']}</p>
                                     <div class="input-group my-3">
                                         <input id="uploadEnvFile" type="file" class="custom-file-input" accept=".json">
                                     </div>
                                 </div>                            
                                 <div class="card-footer">
                                     <button id="uploadEnvBtn" class="btn btn-warning w-100" type="button"
-                                    data-bs-toggle="tooltip" title="Upload the environment from the file">
+                                    data-bs-toggle="tooltip" title="${dict['uploadCard']['uploadBtnTooltip']}">
                                     <i class="fas fa-upload"></i>
                                     </button>      
                                 </div>
@@ -78,9 +84,9 @@ export default class EnvsSet extends Component{
                             
                             <!-- Download and delete buttons in the footer -->
                             <div class="card-footer justify-content-between">
-                                <button name="downloadEnvBtn" class="btn btn-primary mx-1" type="button" data-bs-toggle="tooltip" title="Download the environment">
+                                <button name="downloadEnvBtn" class="btn btn-primary mx-1" type="button" data-bs-toggle="tooltip" title="${dict['downloadBtnTooltip']}">
                                 <i class="fas fa-download"></i></button>
-                                <button name="deleteEnvBtn" class="btn btn-danger mx-1" type="button" data-bs-toggle="tooltip" title="Delete the environment">
+                                <button name="deleteEnvBtn" class="btn btn-danger mx-1" type="button" data-bs-toggle="tooltip" title="${dict['deleteBtnTooltip']}">
                                 <i class="fa fa-trash"></i></button>
                             </div>  
                         </div>
