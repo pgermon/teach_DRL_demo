@@ -424,8 +424,10 @@
 
                             <p class="mb-4">
                                 <strong>Deep Reinforcement Learning (DRL)</strong>
-                                is a machine learning approach for teaching <strong>agents</strong> how to solve tasks by combining
+                                is a machine learning approach for teaching <strong>virtual agents</strong> how to solve tasks by combining
                                 <strong>Reinforcement Learning</strong> and <strong>Deep Learning</strong> methods.
+                                This approach has been used for a diverse set of applications including robotics (e.g. <a href="https://openai.com/blog/solving-rubiks-cube/">Solving Rubik's Cube</a>),
+                                video games and boardgames (e.g <a href="https://deepmind.com/research/case-studies/alphago-the-story-so-far">AlphaGo</a>).
 
                             </p>
 
@@ -446,10 +448,9 @@
                                 <div class="col-12 col-md-6">
                                     <p>
                                         The diagram on the right presents this interaction process between the <strong>agent</strong> and the <strong>environment</strong>,
-                                        with <em>a<sub>t</sub></em>, <em>s<sub>t</sub></em> and <em>r<sub>t</sub></em> being respectively the action taken, the new observation of the world's state and
-                                        the reward received by the agent at step <em>t</em>.
+                                        with the different information they exchange at each step.
                                         <br>
-                                        <strong>Maximizing the cumulative reward</strong> over steps is a way for the agent to learn a behavior, also called <strong>policy</strong>,
+                                        <strong>Maximizing the reward</strong> over steps is a way for the agent to learn a behaviour, also called <strong>policy</strong>,
                                         to achieve its objective.
                                     </p>
                                 </div>
@@ -496,12 +497,18 @@
 
                             <h2 class="about-drl-subsection mb-4">About the demo</h2>
 
-                            <p>
+                            <p class="mb-4">
                                 In this demo, all the available agents were trained using <a href="https://spinningup.openai.com/en/latest/algorithms/sac.html">Soft Actor Critic</a>
                                 as the DRL student algorithm alongside different ACL teacher algorithms such as <a href="https://arxiv.org/abs/1910.07224">ALP-GMM</a>.
                                 <br>
                                 They successfully learned efficient behaviours to move through the environment and to generalize to never-seen-before situations.
                                 You can test their robustness using the different tools at your disposal to customize your own environment.
+                            </p>
+
+                            <p class="mb-4">
+                                This demo was designed by <a href="https://github.com/pgermon">Paul Germon</a> as part of an internship within <a href="https://flowers.inria.fr/">Flowers</a>
+                                research team at <a href="https://www.inria.fr/fr">Inria</a>. This internship was monitored by Rémy Portelas and Clément Romac,
+                                and supervised by Pierre-Yves Oudeyer. Special thanks to Nikita Melkozerov for its very helpful contribution.
                             </p>
                         </div>
                     </div>
