@@ -129,7 +129,7 @@ window.lang_dict = {
             'baseSetText': "To begin you can select one of the following environments to load it into the simulation.",
             'customSetText': `In this section you can store your own custom environments by saving them thanks to the <span style="color: blue"><i class="far fa-save fa-lg"></i></span> button above or by uploading them from a JSON file.`,
             'uploadCard': {
-                'title': "Uplaod an environment",
+                'title': "Upload an environment",
                 'text': `Choose a JSON file then click the <span style="color: orange;"><i class="fas fa-upload"></i></span> button below to save the corresponding environment in your collection.`,
                 'uploadBtnTooltip': "Upload the environment from the selected file",
             },

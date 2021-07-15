@@ -120,6 +120,27 @@ function draw() {
                     drawLidars(agent.lidars, env.scale);
                 }
 
+                // Head angle
+                /*let head = agent.agent_body.reference_head_object;
+                let pos = head.GetPosition();
+                let angle = head.GetAngle();
+                let length = 2 * agent.agent_body.AGENT_WIDTH;
+                let vertices = [
+                    [pos.x - length * Math.cos(angle), pos.y - length * Math.sin(angle)],
+                    [pos.x + length * Math.cos(angle), pos.y + length * Math.sin(angle)]
+                ];
+                let color;
+                if(Math.abs(angle) > Math.PI / 10){
+                    color = "#FF0000";
+                }
+                else if(Math.abs(angle) > Math.PI / 40){
+                    color = "#F4BE18";
+                }
+                else{
+                    color = "#00B400";
+                }
+                drawLine(vertices, color);*/
+
                 if(window.draw_joints){
 
                     // Agent motors
@@ -244,12 +265,35 @@ function drawAgent(agent, scale){
  */
 function drawLidars(lidars, scale){
     for(let i = 0; i < lidars.length; i++){
+        let lidar = lidars[i];
+
+        // Draws a red line representing the lidar
         let vertices = [
-            [lidars[i].p1.x, lidars[i].p1.y],
-            [lidars[i].p2.x, lidars[i].p2.y]
+            [lidar.p1.x, lidar.p1.y],
+            [lidar.p2.x, lidar.p2.y]
         ];
         strokeWeight(1/scale);
         drawLine(vertices, "#FF0000");
+
+        // Draws a circle according to the surface detected by the lidar
+        if(lidar.fraction < 1){
+            if(lidar.is_water_detected){
+                noStroke();
+                fill("#0000FF");
+                circle(lidar.p2.x, VIEWPORT_H - lidar.p2.y, 5/scale);
+            }
+            else if(lidar.is_creeper_detected){
+                noStroke();
+                fill("#00B400");
+                circle(lidar.p2.x, VIEWPORT_H - lidar.p2.y, 5/scale);
+            }
+            else{
+                noStroke();
+                fill("#F4BE18");
+                circle(lidar.p2.x, VIEWPORT_H - lidar.p2.y, 5/scale);
+            }
+        }
+
     }
 }
 
