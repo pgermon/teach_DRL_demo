@@ -82,3 +82,13 @@ hr.solid {
     color: black;
     font-weight: bold;
 }
+
+.about-drl-text {
+    font-size: 18px;
+}
+
+.about-drl-subsection {
+    font-size: 26px;
+    font-weight: bold;
+    color: #0a41c9;
+}
