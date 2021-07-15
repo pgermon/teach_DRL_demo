@@ -61,8 +61,8 @@
         </div>
         <div class="col-auto">
             <select id="langSelect" class="form-select">
-                <option value="EN">🇬🇧</option>
-                <option value="FR">🇫🇷</option>
+                <option value="EN">🇬🇧 English</option>
+                <option value="FR">🇫🇷 Français</option>
             </select>
         </div>
     </div>
@@ -420,7 +420,90 @@
 
                     <!-- About DeepRL tab pane -->
                     <div class="tab-pane" id="about-drl-tab" role="tabpanel" aria-labelledby="about-drl-btn">
-                        <p>Coming soon...</p>
+                        <div class="about-drl-text px-5 my-5">
+
+                            <p class="mb-4">
+                                <strong>Deep Reinforcement Learning (DRL)</strong>
+                                is a machine learning approach for teaching <strong>agents</strong> how to solve tasks by combining
+                                <strong>Reinforcement Learning</strong> and <strong>Deep Learning</strong> methods.
+
+                            </p>
+
+                            <h2 class="about-drl-subsection mb-4">Reinforcement Learning</h2>
+
+                            <p>
+                                <strong>Reinforcement Learning (RL)</strong> is the study of agents and how they learn by <strong>trial and error</strong>.
+                                The main idea is to <strong>reward or punish</strong> an agent according to the actions it takes in order to teach it an efficient behavior to reach an objective.
+                                <br>
+                                The RL approaches generally feature an <strong>agent</strong> which evolves and interacts with a <strong>world</strong>.
+                                At each interaction step, the agent sees a partial <strong>observation</strong> of the current state of the environment and decides of an action to take.
+                                Each action taken by the agent changes the state of the world.
+                                The agent also receives a <strong>reward</strong> signal at each step, that indicates how good or bad the current state is
+                                according to the objective the agent has to reach.
+                            </p>
+
+                            <div class="row align-items-center mb-4">
+                                <div class="col-12 col-md-6">
+                                    <p>
+                                        The diagram on the right presents this interaction process between the <strong>agent</strong> and the <strong>environment</strong>,
+                                        with <em>a<sub>t</sub></em>, <em>s<sub>t</sub></em> and <em>r<sub>t</sub></em> being respectively the action taken, the new observation of the world's state and
+                                        the reward received by the agent at step <em>t</em>.
+                                        <br>
+                                        <strong>Maximizing the cumulative reward</strong> over steps is a way for the agent to learn a behavior, also called <strong>policy</strong>,
+                                        to achieve its objective.
+                                    </p>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <img id="rl-diagram" class="w-100" src="images/about_drl/rl_diagram_transparent_bg.png" alt="RL diagram">
+                                </div>
+                            </div>
+
+                            <h2 class="about-drl-subsection mb-4">Deep RL</h2>
+
+                            <p class="mb-2">
+                                In order to remember and improve the actions taken by the agent, DRL algorithms utilizes <strong>artificial neural networks</strong>.
+                                With <strong>training</strong>, these neural networks are able to <strong>learn to predict an optimal action to take at each step from the observation received</strong>,
+                                and relying on all the observations and rewards previously received after each action during training.
+                                Thanks to this, DRL algorithms are able to produce behaviours that are very effective in situations similar to those they were trained on.
+                            </p>
+                            <p class="mb-4">
+                                However, in real-world applications, the environment rarely remains still and frequently evolves. Therefore one would
+                                want DRL agents to be able to <strong>generalize their behaviour</strong> to previously unseen changes of the environment so that
+                                they can <strong>adapt to a large range of situations</strong>.
+                            </p>
+
+                            <h2 class="about-drl-subsection mb-4">Automatic Curriculum Learning</h2>
+
+                            <p class="mb-2">
+                                One solution to handle this challenge is to train DRL agents on <strong>procedurally generated environments</strong>.
+                                <br>
+                                <strong>Procedural generation</strong> is a method of automatically creating environments according to some parameters.
+                                Using this method, DRL agents can be trained on a <strong>very wide range of environments</strong>, hence allowing them
+                                to <strong>generalize their behaviour</strong> to more different situations.
+                            </p>
+
+                            <p class="mb-4">
+                                However, randomly generating environments during training implies the risk to generate environments that are too difficult or too easy to resolve
+                                for the agents, preventing them to continuously learn in an efficient way.
+                                <br>
+                                Therefore, one would need <strong>smarter training strategies</strong> that propose relevant environments tailored to the current <strong>learning progress</strong> of the <strong>student</strong> (DRL agent).
+                                This method is called <strong>Automatic Curriculum Learning (ACL)</strong> and is embodied by a <strong>teacher algorithm</strong> which is trained to learn to generate
+                                the most relevant environments throughout the entire training process according to the student performances.
+                                <br>
+                                This way, the teacher proposes easy environments to the student at the beginning and <strong>gradually increases the difficulty
+                                and the diversity</strong> of the tasks in order to guarantee that the <strong>student is progressing while not always facing the same situation or forgetting what it has already learned</strong>.
+                            </p>
+
+                            <h2 class="about-drl-subsection mb-4">About the demo</h2>
+
+                            <p>
+                                In this demo, all the available agents were trained using <a href="https://spinningup.openai.com/en/latest/algorithms/sac.html">Soft Actor Critic</a>
+                                as the DRL student algorithm alongside different ACL teacher algorithms such as <a href="https://arxiv.org/abs/1910.07224">ALP-GMM</a>.
+                                <br>
+                                They successfully learned efficient behaviours to move through the environment and to generalize to never-seen-before situations.
+                                You can test their robustness using the different tools at your disposal to customize your own environment.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
