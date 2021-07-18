@@ -40,6 +40,8 @@ export default {
         drawJoints: false,
         drawLidars: true,
         drawNames: true,
+        drawObservation: false,
+        drawReward: false,
         assets: {
             circle: false,
         },

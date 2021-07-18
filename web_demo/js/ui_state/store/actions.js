@@ -147,6 +147,12 @@ export default {
             case 'drawNames':
                 context.commit('drawNames', payload.value);
                 break;
+            case 'drawObservation':
+                context.commit('drawObservation', payload.value);
+                break;
+            case 'drawReward':
+                context.commit('drawReward', payload.value);
+                break;
         }
     },
 

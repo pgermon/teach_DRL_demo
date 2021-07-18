@@ -21,6 +21,7 @@ class Game {
 
         this.run_fps = 60;
         this.obs = [];
+        this.rewards = [];
         this.initWorld(agents, cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing,
                         creepers_type, ground, ceiling, align_terrain);
         this.running = false;
@@ -56,7 +57,9 @@ class Game {
             align_terrain);
 
         this.env.set_environment(cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing, smoothing, creepers_type);
-        this.obs.push(this.env.reset());
+        let step_rets = this.env.reset();
+        this.obs.push([...step_rets.map(e => e[0])]);
+        this.rewards.push([...step_rets.map(e => e[1])]);
     }
 
     /**
@@ -155,6 +158,7 @@ class Game {
         // Runs one step and stores the resulted states for each agent
         let step_rets = this.env.step();
         this.obs.push([...step_rets.map(e => e[0])]);
+        this.rewards.push([...step_rets.map(e => e[1])]);
 
         this.env.render();
     }

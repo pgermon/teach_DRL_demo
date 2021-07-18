@@ -194,12 +194,12 @@
                         <div class="row justify-content-center">
                             <div class="col-2">
                                 <div class="nav flex-column nav-pills" id="parkour-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <button class="nav-link active my-2" id="draw-tab-btn" data-bs-toggle="pill" data-bs-target="#draw-tab"
+                                    <button class="nav-link active my-2 border border-primary" id="draw-tab-btn" data-bs-toggle="pill" data-bs-target="#draw-tab"
                                             type="button" role="tab" aria-controls="draw-tab" aria-selected="true"> Draw Yourself! </button>
 
                                     <hr class="solid">
 
-                                    <button class="nav-link my-2" id="proc-gen-tab-btn" data-bs-toggle="pill" data-bs-target="#proc-gen-tab"
+                                    <button class="nav-link my-2 border border-primary" id="proc-gen-tab-btn" data-bs-toggle="pill" data-bs-target="#proc-gen-tab"
                                             type="button" role="tab" aria-controls="proc-gen-tab" aria-selected="false"> Procedural Generation </button>
                                 </div>
                             </div>
@@ -280,8 +280,8 @@
                         <div class="row justify-content-center mb-3">
 
                             <!-- Smoothing + Water level sliders -->
-                            <div class="col-5 border border-top-0 border-start-0 border-bottom-0">
-                                <div class="row justify-content-center mb-2">
+                            <div class="col-6 border border-top-0 border-start-0 border-bottom-0">
+                                <div class="row justify-content-center mb-4">
                                     <strong id="general-parameters-title" class="has-text-centered">General parameters</strong>
                                 </div>
 
@@ -289,7 +289,7 @@
                                     <div class="col-auto">
                                         <label id="smoothing-label" for="smoothingSlider" class="form-label">Smoothing</label>
                                     </div>
-                                    <div class="col-8">
+                                    <div class="col-9">
                                         <input type="range" class="form-range" min="10" max="40" value="20" step="0.01"
                                                id="smoothingSlider">
                                     </div>
@@ -303,7 +303,7 @@
                                     <div class="col-auto">
                                         <label id="water-level-label" for="waterSlider" class="form-label">Water level</label>
                                     </div>
-                                    <div class="col-8">
+                                    <div class="col-9">
                                         <input type="range" class="form-range" min="0" max="1" step="0.01" value="0"
                                                id="waterSlider">
                                     </div>
@@ -315,64 +315,55 @@
 
                             <!-- Creepers parameters -->
                             <div class="col">
-                                <div class="row justify-content-center mb-2">
-                                    <strong id="creepers-title" class="has-text-centered">Creepers</strong>
+                                <div class="row justify-content-center align-items-center mb-2">
+                                    <div class="col-auto">
+                                        <strong id="creepers-title" class="has-text-centered">Creepers</strong>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <select id="creepersType" class="form-select">
+                                            <option id="rigid-otpion" value="Rigid">Rigid</option>
+                                            <option id="swingable-option" value="Swingable">Swingable</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="row justify-content-center">
-                                    <div class="col-7">
-                                        <div class="row justify-content-center">
-                                            <div class="col-auto">
-                                                <label id="creepers-width-label" for="creepersWidthSlider" class="form-label">Width</label>
-                                            </div>
-                                            <div class="col-8">
-                                                <input type="range" class="form-range" min="0.2" max="0.7" value="0.3" step="0.01"
-                                                       id="creepersWidthSlider">
-                                            </div>
-                                            <div class="col-auto">
-                                                <span id="creepersWidthValue"></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="row justify-content-center">
-                                            <div class="col-auto">
-                                                <label id="creepers-height-label" for="creepersHeightSlider" class="form-label">Height</label>
-                                            </div>
-                                            <div class="col-8">
-                                                <input type="range" class="form-range" min="0.2" max="5" value="3" step="0.01"
-                                                       id="creepersHeightSlider">
-                                            </div>
-                                            <div class="col-auto">
-                                                <span id="creepersHeightValue"></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="row justify-content-center ">
-                                            <div class="col-auto">
-                                                <label id="creepers-spacing-label" for="creepersSpacingSlider" class="form-label">Spacing</label>
-                                            </div>
-                                            <div class="col-8">
-                                                <input type="range" class="form-range" min="0.6" max="5" value="1" step="0.01"
-                                                       id="creepersSpacingSlider">
-                                            </div>
-                                            <div class="col-auto">
-                                                <span id="creepersSpacingValue"></span>
-                                            </div>
-                                        </div>
+                                    <div class="col-auto">
+                                        <label id="creepers-width-label" for="creepersWidthSlider" class="form-label">Width</label>
                                     </div>
+                                    <div class="col-9">
+                                        <input type="range" class="form-range" min="0.2" max="0.7" value="0.3" step="0.01"
+                                               id="creepersWidthSlider">
+                                    </div>
+                                    <div class="col-auto">
+                                        <span id="creepersWidthValue"></span>
+                                    </div>
+                                </div>
 
-                                    <div class="col">
-                                        <div class="row justify-content-center align-items-center my-2">
-                                            <div class="col-auto">
-                                                <label id="creepers-type-label" for="creepersType" class="form-label">Type</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <select id="creepersType" class="form-select">
-                                                    <option id="rigid-otpion" value="Rigid">Rigid</option>
-                                                    <option id="swingable-option" value="Swingable">Swingable</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-auto">
+                                        <label id="creepers-height-label" for="creepersHeightSlider" class="form-label">Height</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="range" class="form-range" min="0.2" max="5" value="3" step="0.01"
+                                               id="creepersHeightSlider">
+                                    </div>
+                                    <div class="col-auto">
+                                        <span id="creepersHeightValue"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center ">
+                                    <div class="col-auto">
+                                        <label id="creepers-spacing-label" for="creepersSpacingSlider" class="form-label">Spacing</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="range" class="form-range" min="0.6" max="5" value="1" step="0.01"
+                                               id="creepersSpacingSlider">
+                                    </div>
+                                    <div class="col-auto">
+                                        <span id="creepersSpacingValue"></span>
                                     </div>
                                 </div>
                             </div>
@@ -399,6 +390,14 @@
                                         <input class="form-check-input" type="checkbox" id="drawNamesSwitch">
                                         <label id="drawNamesLabel" class="form-check-label" for="drawNamesSwitch">Draw names</label>
                                     </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="drawObservationSwitch">
+                                        <label id="drawObservationLabel" class="form-check-label" for="drawObservationSwitch">Draw observations</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="drawRewardSwitch">
+                                        <label id="drawRewardLabel" class="form-check-label" for="drawRewardSwitch">Draw rewards</label>
+                                    </div>
                                 </div>
                             </div>
 
@@ -424,10 +423,10 @@
 
                             <p class="mb-4">
                                 <strong>Deep Reinforcement Learning (DRL)</strong>
-                                is a machine learning approach for teaching <strong>virtual agents</strong> how to solve tasks by combining
+                                is a <strong>machine learning</strong> approach for teaching <strong>virtual agents</strong> how to solve tasks by combining
                                 <strong>Reinforcement Learning</strong> and <strong>Deep Learning</strong> methods.
                                 This approach has been used for a diverse set of applications including robotics (e.g. <a href="https://openai.com/blog/solving-rubiks-cube/">Solving Rubik's Cube</a>),
-                                video games and boardgames (e.g <a href="https://deepmind.com/research/case-studies/alphago-the-story-so-far">AlphaGo</a>).
+                                video games and boardgames (e.g. <a href="https://deepmind.com/research/case-studies/alphago-the-story-so-far">AlphaGo</a>).
 
                             </p>
 
@@ -467,6 +466,11 @@
                                 and relying on all the observations and rewards previously received after each action during training.
                                 Thanks to this, DRL algorithms are able to produce behaviours that are very effective in situations similar to those they were trained on.
                             </p>
+
+                            <div class="row justify-content-center">
+                                <img id="rl-demo_diagram" class="w-50 my-2" src="images/about_drl/rl_demo_diagram_EN.png" alt="RL demo diagram">
+                            </div>
+
                             <p class="mb-4">
                                 However, in real-world applications, the environment rarely remains still and frequently evolves. Therefore one would
                                 want DRL agents to be able to <strong>generalize their behaviour</strong> to previously unseen changes of the environment so that
