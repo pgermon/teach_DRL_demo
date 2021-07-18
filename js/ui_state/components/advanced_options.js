@@ -38,6 +38,8 @@ export default class AdvancedOptions extends Component {
         this.element.querySelector('#drawJointsLabel').innerText = dict['drawJoints'];
         this.element.querySelector('#drawLidarsLabel').innerText = dict['drawLidars'];
         this.element.querySelector('#drawNamesLabel').innerText = dict['drawNames'];
+        this.element.querySelector('#drawObservationLabel').innerText = dict['drawObservation'];
+        this.element.querySelector('#drawRewardLabel').innerText = dict['drawReward'];
 
         /* Assets */
 

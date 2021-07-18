@@ -54,7 +54,6 @@ class MultiAgentsContinuousParkour {
         this.scale = SCALE;
         this.zoom = INIT_ZOOM;
         this.movable_creepers = movable_creepers;
-        this.prev_shaping = null;
         this.terrain_bodies = [];
         this.background_polys = [];
         this.creepers_joints = [];
@@ -101,7 +100,9 @@ class MultiAgentsContinuousParkour {
             is_selected: false,
             morphology: morphology,
             policy: policy,
-            init_pos: init_pos
+            init_pos: init_pos,
+            prev_shaping: null,
+            episodic_reward: 0,
         };
 
         // Initializes the agent's body and lidars according to the morphology
@@ -226,13 +227,12 @@ class MultiAgentsContinuousParkour {
 
     /**
      * Resets the environment.
-     * @returns {*[]} - Array that contains the observation state of each agent.
+     * @returns {*[]} - Array that contains the observation state and reward of each agent.
      */
     reset(){
         this._destroy();
         this.contact_listener = new ContactDetector(this);
         this.world.SetContactListener(this.contact_listener);
-        this.prev_shaping = null;
         this.scroll = [0, 0];
         this.water_y = this.GROUND_LIMIT;
         this.assets_bodies = [];
@@ -251,10 +251,8 @@ class MultiAgentsContinuousParkour {
             this.init_agent(agent);
         }
 
-        // Runs a simulation step and gets the resulted states
-        let step_rets = this.step();
-        let initial_states = [...step_rets.map(e => e[0])];
-        return initial_states;
+        // Runs a simulation step and returns the results
+        return this.step();
     }
 
     /**
@@ -426,10 +424,10 @@ class MultiAgentsContinuousParkour {
             }
 
             let reward = 0;
-            if(this.prev_shaping != null){
-                reward = shaping - this.prev_shaping;
+            if(agent.prev_shaping != null){
+                reward = shaping - agent.prev_shaping;
             }
-            this.prev_shaping = shaping;
+            agent.prev_shaping = shaping;
 
             for(let a of agent.actions){
                 reward -= agent.agent_body.TORQUE_PENALTY * 80 * Math.max(0, Math.min(Math.abs(a), 1));
@@ -1074,6 +1072,7 @@ class MultiAgentsContinuousParkour {
         this.init_agent(this.agents[this.agents.length - 1]);
         let step_rets = this.step();
         window.game.obs.push([...step_rets.map(e => e[0])]);
+        window.game.rewards.push([...step_rets.map(e => e[1])]);
     }
 
     /**
@@ -1095,6 +1094,7 @@ class MultiAgentsContinuousParkour {
 
             // Removes the observation of this agent from the list of observations.
             window.game.obs[window.game.obs.length - 1].splice(agent_index, 1);
+            window.game.rewards[window.game.rewards.length - 1].splice(agent_index, 1);
         }
     }
 

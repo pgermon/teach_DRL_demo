@@ -590,6 +590,32 @@ export default {
     },
 
     /**
+     * Draws or not the observation of the agents of the environment and renders it.
+     * @param state {Object} - UI state
+     * @param payload {boolean}
+     * @return {Object} - UI state
+     */
+    drawObservation(state, payload) {
+        state.advancedOptionsState.drawObservation = payload;
+        window.draw_observation = payload;
+        window.game.env.render();
+        return state;
+    },
+
+    /**
+     * Draws or not the reward of the agents of the environment and renders it.
+     * @param state {Object} - UI state
+     * @param payload {boolean}
+     * @return {Object} - UI state
+     */
+    drawReward(state, payload) {
+        state.advancedOptionsState.drawReward = payload;
+        window.draw_reward = payload;
+        window.game.env.render();
+        return state;
+    },
+
+    /**
      * Starts (true) or exits (false) intro tour.
      * @param state {Object} - UI state
      * @param payload {boolean}

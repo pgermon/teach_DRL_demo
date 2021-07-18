@@ -120,26 +120,13 @@ function draw() {
                     drawLidars(agent.lidars, env.scale);
                 }
 
-                // Head angle
-                /*let head = agent.agent_body.reference_head_object;
-                let pos = head.GetPosition();
-                let angle = head.GetAngle();
-                let length = 2 * agent.agent_body.AGENT_WIDTH;
-                let vertices = [
-                    [pos.x - length * Math.cos(angle), pos.y - length * Math.sin(angle)],
-                    [pos.x + length * Math.cos(angle), pos.y + length * Math.sin(angle)]
-                ];
-                let color;
-                if(Math.abs(angle) > Math.PI / 10){
-                    color = "#FF0000";
+                if(window.draw_observation){
+                    drawObservation(agent, env.scale);
                 }
-                else if(Math.abs(angle) > Math.PI / 40){
-                    color = "#F4BE18";
+
+                if(window.draw_reward){
+                    drawReward(agent, env.scale);
                 }
-                else{
-                    color = "#00B400";
-                }
-                drawLine(vertices, color);*/
 
                 if(window.draw_joints){
 
@@ -275,25 +262,137 @@ function drawLidars(lidars, scale){
         strokeWeight(1/scale);
         drawLine(vertices, "#FF0000");
 
-        // Draws a circle according to the surface detected by the lidar
+    }
+}
+
+function drawObservation(agent, scale){
+
+    // Draws a circle depending to the surface detected by the lidar and the fraction of the lidar
+    for(let i = 0; i < agent.lidars.length; i++) {
+        let lidar = agent.lidars[i];
         if(lidar.fraction < 1){
             if(lidar.is_water_detected){
                 noStroke();
-                fill("#0000FF");
+                fill(0, 50 + (1 - lidar.fraction) * 160, 150 + (1 - lidar.fraction) * 105);
                 circle(lidar.p2.x, VIEWPORT_H - lidar.p2.y, 5/scale);
             }
             else if(lidar.is_creeper_detected){
                 noStroke();
-                fill("#00B400");
+                fill(0, 120 + (1 - lidar.fraction) * 135, 0);
                 circle(lidar.p2.x, VIEWPORT_H - lidar.p2.y, 5/scale);
             }
             else{
                 noStroke();
-                fill("#F4BE18");
+                fill(0, 120 + (1 - lidar.fraction) * 135, 0);
                 circle(lidar.p2.x, VIEWPORT_H - lidar.p2.y, 5/scale);
             }
         }
+    }
 
+    // Draws a line corresponding to the agent's head angle
+    let head = agent.agent_body.reference_head_object;
+    let pos = head.GetPosition();
+    let angle = head.GetAngle();
+    let length = 2 * agent.agent_body.AGENT_WIDTH;
+    let vertices = [
+        [pos.x - length * Math.cos(angle), pos.y - length * Math.sin(angle)],
+        [pos.x + length * Math.cos(angle), pos.y + length * Math.sin(angle)]
+    ];
+    let color;
+    if(Math.abs(angle) > Math.PI / 10){
+        color = "#FF0000";
+    }
+    else if(Math.abs(angle) > Math.PI / 40){
+        color = "#F4BE18";
+    }
+    else{
+        color = "#00B400";
+    }
+    strokeWeight(2/scale);
+    drawLine(vertices, color);
+
+    // Draws an arrow corresponding to the agent's linear velocity
+    let vel = head.GetLinearVelocity().Length();
+    let y_pos;
+    if(agent.agent_body.body_type == BodyTypesEnum.WALKER){
+        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/4;
+    }
+    else if(agent.agent_body.body_type == BodyTypesEnum.CLIMBER){
+        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/3;
+    }
+    else if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
+        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT * 1.5;
+    }
+    vertices = [
+        [pos.x - agent.agent_body.AGENT_WIDTH , y_pos],
+        [pos.x - agent.agent_body.AGENT_WIDTH + vel / 2, y_pos]
+    ];
+    strokeWeight(2/scale);
+    drawLine(vertices, "#0070FF");
+
+    vertices = [
+        [pos.x - agent.agent_body.AGENT_WIDTH + vel / 2 - 0.25, y_pos + Math.sin(Math.PI / 12)],
+        [pos.x - agent.agent_body.AGENT_WIDTH + vel / 2, y_pos]
+    ]
+    drawLine(vertices, "#0070FF");
+
+    vertices = [
+        [pos.x - agent.agent_body.AGENT_WIDTH + vel / 2 - 0.25, y_pos - Math.sin(Math.PI / 12)],
+        [pos.x - agent.agent_body.AGENT_WIDTH + vel / 2, y_pos]
+    ]
+    drawLine(vertices, "#0070FF");
+}
+
+function drawReward(agent, scale){
+    // Text reward
+    if(window.game.rewards.length > 0){
+
+        let pos = agent.agent_body.reference_head_object.GetPosition();
+
+        let x_pos;
+        let y_pos;
+        if(agent.agent_body.body_type == BodyTypesEnum.WALKER){
+            x_pos = pos.x + 5 * agent.agent_body.AGENT_WIDTH;
+            y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/2;
+        }
+        else if(agent.agent_body.body_type == BodyTypesEnum.CLIMBER){
+            x_pos = pos.x + 7 * agent.agent_body.AGENT_WIDTH;
+            y_pos = pos.y - agent.agent_body.AGENT_HEIGHT/2;
+        }
+        else if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
+            x_pos = pos.x + 9 * agent.agent_body.AGENT_WIDTH;
+            y_pos = pos.y;
+        }
+
+        noStroke()
+        fill(0);
+        textSize(20/ scale);
+        textAlign(RIGHT);
+        text("Step reward = ", x_pos, RENDERING_VIEWER_H - y_pos);
+        text("Total reward = ", x_pos, RENDERING_VIEWER_H - (y_pos - 1));
+
+        let reward = window.game.rewards[window.game.rewards.length - 1][agent.id].toPrecision(3);
+        if(reward > 0.35){
+            fill("#00B400");
+        }
+        else if(reward > 0.15){
+            fill("#F4BE18");
+        }
+        else {
+            fill("#FF0000");
+        }
+
+        textAlign(LEFT);
+        text(reward, x_pos, RENDERING_VIEWER_H - y_pos);
+
+        let ep_reward = agent.episodic_reward.toPrecision(3);
+        if(ep_reward > 230){
+            fill("#00B400");
+        }
+        else {
+            fill(0);
+        }
+        text(ep_reward, x_pos, RENDERING_VIEWER_H - (y_pos - 1));
     }
 }
 

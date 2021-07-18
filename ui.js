@@ -253,6 +253,14 @@ window.draw_names = true;
 drawNamesSwitch.addEventListener('input', () => {
     store.dispatch('toggleSwitch', {name: 'drawNames', value: drawNamesSwitch.checked});
 });
+const drawObservationSwitch = document.querySelector("#drawObservationSwitch");
+drawObservationSwitch.addEventListener('input', () => {
+    store.dispatch('toggleSwitch', {name: 'drawObservation', value: drawObservationSwitch.checked});
+});
+const drawRewardSwitch = document.querySelector("#drawRewardSwitch");
+drawRewardSwitch.addEventListener('input', () => {
+    store.dispatch('toggleSwitch', {name: 'drawReward', value: drawRewardSwitch.checked});
+});
 const circleAssetButton = document.querySelector('#circleAssetButton');
 circleAssetButton.addEventListener('click', () => {
     store.dispatch('drawAsset', {name: 'circle', value: !store.state.advancedOptionsState.assets.circle});

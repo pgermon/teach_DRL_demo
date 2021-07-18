@@ -44,7 +44,7 @@ export default class ParkourConfig extends Component {
         this.element.querySelector('#creepers-width-label').innerText = dict['creepersWidth'];
         this.element.querySelector('#creepers-height-label').innerText = dict['creepersHeight'];
         this.element.querySelector('#creepers-spacing-label').innerText = dict['creepersSpacing'];
-        this.element.querySelector('#creepers-type-label').innerText = dict['creepersType'];
+        //this.element.querySelector('#creepers-type-label').innerText = dict['creepersType'];
 
         this.element.querySelector('#rigid-otpion').innerText = dict['rigid'];
         this.element.querySelector('#swingable-option').innerText = dict['swingable'];
