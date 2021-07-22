@@ -37,7 +37,7 @@ window.align_terrain = {
  * @param align {Object}
  */
 function init_game(cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing,
-              smoothing, creepers_type, ground, ceiling, align) {
+              smoothing, creepers_type, ground, ceiling, align, zoom=null, scroll=null) {
 
     let agents = {
         morphologies: [],
@@ -56,8 +56,20 @@ function init_game(cppn_input_vector, water_level, creepers_width, creepers_heig
                             creepers_spacing, smoothing, creepers_type, ground, ceiling, align);
     window.set_agent_selected(-1);
     window.asset_selected = null;
-    window.game.env.set_zoom(INIT_ZOOM);
-    window.game.env.set_scroll(window.agent_selected, INIT_SCROLL_X, 0);
+
+    if(zoom == null){
+        window.game.env.set_zoom(INIT_ZOOM);
+    }
+    else {
+        window.game.env.set_zoom(zoom);
+    }
+
+    if(scroll == null){
+        window.game.env.set_scroll(window.agent_selected, INIT_SCROLL_X, 0);
+    }
+    else{
+        window.game.env.set_scroll(window.agent_selected, scroll[0], scroll[1]);
+    }
     window.game.env.render();
 }
 
@@ -270,10 +282,10 @@ function mouseDragged(){
             let mousePos = convertPosCanvasToEnv(mouseX, mouseY);
 
             // Vertical offset to shift the drawing, trace and forbidden canvas in order to align them to the environment
-            let y_offset = SCROLL_MAX - window.game.env.scroll[1];
+            let y_offset = SCROLL_Y_MAX - window.game.env.scroll[1];
 
             // Drawing ground to the right of the terrain startpad
-            if(window.is_drawing_ground() && mousePos.x > INITIAL_TERRAIN_STARTPAD * TERRAIN_STEP){
+            if(window.is_drawing_ground() && mousePos.x > (INITIAL_TERRAIN_STARTPAD - 1) * TERRAIN_STEP){
                 drawing_canvas.push();
                 drawing_canvas.stroke("#66994D");
                 drawing_canvas.strokeWeight(4);
@@ -284,7 +296,7 @@ function mouseDragged(){
             }
 
             // Drawing ceiling to the right of the terrain startpad
-            else if(window.is_drawing_ceiling() && mousePos.x > INITIAL_TERRAIN_STARTPAD * TERRAIN_STEP){
+            else if(window.is_drawing_ceiling() && mousePos.x > (INITIAL_TERRAIN_STARTPAD - 1) * TERRAIN_STEP){
                 drawing_canvas.push();
                 drawing_canvas.stroke("#808080");
                 drawing_canvas.strokeWeight(4);
@@ -317,11 +329,14 @@ function mouseDragged(){
                 drawing_canvas.noErase();
             }
 
-            // Dragging to move vertically
+            // Dragging to scroll
             else{
                 cursor(MOVE);
                 window.game.env.set_scroll(null, window.game.env.scroll[0] + window.prevMouseX - mouseX, window.game.env.scroll[1] + mouseY - prevMouseY);
-                y_offset = SCROLL_MAX - window.game.env.scroll[1];
+
+                // Re-draws the terrain shapes according to the new scroll
+                window.refresh_drawing();
+                y_offset = SCROLL_Y_MAX - window.game.env.scroll[1];
             }
 
             // Renders the environment and displays the off-screen canvas on top of it
@@ -474,10 +489,10 @@ function mouseMoved(){
             && mouseY >= 0 && mouseY <= window.canvas.height) {
             trace_canvas.noStroke();
             trace_canvas.fill(136, 92, 0, 180);
-            trace_canvas.circle(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.asset_size * 4 * window.game.env.zoom);
+            trace_canvas.circle(mouseX, mouseY + SCROLL_Y_MAX - window.game.env.scroll[1], window.asset_size * 4 * window.game.env.zoom);
         }
         window.game.env.render();
-        image(trace_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
+        image(trace_canvas, 0, -SCROLL_Y_MAX + window.game.env.scroll[1]);
     }
 
     // Draws the trace of the eraser at the mouse position
@@ -487,12 +502,12 @@ function mouseMoved(){
             && mouseY >= 0 && mouseY <= window.canvas.height) {
             trace_canvas.noStroke();
             trace_canvas.fill(255, 180);
-            trace_canvas.circle(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.erasing_radius * 2);
+            trace_canvas.circle(mouseX, mouseY + SCROLL_Y_MAX - window.game.env.scroll[1], window.erasing_radius * 2);
         }
         window.game.env.render();
-        image(drawing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
-        image(trace_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
-        image(forbidden_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
+        image(drawing_canvas, 0, -SCROLL_Y_MAX + window.game.env.scroll[1]);
+        image(trace_canvas, 0, -SCROLL_Y_MAX + window.game.env.scroll[1]);
+        image(forbidden_canvas, 0, -SCROLL_Y_MAX + window.game.env.scroll[1]);
     }
 }
 
@@ -512,9 +527,9 @@ function mouseWheel(event){
             window.asset_size = Math.max(3, Math.min(window.asset_size - event.delta / 100, 30));
             trace_canvas.noStroke();
             trace_canvas.fill(136, 92, 0, 180);
-            trace_canvas.circle(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.asset_size * 4 * window.game.env.zoom);
+            trace_canvas.circle(mouseX, mouseY + SCROLL_Y_MAX - window.game.env.scroll[1], window.asset_size * 4 * window.game.env.zoom);
             window.game.env.render();
-            image(trace_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
+            image(trace_canvas, 0, -SCROLL_Y_MAX + window.game.env.scroll[1]);
         }
 
         // Resizes erasing radius
@@ -522,26 +537,29 @@ function mouseWheel(event){
             window.erasing_radius = Math.max(5, Math.min(window.erasing_radius - event.delta / 100, 30));
             trace_canvas.noStroke();
             trace_canvas.fill(255, 180);
-            trace_canvas.circle(mouseX, mouseY + SCROLL_MAX - window.game.env.scroll[1], window.erasing_radius * 2);
+            trace_canvas.circle(mouseX, mouseY + SCROLL_Y_MAX - window.game.env.scroll[1], window.erasing_radius * 2);
             window.game.env.render();
-            image(drawing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
-            image(trace_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
-            image(forbidden_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
+            image(drawing_canvas, 0, -SCROLL_Y_MAX + window.game.env.scroll[1]);
+            image(trace_canvas, 0, -SCROLL_Y_MAX + window.game.env.scroll[1]);
+            image(forbidden_canvas, 0, -SCROLL_Y_MAX + window.game.env.scroll[1]);
         }
 
         // Zooms in or out
-        else if(!window.is_drawing()) {
+        else {
             window.game.env.set_zoom(window.game.env.zoom - event.delta / 2000);
             // TODO: scroll on the mouse position
             window.game.env.set_scroll(null, window.game.env.scroll[0], window.game.env.scroll[1]);
-            window.game.env.render();
 
-            /*if(window.is_drawing()){
-                window.draw_forbidden_area();
-                window.generateTerrain(false);
-                image(drawing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
-                image(forbidden_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
-            }*/
+            // If drawing mode, re-draws the terrain shapes according to the new zoom
+            if(window.is_drawing()){
+                window.refresh_drawing();
+                window.game.env.render();
+                image(drawing_canvas, 0, -SCROLL_Y_MAX + window.game.env.scroll[1]);
+                image(forbidden_canvas, 0, -SCROLL_Y_MAX + window.game.env.scroll[1]);
+            }
+            else{
+                window.game.env.render();
+            }
 
         }
 
@@ -584,10 +602,10 @@ function windowResized(){
     THUMBNAIL_ZOOM = RENDERING_VIEWER_W / ((TERRAIN_LENGTH + INITIAL_TERRAIN_STARTPAD) * 0.99 * TERRAIN_STEP * SCALE);
 
     // Resizes the main canvas
-    resizeCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H);
-    drawing_canvas.resizeCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
-    trace_canvas.resizeCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
-    forbidden_canvas.resizeCanvas(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
+    resizeCanvas(RENDERING_VIEWER_W + SCROLL_X_MAX, RENDERING_VIEWER_H);
+    drawing_canvas.resizeCanvas(RENDERING_VIEWER_W + SCROLL_X_MAX, RENDERING_VIEWER_H + 2 * SCROLL_Y_MAX);
+    trace_canvas.resizeCanvas(RENDERING_VIEWER_W + SCROLL_X_MAX, RENDERING_VIEWER_H + 2 * SCROLL_Y_MAX);
+    forbidden_canvas.resizeCanvas(RENDERING_VIEWER_W + SCROLL_X_MAX, RENDERING_VIEWER_H + 2 * SCROLL_Y_MAX);
 
     // Generates the terrain from the drawing
     if(is_drawing()){
@@ -619,5 +637,5 @@ window.draw_forbidden_area = () => {
     forbidden_canvas.strokeWeight(3);
     forbidden_canvas.fill(255, 50, 0, 75);
     let w = convertPosEnvToCanvas((INITIAL_TERRAIN_STARTPAD - 1) * TERRAIN_STEP, 0).x;
-    forbidden_canvas.rect(0, 0, w, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
+    forbidden_canvas.rect(0, 0, w, RENDERING_VIEWER_H + 2 * SCROLL_Y_MAX);
 }

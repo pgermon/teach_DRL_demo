@@ -414,17 +414,8 @@ export default {
         state.drawingModeState.drawing = !payload;
         state.simulationState.status = 'init';
 
-        // Sets initial zoom and scroll
-        window.game.env.set_zoom(INIT_ZOOM);
-        window.game.env.set_scroll(null, INIT_SCROLL_X, 0);
-
         // Generates the terrain from the shapes drawn
         if(payload) {
-
-            state.drawingModeState.drawing_ground = false;
-            state.drawingModeState.drawing_ceiling = false;
-            state.drawingModeState.erasing = false;
-            state.advancedOptionsState.assets.circle = false;
 
             // Horizontally sorts the ground points that have been drawn
             window.terrain.ground.sort(function (a, b) {
@@ -458,7 +449,9 @@ export default {
                 creepersConfig.type == 'Swingable',
                 window.ground,
                 window.ceiling,
-                window.align_terrain
+                window.align_terrain,
+                window.game.env.zoom,
+                window.game.env.scroll
             );
         }
 
@@ -488,9 +481,9 @@ export default {
                     drawing_canvas.strokeWeight(4);
                     drawing_canvas.line(
                         p_pos.x,
-                        p_pos.y + SCROLL_MAX - window.game.env.scroll[1],
+                        p_pos.y + SCROLL_Y_MAX - window.game.env.scroll[1],
                         p2_pos.x,
-                        p2_pos.y + SCROLL_MAX - window.game.env.scroll[1]
+                        p2_pos.y + SCROLL_Y_MAX - window.game.env.scroll[1]
                     )
 
                     window.terrain.ground.push({x: p.x, y: p.y});
@@ -512,9 +505,9 @@ export default {
                     drawing_canvas.strokeWeight(4);
                     drawing_canvas.line(
                         p_pos.x,
-                        p_pos.y + SCROLL_MAX - window.game.env.scroll[1],
+                        p_pos.y + SCROLL_Y_MAX - window.game.env.scroll[1],
                         p2_pos.x,
-                        p2_pos.y + SCROLL_MAX - window.game.env.scroll[1]
+                        p2_pos.y + SCROLL_Y_MAX - window.game.env.scroll[1]
                     )
 
                     window.terrain.ceiling.push({x: p.x, y: p.y});
@@ -540,13 +533,75 @@ export default {
                 creepersConfig.type == 'Swingable',
                 window.ground,
                 window.ceiling,
-                window.align_terrain
+                window.align_terrain,
+                window.game.env.zoom,
+                window.game.env.scroll
             );
 
             // Displays the drawing and forbidden canvas on top of the main canvas
-            image(drawing_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
-            image(forbidden_canvas, 0, -SCROLL_MAX + window.game.env.scroll[1]);
+            image(drawing_canvas, 0, -SCROLL_Y_MAX + window.game.env.scroll[1]);
+            image(forbidden_canvas, 0, -SCROLL_Y_MAX + window.game.env.scroll[1]);
         }
+        return state;
+    },
+
+    /**
+     * Re-draws the terrain shapes on the drawing canvas.
+     * @param state {Object} - UI state
+     * @param payload
+     * @return {Object} - UI state
+     */
+    refreshDrawing(state, payload){
+
+        // Draws the forbidden red area on the forbidden canvas
+        window.draw_forbidden_area();
+
+        drawing_canvas.clear();
+
+        // Horizontally sorts the ground points that have been drawn
+        window.terrain.ground.sort(function (a, b) {
+            return a.x - b.x;
+        });
+
+        // Horizontally sorts the ceiling points that have been drawn
+        window.terrain.ceiling.sort(function (a, b) {
+            return a.x - b.x;
+        });
+
+        // Draws the ground ground
+        for(let i = 0; i < window.terrain.ground.length - 1; i++) {
+            let p = window.terrain.ground[i];
+            let p2 = window.terrain.ground[i + 1];
+            let p_pos = convertPosEnvToCanvas(p.x, p.y);
+            let p2_pos = convertPosEnvToCanvas(p2.x, p2.y);
+
+            drawing_canvas.stroke("#66994D");
+            drawing_canvas.strokeWeight(4);
+            drawing_canvas.line(
+                p_pos.x,
+                p_pos.y + SCROLL_Y_MAX - window.game.env.scroll[1],
+                p2_pos.x,
+                p2_pos.y + SCROLL_Y_MAX - window.game.env.scroll[1]
+            )
+        }
+
+        // Draws the ceiling
+        for(let i = 0; i < window.terrain.ceiling.length - 1; i++) {
+            let p = window.terrain.ceiling[i];
+            let p2 = window.terrain.ceiling[i + 1];
+            let p_pos = convertPosEnvToCanvas(p.x, p.y);
+            let p2_pos = convertPosEnvToCanvas(p2.x, p2.y);
+
+            drawing_canvas.stroke("#808080");
+            drawing_canvas.strokeWeight(4);
+            drawing_canvas.line(
+                p_pos.x,
+                p_pos.y + SCROLL_Y_MAX - window.game.env.scroll[1],
+                p2_pos.x,
+                p2_pos.y + SCROLL_Y_MAX - window.game.env.scroll[1]
+            )
+        }
+
         return state;
     },
 

@@ -385,6 +385,13 @@ window.generateTerrain = (payload) => {
 }
 
 /**
+ * Re-draws the drawing canvas.
+ */
+window.refresh_drawing = () => {
+    store.dispatch('refreshDrawing', {});
+}
+
+/**
  * Loads the default environment (Flat Parkour).
  */
 window.loadDefaultEnv = () => {
