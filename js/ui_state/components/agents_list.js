@@ -3,11 +3,6 @@ import store from '../store/index.js';
 
 const thumbnails_path = "images/agents_thumbnails/";
 
-const bodyTypeMapping = new Map();
-bodyTypeMapping.set("classic_bipedal", "bipedal");
-bodyTypeMapping.set("climbing_profile_chimpanzee", "chimpanzee");
-bodyTypeMapping.set("fish", "fish");
-
 /**
  * @classdesc UI component for the list of running agents.
  */
@@ -31,11 +26,11 @@ export default class AgentsList extends Component {
             return `<li name="agent-list-item" class="list-group-item d-flex justify-content-between align-items-center px-0 py-1">
 
                     <!-- Thumbnail of the morphology -->
-                    <img src=${thumbnails_path + bodyTypeMapping.get(agent.morphology) + "_thumbnail.png"} 
+                    <img src=${thumbnails_path + agent.morphology + "_thumbnail.png"} 
                              alt=${agent.morphology + "_thumbnail"}
                              width="8%"
                              class="mx-1"
-                             data-bs-toggle="tooltip" title=${window.lang_dict[store.state.language]['morphologies'][bodyTypeMapping.get(agent.morphology)]['title']}>
+                             data-bs-toggle="tooltip" title=${window.lang_dict[store.state.language]['morphologies'][agent.morphology]['title']}>
                              
                     <!-- Text field of the name of the agent -->
                     <div class="form-group">

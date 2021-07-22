@@ -1,18 +1,3 @@
-// Mapping for the morphology names
-const bodyTypeMapping = new Map();
-bodyTypeMapping.set("bipedal", "classic_bipedal");
-bodyTypeMapping.set("classic_bipedal", "classic_bipedal");
-bodyTypeMapping.set("chimpanzee", "climbing_profile_chimpanzee");
-bodyTypeMapping.set("climbing_profile_chimpanzee", "climbing_profile_chimpanzee");
-bodyTypeMapping.set("fish", "fish");
-
-// Names for the different policies of each morphology
-const seed_names = {
-    bipedal: ['Joe', 'Alice', 'Bob', 'Susan'],
-    chimpanzee: ['Tarzan', 'Kong', 'Caesar', 'Rafiki'],
-    fish: ['Nemo', 'Dory', 'Oscar', 'Bubbles']
-};
-
 // All available actions
 export default {
 
@@ -65,7 +50,7 @@ export default {
         }
         for(let agent of payload.agents){
             context.commit('addAgent', {
-                morphology: bodyTypeMapping.get(agent.morphology),
+                morphology: agent.morphology,
                 name: agent.name,
                 path: agent.path,
                 init_pos: agent.init_pos

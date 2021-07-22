@@ -105,69 +105,58 @@ function color_agent_head(agent, c1, c2){
  * Renders all the elements of the environment.
  */
 function draw() {
-    background("#E6F0FF");
     if(window.game != null){
         let env = window.game.env;
         push();
 
         drawTerrain(env);
 
-        for(let agent of env.agents){
-            if(!window.is_drawing()){
+        // Renders the agents if not drawing mode
+        if(!window.is_drawing()){
+            for(let agent of env.agents){
+
+                // Draws the agent morphology
                 drawAgent(agent, env.scale);
 
+                // Draws the agent's lidars
                 if(window.draw_lidars){
                     drawLidars(agent.lidars, env.scale);
                 }
 
+                // Draws the agent's observation
                 if(window.draw_observation){
                     drawObservation(agent, env.scale);
                 }
 
+                // Draws the agent's rewards
                 if(window.draw_reward){
                     drawReward(agent, env.scale);
                 }
 
+                // Draws the agent's joints
                 if(window.draw_joints){
 
                     // Agent motors
                     let joints = [...agent.agent_body.motors];
+
+                    // Adds neck joint and grip joints for climbers
                     if(agent.agent_body.body_type == BodyTypesEnum.CLIMBER){
                         joints.push(agent.agent_body.neck_joint);
+                        let grip_joints = [...agent.agent_body.sensors.map(s => s.GetUserData().has_joint ? s.GetUserData().joint : null)];
+                        joints = joints.concat(grip_joints);
                     }
                     drawJoints(joints, env.scale);
-
-                    if(agent.agent_body.body_type == BodyTypesEnum.CLIMBER){
-                        joints = [...agent.agent_body.sensors.map(s => s.GetUserData().has_joint ? s.GetUserData().joint : null)];
-                        drawJoints(joints, env.scale);
-                    }
                 }
 
+                // Draws the agent's name
                 if(window.draw_names){
-                    let pos = agent.agent_body.reference_head_object.GetPosition();
-                    fill(0);
-                    noStroke()
-                    textSize(25/ env.scale);
-                    textAlign(CENTER);
-                    let x_pos = pos.x;
-                    let y_pos;
-                    if(agent.agent_body.body_type == BodyTypesEnum.WALKER){
-                        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/3;
-                    }
-                    else if(agent.agent_body.body_type == BodyTypesEnum.CLIMBER){
-                        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/2;
-                    }
-                    else if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
-                        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT * 2;
-                    }
-                    text(agent.name, x_pos, RENDERING_VIEWER_H - y_pos);
+                    drawName(agent, env.scale);
                 }
             }
-
         }
 
+        // Draws creepers joints
         if(window.draw_joints) {
-            // Creepers joints
             drawJoints(env.creepers_joints, env.scale);
         }
 
@@ -212,6 +201,34 @@ function drawJoints(joints, scale){
 }
 
 /**
+ * Draws the name of the given agent.
+ * @param agent {Object}
+ * @param scale {number} - Scale of the environment
+ */
+function drawName(agent, scale){
+    let pos = agent.agent_body.reference_head_object.GetPosition();
+    fill(0);
+    noStroke()
+    textSize(25 / scale);
+    textAlign(CENTER);
+    let x_pos = pos.x;
+    let y_pos;
+    if(agent.morphology == "bipedal"){
+        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/3;
+    }
+    else if(agent.morphology == "spider"){
+        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT / 2;
+    }
+    else if(agent.morphology == "chimpanzee"){
+        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/2;
+    }
+    else if(agent.morphology == "fish"){
+        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT * 2;
+    }
+    text(agent.name, x_pos, RENDERING_VIEWER_H - y_pos);
+}
+
+/**
  * Draws all the body parts of the given agent.
  * @param agent {Object}
  * @param scale {number} - Scale of the environment
@@ -248,7 +265,7 @@ function drawAgent(agent, scale){
 /**
  * Draws the given lidars.
  * @param lidars {Array}
- * @param scale {number}
+ * @param scale {number} - Scale of the environment
  */
 function drawLidars(lidars, scale){
     for(let i = 0; i < lidars.length; i++){
@@ -265,6 +282,11 @@ function drawLidars(lidars, scale){
     }
 }
 
+/**
+ * Draws the different parts of the agent's observation.
+ * @param agent {Object}
+ * @param scale {number} - Scale of the environment
+ */
 function drawObservation(agent, scale){
 
     // Draws a circle depending to the surface detected by the lidar and the fraction of the lidar
@@ -294,6 +316,9 @@ function drawObservation(agent, scale){
     let pos = head.GetPosition();
     let angle = head.GetAngle();
     let length = 2 * agent.agent_body.AGENT_WIDTH;
+    if(agent.morphology == "spider"){
+        length = agent.agent_body.AGENT_WIDTH;
+    }
     let vertices = [
         [pos.x - length * Math.cos(angle), pos.y - length * Math.sin(angle)],
         [pos.x + length * Math.cos(angle), pos.y + length * Math.sin(angle)]
@@ -313,36 +338,49 @@ function drawObservation(agent, scale){
 
     // Draws an arrow corresponding to the agent's linear velocity
     let vel = head.GetLinearVelocity().Length();
+    let x_pos;
     let y_pos;
-    if(agent.agent_body.body_type == BodyTypesEnum.WALKER){
-        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/4;
+    if(agent.morphology == "bipedal"){
+        x_pos = pos.x - agent.agent_body.AGENT_WIDTH;
+        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT / 4;
     }
-    else if(agent.agent_body.body_type == BodyTypesEnum.CLIMBER){
-        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/3;
+    else if(agent.morphology == "spider"){
+        x_pos = pos.x - agent.agent_body.AGENT_WIDTH / 2;
+        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT / 4;
     }
-    else if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
+    else if(agent.morphology == "chimpanzee"){
+        x_pos = pos.x - agent.agent_body.AGENT_WIDTH;
+        y_pos = pos.y + agent.agent_body.AGENT_HEIGHT / 3;
+    }
+    else if(agent.morphology == "fish"){
+        x_pos = pos.x - agent.agent_body.AGENT_WIDTH;
         y_pos = pos.y + agent.agent_body.AGENT_HEIGHT * 1.5;
     }
     vertices = [
-        [pos.x - agent.agent_body.AGENT_WIDTH , y_pos],
-        [pos.x - agent.agent_body.AGENT_WIDTH + vel / 2, y_pos]
+        [x_pos, y_pos],
+        [x_pos + vel / 2, y_pos]
     ];
     strokeWeight(2/scale);
     drawLine(vertices, "#0070FF");
 
     vertices = [
-        [pos.x - agent.agent_body.AGENT_WIDTH + vel / 2 - 0.25, y_pos + Math.sin(Math.PI / 12)],
-        [pos.x - agent.agent_body.AGENT_WIDTH + vel / 2, y_pos]
+        [x_pos + vel / 2 - 0.25, y_pos + Math.sin(Math.PI / 12)],
+        [x_pos + vel / 2, y_pos]
     ]
     drawLine(vertices, "#0070FF");
 
     vertices = [
-        [pos.x - agent.agent_body.AGENT_WIDTH + vel / 2 - 0.25, y_pos - Math.sin(Math.PI / 12)],
-        [pos.x - agent.agent_body.AGENT_WIDTH + vel / 2, y_pos]
+        [x_pos + vel / 2 - 0.25, y_pos - Math.sin(Math.PI / 12)],
+        [x_pos + vel / 2, y_pos]
     ]
     drawLine(vertices, "#0070FF");
 }
 
+/**
+ * Draws the agent's step and episodic reward.
+ * @param agent {Object}
+ * @param scale {number} - Scale of the environment
+ */
 function drawReward(agent, scale){
     // Text reward
     if(window.game.rewards.length > 0){
@@ -351,15 +389,19 @@ function drawReward(agent, scale){
 
         let x_pos;
         let y_pos;
-        if(agent.agent_body.body_type == BodyTypesEnum.WALKER){
+        if(agent.morphology == "bipedal"){
             x_pos = pos.x + 5 * agent.agent_body.AGENT_WIDTH;
             y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/2;
         }
-        else if(agent.agent_body.body_type == BodyTypesEnum.CLIMBER){
+        else if(agent.morphology == "spider"){
+            x_pos = pos.x + 2 * agent.agent_body.AGENT_WIDTH;
+            y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/2;
+        }
+        else if(agent.morphology == "chimpanzee"){
             x_pos = pos.x + 7 * agent.agent_body.AGENT_WIDTH;
             y_pos = pos.y - agent.agent_body.AGENT_HEIGHT/2;
         }
-        else if(agent.agent_body.body_type == BodyTypesEnum.SWIMMER){
+        else if(agent.morphology == "fish"){
             x_pos = pos.x + 9 * agent.agent_body.AGENT_WIDTH;
             y_pos = pos.y;
         }
@@ -404,14 +446,7 @@ function drawSkyClouds(env){
     push();
 
     // Sky
-    let vertices = [
-        [0, 0],
-        [0, RENDERING_VIEWER_H],
-        [RENDERING_VIEWER_W, RENDERING_VIEWER_H],
-        [RENDERING_VIEWER_W, 0]
-    ];
-    noStroke();
-    //drawPolygon(vertices, "#e6e6ff");
+    background("#E6F0FF");
 
     // Translation to scroll horizontally and vertically
     translate(- env.scroll[0]/3, env.scroll[1]/3);

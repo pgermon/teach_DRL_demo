@@ -3,22 +3,13 @@ import store from '../store/index.js';
 
 const thumbnails_path = "images/agents_thumbnails/";
 
+// Names for the different policies of each morphology
 const seed_names = {
     bipedal: ['Joe', 'Alice', 'Bob', 'Susan'],
     chimpanzee: ['Tarzan', 'Kong', 'Caesar', 'Rafiki'],
-    fish: ['Nemo', 'Dory', 'Oscar', 'Bubbles']
+    fish: ['Nemo', 'Dory', 'Oscar', 'Bubbles'],
+    spider: ['Peter', 'Aragog', 'Lucas', 'Natasha']
 };
-
-const morphologies_descriptions = {
-    bipedal: "This morphology is composed of a head and two legs which allow it to walk on the floor.",
-    chimpanzee: "This morphology is composed of a head, a torso and two arms and legs. It can only move by climbing the ceiling and grasping the creepers.",
-    fish: "This morphology is composed of a head, a tail and a fin, allowing it to swim in the water."
-}
-
-const bodyTypeMapping = new Map();
-bodyTypeMapping.set("bipedal", "classic_bipedal");
-bodyTypeMapping.set("chimpanzee", "climbing_profile_chimpanzee");
-bodyTypeMapping.set("fish", "fish");
 
 /**
  * @classdesc UI component for the list of morphologies.
@@ -107,7 +98,7 @@ export default class MorphologiesList extends Component {
             span.addEventListener('click', () => {
                 let morph = store.state.morphologies[index];
                 store.dispatch('addAgent', {
-                    morphology: bodyTypeMapping.get(morph.morphology),
+                    morphology: morph.morphology,
                     name: seed_names[morph.morphology][store.state.currentSeedsIdx[morph.morphology]],
                     path: morph.seeds[store.state.currentSeedsIdx[morph.morphology]].path,
                     init_pos: null

@@ -78,7 +78,7 @@ class Game {
 
         // Loads the policy for each agent before launching the simulation
         for(let agent of window.game.env.agents){
-            if(agent.policy.path != null){
+            if(agent.morphology != "spider" && agent.policy.path != null){
                 agent.model = await tf.loadGraphModel(agent.policy.path + '/model.json');
             }
             else{
@@ -145,14 +145,14 @@ class Game {
             }
 
             // Generates random actions
-            else if(agent.policy.name == "random"){
+            else /*if(agent.policy.name == "random")*/{
                 agent.actions = Array.from({length: agent.agent_body.get_action_size()}, () => Math.random() * 2 - 1);
             }
 
             // Generates motionless actions
-            else{
+            /*else{
                 agent.actions = Array.from({length: agent.agent_body.get_action_size()}, () => 0);
-            }
+            }*/
         }
 
         // Runs one step and stores the resulted states for each agent

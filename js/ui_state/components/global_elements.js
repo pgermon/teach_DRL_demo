@@ -30,7 +30,7 @@ export default class GlobalElements extends Component{
         this.element.querySelector('#getting-started-btn').innerText = dict['gettingStarted'];
         this.element.querySelector('#parkour-custom-btn').innerText = dict['parkourCustomization'];
         this.element.querySelector('#advanced-options-btn').innerText = dict['advancedOptions'];
-        this.element.querySelector('#about-drl-btn').innerHTML = `<i class="fas fa-info-circle fa-lg"></i> ${dict['aboutDeepRL']}`;
+        this.element.querySelector('#about-btn').innerHTML = `<i class="fas fa-info-circle fa-lg"></i> ${dict['about']}`;
 
         // Changes the selected index of the language dropdown
         this.element.querySelector('#langSelect').selectedIndex = store.state.language == 'EN' ? 0 : 1;

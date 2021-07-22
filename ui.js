@@ -7,6 +7,7 @@ import DrawingMode from "./js/ui_state/components/drawing_mode.js";
 import AdvancedOptions from "./js/ui_state/components/advanced_options.js";
 import EnvsSet from "./js/ui_state/components/envs_set.js";
 import GlobalElements from "./js/ui_state/components/global_elements.js";
+import AboutTab from "./js/ui_state/components/about_tab.js";
 
 /**
  * Opens the given modal.
@@ -209,9 +210,9 @@ const advancedOptionsBtn = document.querySelector('#advanced-options-btn');
 advancedOptionsBtn.addEventListener('click', () => {
     store.dispatch('switchTab', 'advanced_options');
 });
-const aboutDRLBtn = document.querySelector('#about-drl-btn');
-aboutDRLBtn.addEventListener('click', () => {
-    store.dispatch('switchTab', 'about_drl');
+const aboutBtn = document.querySelector('#about-btn');
+aboutBtn.addEventListener('click', () => {
+    store.dispatch('switchTab', 'about');
 });
 
 // Drawing Mode buttons setup
@@ -274,7 +275,11 @@ langSelect.addEventListener('input', () => {
     store.dispatch('setLanguage', langSelect.value);
 });
 
-// Global elements
+// About tab set up
+const aboutTabInstance = new AboutTab();
+aboutTabInstance.render();
+
+// Global elements set up
 const globalElementsInstance = new GlobalElements();
 globalElementsInstance.render();
 
