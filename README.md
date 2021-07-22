@@ -67,8 +67,9 @@ pushd web_demo/; python3 -m http.server 9999; popd;
 ```
 
 ## HOW TO tutorials
-- [Add a new policy model](HOW_TO_tutorials/add_policy_model.md)
-- [Add a new base environment](HOW_TO_tutorials/add_base_env.md)
+- [Adding a new morphology](HOW_TO_tutorials/add_morphology.md)
+- [Adding a new policy model](HOW_TO_tutorials/add_policy_model.md)
+- [Adding a new base environment](HOW_TO_tutorials/add_base_env.md)
 
 [`policy_models`]: policy_models
 [`web_demo`]: web_demo
