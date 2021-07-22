@@ -72,6 +72,7 @@ class MultiAgentsContinuousParkour {
         console.assert(agents.morphologies.length == agents.policies.length && agents.morphologies.length == agents.positions.length);
         for(let i = 0; i < agents.morphologies.length; i++){
             this.create_agent(agents.morphologies[i], agents.policies[i], agents.positions[i]);
+            //this.create_agent("spider", {name: "random", path: null}, null);
         }
 
         // Initializes dynamics
@@ -106,17 +107,21 @@ class MultiAgentsContinuousParkour {
         };
 
         // Initializes the agent's body and lidars according to the morphology
-        if(morphology == "classic_bipedal") {
+        if(morphology == "bipedal") {
             agent.agent_body = new ClassicBipedalBody(SCALE);
             agent.lidars_config = this.set_lidars_type("down");
         }
-        else if(morphology == "climbing_profile_chimpanzee") {
+        else if(morphology == "chimpanzee") {
             agent.agent_body = new ClimbingProfileChimpanzee(SCALE);
             agent.lidars_config = this.set_lidars_type("up");
         }
         else if(morphology == "fish"){
             agent.agent_body = new FishBody(SCALE, 80, WATER_DENSITY, 600);
             agent.lidars_config = this.set_lidars_type("full");
+        }
+        else if(morphology == "spider"){
+            agent.agent_body = new SpiderBody(SCALE);
+            agent.lidars_config = this.set_lidars_type("down");
         }
         else {
             agent.agent_body = new ClassicBipedalBody(SCALE);
@@ -1052,7 +1057,7 @@ class MultiAgentsContinuousParkour {
      * @param zoom
      */
     set_zoom(zoom){
-        this.zoom = Math.max(0.2, Math.min(parseFloat(zoom), 1.5));
+        this.zoom = Math.max(0.2, Math.min(parseFloat(zoom), 1.8));
     }
 
     /**

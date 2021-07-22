@@ -60,6 +60,7 @@ export default class Store {
                 }
                 else if(key == 'language'){
                     self.events.publish('globalElementsChange', self.state);
+                    self.events.publish('aboutTabChange', self.state);
                 }
 
                 if (self.status !== 'mutation') {
