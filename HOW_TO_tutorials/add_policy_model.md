@@ -21,16 +21,20 @@ You can easily add a new policy model for a specific morphology to visualize its
    ┣ 📂 [`swimmer`]  
    ┃ ┗ 📂 [`fish`]  
    ┣ 📂 [`walker`]  
-   ┃ ┗ 📂 [`bipedal`]
+   ┃ ┣ 📂 [`bipedal`]  
+   ┃ ┗ 📂 [`spider`]
 
 Your policy model will now automatically appear inside the demo, in the list of agents available for the corresponding morpholgy.
 
-**3. [Optional] Set up for local launch**  
-   3.1. Convert your policy model to a web-friendly format
+**3. Handle policy dependencies**  
+- Add a name to the list of names of the corresponding morphology in [`actions.js`].
+
+**4. [Optional] Set up for local launch**  
+   4.1. Convert your policy model to a web-friendly format
  ```
- ls -d policy_models/<type>/<morphology>/<policy_folder>/ | xargs -I"{}" tensorflowjs_converter --input_format=tf_saved_model [--output_node_names='parkour_walker'] --saved_model_tags=serve --skip_op_check {}tf1_save web_demo/{}
+ ls -d policy_models/<type>/<morphology>/<policy_folder>/ | xargs -I"{}" tensorflowjs_converter --input_format=tf_saved_model --saved_model_tags=serve --skip_op_check {}tf1_save web_demo/{}
  ```
-   3.2. Generate the list of policy models
+   4.2. Generate the list of policy models
 ```
 python3 policies_to_json.py
 ```
@@ -41,4 +45,6 @@ python3 policies_to_json.py
 [`swimmer`]: ../policy_models/swimmer
 [`fish`]: ../policy_models/swimmer/fish
 [`walker`]: ../policy_models/walker
-[`bipedal`]: ../policy_models/walker/bipedal 
+[`bipedal`]: ../policy_models/walker/bipedal
+[`spider`]: ../policy_models/walker/spider
+[`actions.js`]: ../web_demo/js/ui_state/store/actions.js

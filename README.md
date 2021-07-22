@@ -21,7 +21,8 @@ The repository is organized as follows:
 ┃ ┃ ┣ 📂 [`utils`] -- *utility classes and functions*  
 ┃ ┃ ┣ 📜 [`box2d.js`] -- *full box2d code*  
 ┃ ┃ ┣ 📜 [`draw_p5.js`] -- *rendering functions*  
-┃ ┃ ┗ 📜 [`game.js`] -- *handles simulation execution*  
+┃ ┃ ┣ 📜 [`game.js`] -- *handles simulation execution*  
+┃ ┃ ┗ 📜 [`i18n.js`] -- *handles internationalization*  
 ┃ ┣ 📜 [`index.html`]  
 ┃ ┣ 📜 [`index.js`]  
 ┃ ┣ 📜 [`ui.js`] -- *sets up the different UI elements*  
@@ -89,3 +90,4 @@ pushd web_demo/; python3 -m http.server 9999; popd;
 [`demo.css`]: web_demo/demo.css
 [`list_base_envs.py`]: list_base_envs.py
 [`policies_to_json.py`]: policies_to_json.py
+[`i18n.js`]: web_demo/js/i18n.js
