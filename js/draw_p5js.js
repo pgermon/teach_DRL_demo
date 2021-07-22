@@ -33,10 +33,10 @@ function setup() {
     canvas.style('margin-right', 'auto');
 
     // Creates the off-screen canvas. Height is bigger than main canvas' so that one can scroll vertically when drawing.
-    drawing_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
-    trace_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
-    forbidden_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
-    tmp_canvas = createGraphics(RENDERING_VIEWER_W, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
+    drawing_canvas = createGraphics(RENDERING_VIEWER_W + SCROLL_X_MAX, RENDERING_VIEWER_H + 2 * SCROLL_Y_MAX);
+    trace_canvas = createGraphics(RENDERING_VIEWER_W + SCROLL_X_MAX, RENDERING_VIEWER_H + 2 * SCROLL_Y_MAX);
+    forbidden_canvas = createGraphics(RENDERING_VIEWER_W + SCROLL_X_MAX, RENDERING_VIEWER_H + 2 * SCROLL_Y_MAX);
+    tmp_canvas = createGraphics(RENDERING_VIEWER_W + SCROLL_X_MAX, RENDERING_VIEWER_H + 2 * SCROLL_Y_MAX);
 
     // Prevents automatic calls the draw() function
     noLoop();
@@ -531,6 +531,22 @@ function drawTerrain(env){
             drawLine(vertices, poly.color);
         }
     }
+
+    // Draws a flag on startpad
+    let flag_y1 = TERRAIN_HEIGHT;
+    let flag_y2 = flag_y1 + 90 / env.scale;
+    let flag_x = TERRAIN_STEP * 3;
+    vertices = [
+        [flag_x, flag_y1],
+        [flag_x, flag_y2]
+    ]
+    drawLine(vertices, "#000000");
+    vertices = [
+        [flag_x, flag_y2],
+        [flag_x, flag_y2 - 20 / env.scale],
+        [flag_x + 40 / env.scale, flag_y2 - 10 / env.scale]
+    ]
+    drawPolygon(vertices, "#E63300");
 
     // Draws all assets
     for(let asset of env.assets_bodies){

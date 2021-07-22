@@ -20,7 +20,8 @@ const FRICTION = 2.5;
 const WATER_DENSITY = 1.0;
 const CREEPER_UNIT = 1;
 
-const SCROLL_MAX = 300;
+const SCROLL_X_MAX = 500;
+const SCROLL_Y_MAX = 300;
 const INIT_SCROLL_X = -0.035 * RENDERING_VIEWER_W;
 const THUMBNAIL_SCROLL_X = 0;
 let THUMBNAIL_ZOOM = 0.27;
@@ -1043,12 +1044,14 @@ class MultiAgentsContinuousParkour {
             this.scroll = [h, v];
         }
 
-        // Clamps the horizontal scroll
-        this.scroll[0] = Math.max(INIT_SCROLL_X, Math.min(this.scroll[0], terrain_length * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9));
-
-        // Clamps the vertical scroll only when drawing
+        // Clamps scroll both horizontally and vertically when drawing
         if(window.is_drawing()){
-            this.scroll[1] = Math.max(-SCROLL_MAX, Math.min(this.scroll[1], SCROLL_MAX));
+            this.scroll[0] = Math.max(INIT_SCROLL_X, Math.min(this.scroll[0], TERRAIN_LENGTH * TERRAIN_STEP * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9 + SCROLL_X_MAX));
+            this.scroll[1] = Math.max(-SCROLL_Y_MAX, Math.min(this.scroll[1], SCROLL_Y_MAX));
+        }
+        else{
+            // Clamps scroll only horizontally when not drawing
+            this.scroll[0] = Math.max(INIT_SCROLL_X, Math.min(this.scroll[0], terrain_length * this.scale * this.zoom - RENDERING_VIEWER_W * 0.9));
         }
     }
 
@@ -1057,7 +1060,7 @@ class MultiAgentsContinuousParkour {
      * @param zoom
      */
     set_zoom(zoom){
-        this.zoom = Math.max(0.2, Math.min(parseFloat(zoom), 1.8));
+        this.zoom = Math.max(0.2, Math.min(parseFloat(zoom), 1.5));
     }
 
     /**

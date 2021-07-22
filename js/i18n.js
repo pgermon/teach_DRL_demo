@@ -439,7 +439,7 @@ window.lang_dict = {
                             </p>`,
             'rlTitle': "Apprentissage par Renforcement",
             'rlText': `<p>
-                            L'<strong>Apprentissage par Renforcement (AR)</strong> est l'étude des agents virtuels et de leur apprentissage par <strong>essais et erreurs</strong>.
+                            L'<strong>Apprentissage par renforcement (AR)</strong> est l'étude des agents virtuels et de leur apprentissage par <strong>essais et erreurs</strong>.
                             L'idée principale est de <strong>récompenser ou punir</strong> un agent en fonction des actions qu'il effectue pour qu'il apprenne un comportement efficace pour atteindre un objectif.
                             <br>
                             Les approches d'<strong>AR</strong> sont généralement composées d'un <strong>agent</strong> qui évolue dans un <strong>monde</strong> ou <strong>environnement</strong>  et interagit avec.
@@ -495,9 +495,9 @@ window.lang_dict = {
                             Néanmoins, le fait de générer des environnements aléatoires au cours de l'entraînement implique le risque de générer 
                             des environnements trop difficiles ou trop faciles à résoudre pour les agents, les empêchant par conséquent d'apprendre en continu de manière efficace.
                             <br>
-                            L'idéal serait donc de disposer de <strong>stratégies d'entraînement plus intelligentes</strong> qui proposerait des
+                            L'idéal serait donc de disposer de <strong>stratégies d'entraînement plus intelligentes</strong> qui proposeraient des
                             environnements pertinents adaptés à l'<strong>avancement de l'apprentissage</strong> de l'<strong>élève</strong> (agent).
-                            Cette méthode est appelée <strong>Programme d'apprentissage automatique</strong> (<em>Automatic Curriculum Learning</em>) 
+                            Cette méthode est appelée <strong>programme d'apprentissage automatique</strong> (<em>Automatic Curriculum Learning</em>) 
                             et est incarnée par un <strong>algorithme enseignant</strong> qui est entraîné dans le but d'apprendre à générer des environnements 
                             les plus pertinents possibles tout au long du processus d'entraînement de l'élève en fonction de l'évolution de ses performances.
                             <br>

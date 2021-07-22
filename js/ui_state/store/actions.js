@@ -348,6 +348,10 @@ export default {
         context.commit('generateTerrain', payload);
     },
 
+    refreshDrawing(context, payload){
+        context.commit('refreshDrawing', payload);
+    },
+
     /**
      * Starts (true) or exits (false) intro tour.
      * @param context {Store}

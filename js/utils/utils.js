@@ -33,5 +33,5 @@ window.draw_forbidden_area = () => {
     forbidden_canvas.strokeWeight(3);
     forbidden_canvas.fill(255, 50, 0, 75);
     let w = convertPosEnvToCanvas((INITIAL_TERRAIN_STARTPAD - 1) * TERRAIN_STEP, 0).x;
-    forbidden_canvas.rect(0, 0, w, RENDERING_VIEWER_H + 2 * SCROLL_MAX);
+    forbidden_canvas.rect(0, 0, w, RENDERING_VIEWER_H + 2 * SCROLL_Y_MAX);
 }
