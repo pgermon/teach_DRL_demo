@@ -32,11 +32,12 @@
     <script defer src="js/Box2D_dynamics/contact_detector.js"></script>
     <script defer src="./js/utils/custom_user_data.js"></script>
 
+    <!-- Morphologies -->
     <script defer src="./js/bodies/bodies_enum.js"></script>
     <script defer src="./js/bodies/abstract_body.js"></script>
     <script defer src="js/bodies/walkers/walker_abstract_body.js"></script>
-    <!--<script defer src="js/bodies/walkers/old_classic_bipedal_body.js"></script>-->
     <script defer src="js/bodies/walkers/classic_bipedal_body.js"></script>
+    <script defer src="js/bodies/walkers/spider_body.js"></script>
     <script defer src="js/bodies/climbers/climber_abstract_body.js"></script>
     <script defer src="js/bodies/climbers/climbing_profile_chimpanzee.js"></script>
     <script defer src="js/bodies/swimmers/swimmer_abstract_body.js"></script>
@@ -45,7 +46,8 @@
     <script defer src="js/CPPN/cppn.js"></script>
     <script defer src="js/envs/multi_agents_continuous_parkour.js"></script>
     <script defer src="js/game.js"></script>
-    <script defer src="./js/draw_p5js.js"></script>
+    <script defer src="js/draw_p5js.js"></script>
+    <script defer src="js/i18n.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -149,9 +151,9 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="about-drl-btn" data-bs-toggle="tab" data-bs-target="#about-drl-tab"
-                                type="button" role="tab" aria-controls="about-drl-tab" aria-selected="false">
-                            <i class="fas fa-info-circle fa-lg"></i> <strong>About DeepRL</strong>
+                        <button class="nav-link" id="about-btn" data-bs-toggle="tab" data-bs-target="#about-tab"
+                                type="button" role="tab" aria-controls="about-tab" aria-selected="false">
+                            <i class="fas fa-info-circle fa-lg"></i> <strong>About...</strong>
                         </button>
                     </li>
                 </ul>
@@ -374,10 +376,10 @@
                     <div class="tab-pane" id="advanced-options-tab" role="tabpanel" aria-labelledby="advanced-options-btn">
                         <!-- Draw joins/sensors/names selectors -->
                         <div id="advancedOptions" class="row mt-3">
-                            <div class="col-1"></div>
-                            <div class="col-2 border border-start-0 border-top-0 border-bottom-0">
+
+                            <div class="col-3 border border-start-0 border-top-0 border-bottom-0">
                                 <h1 id="renderingOptionsTitle" class="has-text-centered my-2"><strong> Rendering Options </strong></h1>
-                                <div id="drawSelectors" class="my-2">
+                                <div id="drawSelectors" class="mx-5 my-2">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" id="drawJointsSwitch">
                                         <label id="drawJointsLabel" class="form-check-label" for="drawJointsSwitch">Draw joints</label>
@@ -417,103 +419,144 @@
                         </div>
                     </div>
 
-                    <!-- About DeepRL tab pane -->
-                    <div class="tab-pane" id="about-drl-tab" role="tabpanel" aria-labelledby="about-drl-btn">
-                        <div class="about-drl-text px-5 my-5">
+                    <!-- About... tab pane -->
+                    <div class="tab-pane" id="about-tab" role="tabpanel" aria-labelledby="about-btn">
+                        <div class="about-text px-5 my-5">
 
-                            <p class="mb-4">
-                                <strong>Deep Reinforcement Learning (DRL)</strong>
-                                is a <strong>machine learning</strong> approach for teaching <strong>virtual agents</strong> how to solve tasks by combining
-                                <strong>Reinforcement Learning</strong> and <strong>Deep Learning</strong> methods.
-                                This approach has been used for a diverse set of applications including robotics (e.g. <a href="https://openai.com/blog/solving-rubiks-cube/">Solving Rubik's Cube</a>),
-                                video games and boardgames (e.g. <a href="https://deepmind.com/research/case-studies/alphago-the-story-so-far">AlphaGo</a>).
+                            <h2 id="purpose-title" class="about-subsection mb-4">Purpose of the demo</h2>
 
-                            </p>
+                            <div id="purpose-text">
+                                <p class="mb-2">
+                                    The goal of this demo is to showcase the challenge of <strong>generalization</strong> to unknown tasks
+                                    for <strong>Deep Reinforcement Learning (DRL)</strong> agents.
+                                </p>
 
-                            <h2 class="about-drl-subsection mb-4">Reinforcement Learning</h2>
+                                <p class="mb-2">
+                                    <strong>DRL</strong> is a <strong>machine learning</strong> approach for teaching <strong>virtual agents</strong>
+                                    how to solve tasks by combining <strong>Reinforcement Learning</strong> and <strong>Deep Learning</strong> methods.
+                                    This approach has been used for a diverse set of applications including robotics (e.g. <a href="https://openai.com/blog/solving-rubiks-cube/">Solving Rubik's Cube</a>),
+                                    video games and boardgames (e.g. <a href="https://deepmind.com/research/case-studies/alphago-the-story-so-far">AlphaGo</a>).
+                                </p>
 
-                            <p>
-                                <strong>Reinforcement Learning (RL)</strong> is the study of agents and how they learn by <strong>trial and error</strong>.
-                                The main idea is to <strong>reward or punish</strong> an agent according to the actions it takes in order to teach it an efficient behavior to reach an objective.
-                                <br>
-                                The RL approaches generally feature an <strong>agent</strong> which evolves and interacts with a <strong>world</strong>.
-                                At each interaction step, the agent sees a partial <strong>observation</strong> of the current state of the environment and decides of an action to take.
-                                Each action taken by the agent changes the state of the world.
-                                The agent also receives a <strong>reward</strong> signal at each step, that indicates how good or bad the current state is
-                                according to the objective the agent has to reach.
-                            </p>
+                                <p class="mb-2">
+                                    In this demo, all the agents have been <strong>autonomously trained</strong> to learn an efficient behaviour to navigate through a 2D environment,
+                                    combining different methods so that they can be able to <strong>generalize their behaviour to never-seen-before situations</strong>.
+                                </p>
 
-                            <div class="row align-items-center mb-4">
-                                <div class="col-12 col-md-6">
-                                    <p>
-                                        The diagram on the right presents this interaction process between the <strong>agent</strong> and the <strong>environment</strong>,
-                                        with the different information they exchange at each step.
-                                        <br>
-                                        <strong>Maximizing the reward</strong> over steps is a way for the agent to learn a behaviour, also called <strong>policy</strong>,
-                                        to achieve its objective.
-                                    </p>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <img id="rl-diagram" class="w-100" src="images/about_drl/rl_diagram_transparent_bg.png" alt="RL diagram">
+                                <p class="mb-4">
+                                    The demo provides different tools to customize the environment in order to test and challenge the
+                                    <strong>robustness</strong> of the agents on different situations.
+                                </p>
+                            </div>
+
+
+                            <h2 id="rl-title" class="about-subsection mb-4">Reinforcement Learning</h2>
+
+                            <div id="rl-text">
+                                <p>
+                                    <strong>Reinforcement Learning (RL)</strong> is the study of agents and how they learn by <strong>trial and error</strong>.
+                                    The main idea is to <strong>reward or punish</strong> an agent according to the actions it takes in order to teach it an efficient behavior to reach an objective.
+                                    <br>
+                                    The RL approaches generally feature an <strong>agent</strong> which evolves and interacts with a <strong>world</strong>.
+                                    At each interaction step, the agent sees a partial <strong>observation</strong> of the current state of the environment and decides of an action to take.
+                                    Each action taken by the agent changes the state of the world.
+                                    The agent also receives a <strong>reward</strong> signal at each step, that indicates how good or bad the current state is
+                                    according to the objective the agent has to reach.
+                                </p>
+
+                                <div class="row align-items-center mb-4">
+                                    <div class="col-12 col-md-6">
+                                        <p>
+                                            The diagram on the right presents this interaction process between the <strong>agent</strong> and the <strong>environment</strong>,
+                                            with the different information they exchange at each step.
+                                            <br>
+                                            <strong>Maximizing the reward</strong> over steps is a way for the agent to learn a behaviour, also called <strong>policy</strong>,
+                                            to achieve its objective.
+                                        </p>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <img id="rl-diagram" class="w-100" src="images/about/rl_diagram_transparent_bg.png" alt="RL diagram">
+                                    </div>
                                 </div>
                             </div>
 
-                            <h2 class="about-drl-subsection mb-4">Deep RL</h2>
+                            <h2 id="drl-title" class="about-subsection mb-4">Deep RL</h2>
 
-                            <p class="mb-2">
-                                In order to remember and improve the actions taken by the agent, DRL algorithms utilizes <strong>artificial neural networks</strong>.
-                                With <strong>training</strong>, these neural networks are able to <strong>learn to predict an optimal action to take at each step from the observation received</strong>,
-                                and relying on all the observations and rewards previously received after each action during training.
-                                Thanks to this, DRL algorithms are able to produce behaviours that are very effective in situations similar to those they were trained on.
-                            </p>
+                            <div id="drl-text">
+                                <p class="mb-2">
+                                    In order to remember and improve the actions taken by the agent, DRL algorithms utilizes <strong>artificial neural networks</strong>.
+                                    With <strong>training</strong>, these neural networks are able to <strong>learn to predict an optimal action to take at each step from the observation received</strong>,
+                                    and relying on all the observations and rewards previously received after each action during training.
+                                    Thanks to this, DRL algorithms are able to produce behaviours that are very effective in situations similar to those they were trained on.
+                                </p>
 
-                            <div class="row justify-content-center my-4">
-                                <img id="rl-demo_diagram" class="w-50" src="images/about_drl/rl_demo_diagram_EN.png" alt="RL demo diagram">
+                                <div class="row justify-content-center my-4">
+                                    <img id="rl-demo_diagram" class="w-50" src="images/about/rl_demo_diagram_EN.png" alt="RL demo diagram">
+                                </div>
+
+                                <p class="mb-4">
+                                    However, in real-world applications, the environment rarely remains still and frequently evolves. Therefore one would
+                                    want DRL agents to be able to <strong>generalize their behaviour</strong> to previously unseen changes of the environment so that
+                                    they can <strong>adapt to a large range of situations</strong>.
+                                </p>
                             </div>
 
-                            <p class="mb-4">
-                                However, in real-world applications, the environment rarely remains still and frequently evolves. Therefore one would
-                                want DRL agents to be able to <strong>generalize their behaviour</strong> to previously unseen changes of the environment so that
-                                they can <strong>adapt to a large range of situations</strong>.
-                            </p>
+                            <h2 id="acl-title" class="about-subsection mb-4">Automatic Curriculum Learning</h2>
 
-                            <h2 class="about-drl-subsection mb-4">Automatic Curriculum Learning</h2>
+                            <div id="acl-text">
+                                <p class="mb-2">
+                                    One solution to handle this challenge is to train DRL agents on <strong>procedurally generated environments</strong>.
+                                    <br>
+                                    <strong>Procedural generation</strong> is a method of automatically creating environments according to some parameters.
+                                    Using this method, DRL agents can be trained on a <strong>very wide range of environments</strong>, hence allowing them
+                                    to <strong>generalize their behaviour</strong> to more different situations.
+                                </p>
 
-                            <p class="mb-2">
-                                One solution to handle this challenge is to train DRL agents on <strong>procedurally generated environments</strong>.
-                                <br>
-                                <strong>Procedural generation</strong> is a method of automatically creating environments according to some parameters.
-                                Using this method, DRL agents can be trained on a <strong>very wide range of environments</strong>, hence allowing them
-                                to <strong>generalize their behaviour</strong> to more different situations.
-                            </p>
+                                <p class="mb-4">
+                                    However, randomly generating environments during training implies the risk to generate environments that are too difficult or too easy to resolve
+                                    for the agents, preventing them to continuously learn in an efficient way.
+                                    <br>
+                                    Therefore, one would need <strong>smarter training strategies</strong> that propose relevant environments tailored to the current <strong>learning progress</strong> of the <strong>student</strong> (DRL agent).
+                                    This method is called <strong>Automatic Curriculum Learning (ACL)</strong> and is embodied by a <strong>teacher algorithm</strong> which is trained to learn to generate
+                                    the most relevant environments throughout the entire training process according to the student performances.
+                                    <br>
+                                    This way, the teacher proposes easy environments to the student at the beginning and <strong>gradually increases the difficulty
+                                    and the diversity</strong> of the tasks in order to guarantee that the <strong>student is progressing while not always facing the same situation or forgetting what it has already learned</strong>.
+                                </p>
+                            </div>
 
-                            <p class="mb-4">
-                                However, randomly generating environments during training implies the risk to generate environments that are too difficult or too easy to resolve
-                                for the agents, preventing them to continuously learn in an efficient way.
-                                <br>
-                                Therefore, one would need <strong>smarter training strategies</strong> that propose relevant environments tailored to the current <strong>learning progress</strong> of the <strong>student</strong> (DRL agent).
-                                This method is called <strong>Automatic Curriculum Learning (ACL)</strong> and is embodied by a <strong>teacher algorithm</strong> which is trained to learn to generate
-                                the most relevant environments throughout the entire training process according to the student performances.
-                                <br>
-                                This way, the teacher proposes easy environments to the student at the beginning and <strong>gradually increases the difficulty
-                                and the diversity</strong> of the tasks in order to guarantee that the <strong>student is progressing while not always facing the same situation or forgetting what it has already learned</strong>.
-                            </p>
+                            <h2 id="about-demo-title" class="about-subsection mb-4">About the demo</h2>
 
-                            <h2 class="about-drl-subsection mb-4">About the demo</h2>
+                            <div id="about-demo-text">
+                                <p class="mb-2">
+                                    In this demo, all the available agents were trained using <a href="https://spinningup.openai.com/en/latest/algorithms/sac.html">Soft Actor Critic</a>
+                                    as the <strong>DRL student algorithm</strong> alongside different <strong>ACL teacher algorithms</strong> such as <a href="https://arxiv.org/abs/1910.07224">ALP-GMM</a>.
+                                    <br>
+                                    They successfully learned efficient behaviours to move through the environment and to <strong>generalize</strong> to never-seen-before situations.
+                                </p>
 
-                            <p class="mb-4">
-                                In this demo, all the available agents were trained using <a href="https://spinningup.openai.com/en/latest/algorithms/sac.html">Soft Actor Critic</a>
-                                as the DRL student algorithm alongside different ACL teacher algorithms such as <a href="https://arxiv.org/abs/1910.07224">ALP-GMM</a>.
-                                <br>
-                                They successfully learned efficient behaviours to move through the environment and to generalize to never-seen-before situations.
-                                You can test their robustness using the different tools at your disposal to customize your own environment.
-                            </p>
+                                <p class="mb-4">
+                                    The physics of the simulation are supported by <a href="https://github.com/kripken/box2d.js">box2d.js</a>
+                                    which is a direct port of the <a href="https://github.com/erincatto/box2d">Box2D</a> physics engine to JavaScript.
+                                    <br>
+                                    The <strong>pre-trained policies</strong> (agents behaviours) are loaded in the browser thanks to <a href="https://www.tensorflow.org/js">TensorFlow.js</a>.
+                                </p>
+                            </div>
 
-                            <p class="mb-4">
-                                This demo was designed by <a href="https://github.com/pgermon">Paul Germon</a> as part of an internship within <a href="https://flowers.inria.fr/">Flowers</a>
-                                research team at <a href="https://www.inria.fr/fr">Inria</a>. This internship was monitored by Rémy Portelas and Clément Romac,
-                                and supervised by Pierre-Yves Oudeyer. Special thanks to Nikita Melkozerov for its very helpful contribution.
-                            </p>
+                            <h2 id="credits-title" class="about-subsection mb-4">Credits</h2>
+
+                            <div id="credits-text">
+                                <p class="mb-4">
+                                    This demo was designed by <a href="https://github.com/pgermon">Paul Germon</a> as part of an internship within <a href="https://flowers.inria.fr/">Flowers</a>
+                                    research team at <a href="https://www.inria.fr/fr">Inria</a>. This internship was monitored by Rémy Portelas and Clément Romac,
+                                    and supervised by Pierre-Yves Oudeyer. Special thanks to Nikita Melkozerov for its very helpful contribution.
+                                </p>
+
+                                <ul class="px-3" style="list-style-type: disc">
+                                    <li>The code of this demo is open-source and can be found on this <a href="https://github.com/pgermon/teach_DRL_demo">github repository.</a></li>
+                                    <li>The code of the environment and agents is adapted from the <a href="http://developmentalsystems.org/TeachMyAgent/">TeachMyAgent</a> benchmark's Python code to JavaScript.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
