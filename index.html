@@ -425,7 +425,7 @@
 
                             <h2 id="purpose-title" class="about-subsection mb-4">Purpose of the demo</h2>
 
-                            <div id="purpose-text">
+                            <div id="purpose-text" class="mb-4">
                                 <p class="mb-2">
                                     The goal of this demo is to showcase the challenge of <strong>generalization</strong> to unknown tasks
                                     for <strong>Deep Reinforcement Learning (DRL)</strong> agents.
@@ -443,7 +443,7 @@
                                     combining different methods so that they can be able to <strong>generalize their behaviour to never-seen-before situations</strong>.
                                 </p>
 
-                                <p class="mb-4">
+                                <p>
                                     The demo provides different tools to customize the environment in order to test and challenge the
                                     <strong>robustness</strong> of the agents on different situations.
                                 </p>
@@ -452,7 +452,7 @@
 
                             <h2 id="rl-title" class="about-subsection mb-4">Reinforcement Learning</h2>
 
-                            <div id="rl-text">
+                            <div id="rl-text" class="mb-4">
                                 <p>
                                     <strong>Reinforcement Learning (RL)</strong> is the study of agents and how they learn by <strong>trial and error</strong>.
                                     The main idea is to <strong>reward or punish</strong> an agent according to the actions it takes in order to teach it an efficient behavior to reach an objective.
@@ -482,7 +482,7 @@
 
                             <h2 id="drl-title" class="about-subsection mb-4">Deep RL</h2>
 
-                            <div id="drl-text">
+                            <div id="drl-text" class="mb-4">
                                 <p class="mb-2">
                                     In order to remember and improve the actions taken by the agent, DRL algorithms utilizes <strong>artificial neural networks</strong>.
                                     With <strong>training</strong>, these neural networks are able to <strong>learn to predict an optimal action to take at each step from the observation received</strong>,
@@ -494,7 +494,7 @@
                                     <img id="rl-demo_diagram" class="w-50" src="images/about/rl_demo_diagram_EN.png" alt="RL demo diagram">
                                 </div>
 
-                                <p class="mb-4">
+                                <p>
                                     However, in real-world applications, the environment rarely remains still and frequently evolves. Therefore one would
                                     want DRL agents to be able to <strong>generalize their behaviour</strong> to previously unseen changes of the environment so that
                                     they can <strong>adapt to a large range of situations</strong>.
@@ -503,7 +503,7 @@
 
                             <h2 id="acl-title" class="about-subsection mb-4">Automatic Curriculum Learning</h2>
 
-                            <div id="acl-text">
+                            <div id="acl-text" class="mb-4">
                                 <p class="mb-2">
                                     One solution to handle this challenge is to train DRL agents on <strong>procedurally generated environments</strong>.
                                     <br>
@@ -512,7 +512,7 @@
                                     to <strong>generalize their behaviour</strong> to more different situations.
                                 </p>
 
-                                <p class="mb-4">
+                                <p>
                                     However, randomly generating environments during training implies the risk to generate environments that are too difficult or too easy to resolve
                                     for the agents, preventing them to continuously learn in an efficient way.
                                     <br>
@@ -527,7 +527,7 @@
 
                             <h2 id="about-demo-title" class="about-subsection mb-4">About the demo</h2>
 
-                            <div id="about-demo-text">
+                            <div id="about-demo-text" class="mb-4">
                                 <p class="mb-2">
                                     In this demo, all the available agents were trained using <a href="https://spinningup.openai.com/en/latest/algorithms/sac.html">Soft Actor Critic</a>
                                     as the <strong>DRL student algorithm</strong> alongside different <strong>ACL teacher algorithms</strong> such as <a href="https://arxiv.org/abs/1910.07224">ALP-GMM</a>.
@@ -535,7 +535,7 @@
                                     They successfully learned efficient behaviours to move through the environment and to <strong>generalize</strong> to never-seen-before situations.
                                 </p>
 
-                                <p class="mb-4">
+                                <p>
                                     The physics of the simulation are supported by <a href="https://github.com/kripken/box2d.js">box2d.js</a>
                                     which is a direct port of the <a href="https://github.com/erincatto/box2d">Box2D</a> physics engine to JavaScript.
                                     <br>
@@ -545,7 +545,7 @@
 
                             <h2 id="credits-title" class="about-subsection mb-4">Credits</h2>
 
-                            <div id="credits-text">
+                            <div id="credits-text" class="mb-4">
                                 <p class="mb-4">
                                     This demo was designed by <a href="https://github.com/pgermon">Paul Germon</a> as part of an internship within <a href="https://flowers.inria.fr/">Flowers</a>
                                     research team at <a href="https://www.inria.fr/fr">Inria</a>. This internship was monitored by Rémy Portelas and Clément Romac,
@@ -555,6 +555,20 @@
                                 <ul class="px-3" style="list-style-type: disc">
                                     <li>The code of this demo is open-source and can be found on this <a href="https://github.com/pgermon/teach_DRL_demo">github repository.</a></li>
                                     <li>The code of the environment and agents is adapted from the <a href="http://developmentalsystems.org/TeachMyAgent/">TeachMyAgent</a> benchmark's Python code to JavaScript.</li>
+                                </ul>
+                            </div>
+
+                            <h2 id="references-title" class="about-subsection mb-4">References</h2>
+
+                            <div id="references-text">
+                                <ul class="mb-4">
+                                    <li id="ref1">[1] OpenAI, Ilge Akkaya, Marcin Andrychowicz, Maciek Chociej, Mateusz Litwin, Bob McGrew, Arthur Petron, Alex Paino, Matthias Plappert, Glenn Powell, Raphael Ribas, Jonas Schneider, Nikolas Tezak, Jerry Tworek, Peter Welinder, Lilian Weng, Qiming Yuan, Wojciech Zaremba, Lei Zhang:
+                                        Solving Rubik's Cube with a Robot Hand (2019). <a href="https://arxiv.org/abs/1910.07113">https://arxiv.org/abs/1910.07113</a></li>
+                                    <li id="ref2">[2] Silver, D., Huang, A., Maddison, C. et al. Mastering the game of Go with deep neural networks and tree search. Nature 529, 484–489 (2016). <a href="https://doi.org/10.1038/nature16961">https://doi.org/10.1038/nature16961</a></li>
+                                    <li id="ref3">[3] Portelas, R., Colas, C., Weng, L., Hofmann, K., & Oudeyer, P. Y. (2020). Automatic curriculum learning for deep rl: A short survey (2020). <a href="https://arxiv.org/abs/2003.04664">https://arxiv.org/abs/2003.04664</a></li>
+                                    <li id="ref4">[4] Haarnoja, T., Zhou, A., Abbeel, P., & Levine, S. (2018, July). Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor. <em>In International conference on machine learning</em> (pp. 1861-1870). PMLR <a href="https://arxiv.org/abs/1801.01290">https://arxiv.org/abs/1801.01290</a></li>
+                                    <li id="ref5">[5] Portelas, R., Colas, C., Hofmann, K., & Oudeyer, P. Y. (2020, May). Teacher algorithms for curriculum learning of deep rl in continuously parameterized environments. <em>In Conference on Robot Learning</em> (pp. 835-853). PMLR. <a href="https://arxiv.org/abs/1910.07224">https://arxiv.org/abs/1910.07224</a></li>
+                                    <li id="ref6">[6] Romac, C., Portelas, R., Hofmann, K., & Oudeyer, P. Y. (2021). TeachMyAgent: a Benchmark for Automatic Curriculum Learning in Deep RL. <a href="https://arxiv.org/abs/2103.09815">https://arxiv.org/abs/2103.09815</a></li>
                                 </ul>
                             </div>
                         </div>

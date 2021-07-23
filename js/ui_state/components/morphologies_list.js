@@ -3,14 +3,6 @@ import store from '../store/index.js';
 
 const thumbnails_path = "images/agents_thumbnails/";
 
-// Names for the different policies of each morphology
-const seed_names = {
-    bipedal: ['Joe', 'Alice', 'Bob', 'Susan'],
-    chimpanzee: ['Tarzan', 'Kong', 'Caesar', 'Rafiki'],
-    fish: ['Nemo', 'Dory', 'Oscar', 'Bubbles'],
-    spider: ['Peter', 'Aragog', 'Lucas', 'Natasha']
-};
-
 /**
  * @classdesc UI component for the list of morphologies.
  */
@@ -54,7 +46,7 @@ export default class MorphologiesList extends Component {
                                 
                                 <!-- Dropdown policy selector and add button -->                          
                                 <div name="select_button" class="input-group mt-1">                       
-                                    <select name="models" class="form-select" data-bs-toggle="tooltip" title="${dict['policySelectTooltip']}"></select>
+                                    <select name="policies" class="form-select" data-bs-toggle="tooltip" title="${dict['policySelectTooltip']}"></select>
                                     <div class="input-group-append">
                                         <button name="addAgentButton" class="btn btn-warning"
                                         data-bs-toggle="tooltip" title="${dict['addBtnTooltip']}"><i class="fas fa-plus"></i></button>
@@ -75,13 +67,12 @@ export default class MorphologiesList extends Component {
         /* EVENT LISTENERS */
 
         // Adds all the compatible policies as options to the dropdown
-        this.element.querySelectorAll('select[name="models"]').forEach((span, index) => {
+        this.element.querySelectorAll('select[name="policies"]').forEach((span, index) => {
             span.innerHTML = store.state.morphologies
                 .filter(m => m.morphology == store.state.morphologies[index].morphology)
                 .flatMap(morphology => morphology.seeds)
                 .map((seedEntry, idx) => {
-                    let name = seed_names[store.state.morphologies[index].morphology][idx];
-                    return `<option value="${seedEntry.path}">${name}</option>`;
+                    return `<option value="${seedEntry.path}">${seedEntry.name}</option>`;
                 })
                 .join('');
 
@@ -99,7 +90,7 @@ export default class MorphologiesList extends Component {
                 let morph = store.state.morphologies[index];
                 store.dispatch('addAgent', {
                     morphology: morph.morphology,
-                    name: seed_names[morph.morphology][store.state.currentSeedsIdx[morph.morphology]],
+                    name: morph.seeds[store.state.currentSeedsIdx[morph.morphology]].name,
                     path: morph.seeds[store.state.currentSeedsIdx[morph.morphology]].path,
                     init_pos: null
                 });

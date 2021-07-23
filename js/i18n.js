@@ -158,8 +158,8 @@ window.lang_dict = {
                             <p class="mb-2">
                                 <strong>DRL</strong> is a <strong>Machine Learning</strong> approach for teaching <strong>virtual agents</strong>
                                 how to solve tasks by combining <strong>Reinforcement Learning</strong> and <strong>Deep Learning</strong> methods.
-                                This approach has been used for a diverse set of applications including robotics (e.g. <a href="https://openai.com/blog/solving-rubiks-cube/">Solving Rubik's Cube</a>),
-                                video games and boardgames (e.g. <a href="https://deepmind.com/research/case-studies/alphago-the-story-so-far">AlphaGo</a>).
+                                This approach has been used for a diverse set of applications including robotics (e.g. <a href="https://openai.com/blog/solving-rubiks-cube/">Solving Rubik's Cube</a> <a href="#ref1">[1]</a>),
+                                video games and boardgames (e.g. <a href="https://deepmind.com/research/case-studies/alphago-the-story-so-far">AlphaGo</a> <a href="#ref2">[2]</a>).
                             </p>
 
                             <p class="mb-2">
@@ -228,7 +228,7 @@ window.lang_dict = {
                             for the agents, preventing them to continuously learn in an efficient way.
                             <br>
                             Therefore, one would need <strong>smarter training strategies</strong> that propose relevant environments tailored to the current <strong>learning progress</strong> of the <strong>student</strong> (DRL agent).
-                            This method is called <strong>Automatic Curriculum Learning (ACL)</strong> and is embodied by a <strong>teacher algorithm</strong> which is trained to learn to generate
+                            This method is called <strong>Automatic Curriculum Learning (ACL)</strong> <a href="#ref3">[3]</a> and is embodied by a <strong>teacher algorithm</strong> which is trained to learn to generate
                             the most relevant environments throughout the entire training process according to the student performances.
                             <br>
                             This way, the teacher proposes easy environments to the student at the beginning and <strong>gradually increases the difficulty
@@ -237,8 +237,8 @@ window.lang_dict = {
             'aboutDemoTitle': "About the demo",
             'aboutDemoText': `
                             <p class="mb-2">
-                                In this demo, all the available agents were trained using <a href="https://spinningup.openai.com/en/latest/algorithms/sac.html">Soft Actor Critic</a>
-                                as the <strong>DRL student algorithm</strong> alongside different <strong>ACL teacher algorithms</strong> such as <a href="https://arxiv.org/abs/1910.07224">ALP-GMM</a>.
+                                In this demo, all the available agents were trained using <a href="https://spinningup.openai.com/en/latest/algorithms/sac.html">Soft Actor Critic</a> <a href="#ref4">[4]</a>
+                                as the <strong>DRL student algorithm</strong> alongside different <strong>ACL teacher algorithms</strong> such as <a href="https://arxiv.org/abs/1910.07224">ALP-GMM</a> <a href="#ref5">[5]</a>.
                                 <br>
                                 They successfully learned efficient behaviours to move through the environment and to <strong>generalize</strong> to never-seen-before situations.
                             </p>
@@ -258,8 +258,18 @@ window.lang_dict = {
 
                             <ul class="px-3" style="list-style-type: disc">
                                 <li>The code of this demo is open-source and can be found on this <a href="https://github.com/pgermon/teach_DRL_demo">github repository.</a></li>
-                                <li>The code of the environment and agents is adapted from the <a href="http://developmentalsystems.org/TeachMyAgent/">TeachMyAgent</a> benchmark's Python code to JavaScript.</li>
+                                <li>The code of the environment and agents is adapted from the <a href="http://developmentalsystems.org/TeachMyAgent/">TeachMyAgent</a> <a href="#ref6">[6]</a> benchmark's Python code to JavaScript.</li>
                             </ul>`,
+            'referencesTitle': "References",
+            'referencesText': `<ul class="mb-4">
+                                    <li id="ref1">[1] OpenAI, Ilge Akkaya, Marcin Andrychowicz, Maciek Chociej, Mateusz Litwin, Bob McGrew, Arthur Petron, Alex Paino, Matthias Plappert, Glenn Powell, Raphael Ribas, Jonas Schneider, Nikolas Tezak, Jerry Tworek, Peter Welinder, Lilian Weng, Qiming Yuan, Wojciech Zaremba, Lei Zhang:
+                                        Solving Rubik's Cube with a Robot Hand (2019). <a href="https://arxiv.org/abs/1910.07113">https://arxiv.org/abs/1910.07113</a></li>
+                                    <li id="ref2">[2] Silver, D., Huang, A., Maddison, C. et al. Mastering the game of Go with deep neural networks and tree search. Nature 529, 484–489 (2016). <a href="https://doi.org/10.1038/nature16961">https://doi.org/10.1038/nature16961</a></li>
+                                    <li id="ref3">[3] Portelas, R., Colas, C., Weng, L., Hofmann, K., & Oudeyer, P. Y. (2020). Automatic curriculum learning for deep rl: A short survey (2020). <a href="https://arxiv.org/abs/2003.04664">https://arxiv.org/abs/2003.04664</a></li>
+                                    <li id="ref4">[4] Haarnoja, T., Zhou, A., Abbeel, P., & Levine, S. (2018, July). Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor. <em>In International conference on machine learning</em> (pp. 1861-1870). PMLR <a href="https://arxiv.org/abs/1801.01290">https://arxiv.org/abs/1801.01290</a></li>
+                                    <li id="ref5">[5] Portelas, R., Colas, C., Hofmann, K., & Oudeyer, P. Y. (2020, May). Teacher algorithms for curriculum learning of deep rl in continuously parameterized environments. <em>In Conference on Robot Learning</em> (pp. 835-853). PMLR. <a href="https://arxiv.org/abs/1910.07224">https://arxiv.org/abs/1910.07224</a></li>
+                                    <li id="ref6">[6] Romac, C., Portelas, R., Hofmann, K., & Oudeyer, P. Y. (2021). TeachMyAgent: a Benchmark for Automatic Curriculum Learning in Deep RL. <a href="https://arxiv.org/abs/2103.09815">https://arxiv.org/abs/2103.09815</a></li>
+                                </ul>`,
 
         }
     },
@@ -422,8 +432,8 @@ window.lang_dict = {
                                 L'<strong>ARP</strong> est une approche d'<strong>Apprentissage automatique</strong> (<em>Machine Learning</em>)
                                 qui permet d'apprendre à des <strong>agents virtuels</strong> à résoudre des tâches en combinant des méthodes 
                                 d'<strong>Apprentissage par renforcement</strong> (<em>Reinforcement Learning</em>) et d'<strong>Apprentissage profond</strong> (<em>Deep Learning</em>).
-                                Cette approche a été utilisée pour diverses applications dont notamment la robotique (e.g. <a href="https://openai.com/blog/solving-rubiks-cube/">Solving Rubik's Cube</a>),
-                                les jeux vidéo et les jeux de plateau (e.g. <a href="https://deepmind.com/research/case-studies/alphago-the-story-so-far">AlphaGo</a>).
+                                Cette approche a été utilisée pour diverses applications dont notamment la robotique (e.g. <a href="https://openai.com/blog/solving-rubiks-cube/">Solving Rubik's Cube</a>) <a href="#ref1">[1]</a>,
+                                les jeux vidéo et les jeux de plateau (e.g. <a href="https://deepmind.com/research/case-studies/alphago-the-story-so-far">AlphaGo</a>) <a href="#ref2">[2]</a>.
                             </p>
 
                             <p class="mb-2">
@@ -497,7 +507,7 @@ window.lang_dict = {
                             <br>
                             L'idéal serait donc de disposer de <strong>stratégies d'entraînement plus intelligentes</strong> qui proposeraient des
                             environnements pertinents adaptés à l'<strong>avancement de l'apprentissage</strong> de l'<strong>élève</strong> (agent).
-                            Cette méthode est appelée <strong>programme d'apprentissage automatique</strong> (<em>Automatic Curriculum Learning</em>) 
+                            Cette méthode est appelée <strong>programme d'apprentissage automatique</strong> (<em>Automatic Curriculum Learning</em>) <a href="#ref3">[3]</a>
                             et est incarnée par un <strong>algorithme enseignant</strong> qui est entraîné dans le but d'apprendre à générer des environnements 
                             les plus pertinents possibles tout au long du processus d'entraînement de l'élève en fonction de l'évolution de ses performances.
                             <br>
@@ -508,8 +518,8 @@ window.lang_dict = {
             'aboutDemoTitle': "À propos de la démo",
             'aboutDemoText': `
                             <p class="mb-2">
-                                Dans cette démo, tous les agents ont été entraînés avec <a href="https://spinningup.openai.com/en/latest/algorithms/sac.html">Soft Actor Critic</a>
-                                comme <strong>algorithme élève d'ARP</strong> aux côtés de différents <strong>algorithmes enseignants</strong> comme par exemple <a href="https://arxiv.org/abs/1910.07224">ALP-GMM</a>.
+                                Dans cette démo, tous les agents ont été entraînés avec <a href="https://spinningup.openai.com/en/latest/algorithms/sac.html">Soft Actor Critic</a> <a href="#ref4">[4]</a>
+                                comme <strong>algorithme élève d'ARP</strong> aux côtés de différents <strong>algorithmes enseignants</strong> comme par exemple <a href="https://arxiv.org/abs/1910.07224">ALP-GMM</a> <a href="#ref5">[5]</a>.
                                 <br>
                                 Les agents ont ainsi appris avec succès des comportements efficaces pour se déplacer à travers les envirionnements 2D en 
                                 <strong>généralisant</strong> leur comportement à des situations inédites.
@@ -531,8 +541,18 @@ window.lang_dict = {
 
                             <ul class="px-3" style="list-style-type: disc">
                                 <li>Le code source de cette démo est libre d'accès sur ce <a href="https://github.com/pgermon/teach_DRL_demo">dépôt github.</a></li>
-                                <li>Le code de l'environnement et des agents a été adapté en JavaScript à partir du code Python de <a href="http://developmentalsystems.org/TeachMyAgent/">TeachMyAgent</a>.</li>
+                                <li>Le code de l'environnement et des agents a été adapté en JavaScript à partir du code Python de <a href="http://developmentalsystems.org/TeachMyAgent/">TeachMyAgent</a> <a href="#ref6">[6]</a>.</li>
                             </ul>`,
+            'referencesTitle': "Références",
+            'referencesText': `<ul class="mb-4">
+                                    <li id="ref1">[1] OpenAI, Ilge Akkaya, Marcin Andrychowicz, Maciek Chociej, Mateusz Litwin, Bob McGrew, Arthur Petron, Alex Paino, Matthias Plappert, Glenn Powell, Raphael Ribas, Jonas Schneider, Nikolas Tezak, Jerry Tworek, Peter Welinder, Lilian Weng, Qiming Yuan, Wojciech Zaremba, Lei Zhang:
+                                        Solving Rubik's Cube with a Robot Hand (2019). <a href="https://arxiv.org/abs/1910.07113">https://arxiv.org/abs/1910.07113</a></li>
+                                    <li id="ref2">[2] Silver, D., Huang, A., Maddison, C. et al. Mastering the game of Go with deep neural networks and tree search. Nature 529, 484–489 (2016). <a href="https://doi.org/10.1038/nature16961">https://doi.org/10.1038/nature16961</a></li>
+                                    <li id="ref3">[3] Portelas, R., Colas, C., Weng, L., Hofmann, K., & Oudeyer, P. Y. (2020). Automatic curriculum learning for deep rl: A short survey (2020). <a href="https://arxiv.org/abs/2003.04664">https://arxiv.org/abs/2003.04664</a></li>
+                                    <li id="ref4">[4] Haarnoja, T., Zhou, A., Abbeel, P., & Levine, S. (2018, July). Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor. <em>In International conference on machine learning</em> (pp. 1861-1870). PMLR <a href="https://arxiv.org/abs/1801.01290">https://arxiv.org/abs/1801.01290</a></li>
+                                    <li id="ref5">[5] Portelas, R., Colas, C., Hofmann, K., & Oudeyer, P. Y. (2020, May). Teacher algorithms for curriculum learning of deep rl in continuously parameterized environments. <em>In Conference on Robot Learning</em> (pp. 835-853). PMLR. <a href="https://arxiv.org/abs/1910.07224">https://arxiv.org/abs/1910.07224</a></li>
+                                    <li id="ref6">[6] Romac, C., Portelas, R., Hofmann, K., & Oudeyer, P. Y. (2021). TeachMyAgent: a Benchmark for Automatic Curriculum Learning in Deep RL. <a href="https://arxiv.org/abs/2103.09815">https://arxiv.org/abs/2103.09815</a></li>
+                                </ul>`,
 
         }
     }
