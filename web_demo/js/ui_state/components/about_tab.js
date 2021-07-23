@@ -46,5 +46,9 @@ export default class AboutTab extends Component {
         // Credits section
         this.element.querySelector('#credits-title').innerHTML = dict['creditsTitle'];
         this.element.querySelector('#credits-text').innerHTML = dict['creditsText'];
+
+        // References section
+        this.element.querySelector('#references-title').innerHTML = dict['referencesTitle'];
+        this.element.querySelector('#references-text').innerHTML = dict['referencesText'];
     }
 };

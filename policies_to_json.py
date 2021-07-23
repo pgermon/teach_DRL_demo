@@ -27,9 +27,17 @@ def get_seed(seed_path: Path):
     seed_entry = {}
     seed_entry["seed"] = re.findall('_s(\d+)$', seed_path.name)[0]
     seed_entry["path"] = str(seed_path)
+    seed_entry["name"] = get_seed_name(seed_path)
     
     return seed_entry
 
+def get_seed_name(seed_path: Path):
+    name_file = seed_path / 'name.txt'
+    if name_file.exists():
+        with name_file.open() as f:
+            name = f.readline()
+
+    return name.strip('\n')
 
 if __name__ == "__main__":
     policy_list = collect_policies(Path('policy_models'))
