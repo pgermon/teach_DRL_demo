@@ -10,7 +10,8 @@ You can easily add a new policy model for a specific morphology to visualize its
    ┃ ┃ ┣ 📜 variables.data-00000-of-00001  
    ┃ ┃ ┗ 📜 variables.index  
    ┃ ┣ 📜 model_info.plk  
-   ┃ ┗ 📜 saved_model.pb
+   ┃ ┗ 📜 saved_model.pb  
+   ┗ 📜 name.txt -- *contains the name of the policy*
 
 
 **2. Add the policy to the demo**  
@@ -26,15 +27,12 @@ You can easily add a new policy model for a specific morphology to visualize its
 
 Your policy model will now automatically appear inside the demo, in the list of agents available for the corresponding morpholgy.
 
-**3. Handle policy dependencies**  
-- Add a name to the list of names of the corresponding morphology in [`actions.js`].
-
-**4. [Optional] Set up for local launch**  
-   4.1. Convert your policy model to a web-friendly format
+**3. [Optional] Set up for local launch**  
+   3.1. Convert your policy model to a web-friendly format
  ```
  ls -d policy_models/<type>/<morphology>/<policy_folder>/ | xargs -I"{}" tensorflowjs_converter --input_format=tf_saved_model --saved_model_tags=serve --skip_op_check {}tf1_save web_demo/{}
  ```
-   4.2. Generate the list of policy models
+   3.2. Generate the list of policy models
 ```
 python3 policies_to_json.py
 ```

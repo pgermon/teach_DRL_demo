@@ -8,7 +8,6 @@ If the morphology to be added is of a new type, just create a new folder for thi
 Create appropriate folders in [`policy_models`] and follow the [`add_policy_model`] tutorial to add some policies for your new morphology.
 
 **3. Handle morphology dependencies in the code**
-- [`morphologies_list.js`]: Add a list of names for your morphology in the variable `seed_names`.
 - [`multi_agents_continous_parkour.js`]: Add a case to handle your morphology inside the `create_agent` function.   
 - [`draw_p5.js`]: Add a case to handle your morphology inside the `drawName`, `drawObservation` and `drawReward` functions.  
 - [`i18n.js`]: Add an entry with a title and a description for your morphology to the `morphologies` entry for all languages.
