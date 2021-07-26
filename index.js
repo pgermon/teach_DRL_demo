@@ -35,6 +35,8 @@ window.align_terrain = {
  * @param ground {Array} - List of points {x, y} composing the ground
  * @param ceiling {Array} - List of points {x, y} composing the ceiling
  * @param align {Object}
+ * @param zoom {number} - Zoom to apply to the environment
+ * @param scroll {{x: number, y:number}} - Scroll to apply to the environment
  */
 function init_game(cppn_input_vector, water_level, creepers_width, creepers_height, creepers_spacing,
               smoothing, creepers_type, ground, ceiling, align, zoom=null, scroll=null) {
@@ -608,13 +610,13 @@ function windowResized(){
     forbidden_canvas.resizeCanvas(RENDERING_VIEWER_W + SCROLL_X_MAX, RENDERING_VIEWER_H + 2 * SCROLL_Y_MAX);
 
     // Generates the terrain from the drawing
-    if(is_drawing()){
+    /*if(is_drawing()){
         window.generateTerrain(true);
     }
     // Re-initializes the environment
-    else{
+    else{*/
         window.init_default();
-    }
+    //}
 }
 
 window.downloadObjectAsJson = (exportObj, exportName) => {
