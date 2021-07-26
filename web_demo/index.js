@@ -611,7 +611,10 @@ function windowResized(){
 
     // Generates the terrain from the drawing
     if(is_drawing()){
-        window.generateTerrain(true);
+        window.refresh_drawing();
+        window.game.env.render();
+        image(drawing_canvas, 0, -SCROLL_Y_MAX + window.game.env.scroll[1]);
+        image(forbidden_canvas, 0, -SCROLL_Y_MAX + window.game.env.scroll[1]);
     }
     // Re-initializes the environment
     else{

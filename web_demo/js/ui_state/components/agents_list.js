@@ -34,7 +34,7 @@ export default class AgentsList extends Component {
                              
                     <!-- Text field of the name of the agent -->
                     <div class="form-group">
-                        <input name="agentNameArea" type="text" class="form-control w-75 mx-1" placeholder=${agent.name}>
+                        <input name="agentNameArea" type="text" class="form-control w-75 mx-1" placeholder="${agent.name}">
                     </div>
                     
                     <!-- Follow switch -->         

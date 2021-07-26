@@ -68,13 +68,36 @@ export default class MorphologiesList extends Component {
 
         // Adds all the compatible policies as options to the dropdown
         this.element.querySelectorAll('select[name="policies"]').forEach((span, index) => {
-            span.innerHTML = store.state.morphologies
+
+            // Dict that contains HTML code for each optgroup corresponding to each agent name
+            let seed_names = {};
+
+            store.state.morphologies
                 .filter(m => m.morphology == store.state.morphologies[index].morphology)
                 .flatMap(morphology => morphology.seeds)
                 .map((seedEntry, idx) => {
-                    return `<option value="${seedEntry.path}">${seedEntry.name}</option>`;
-                })
-                .join('');
+
+                    // Splits seed name between name and age
+                    let seed = seedEntry.name.split('/');
+                    let name = seed[0];
+                    let age = seed[1];
+
+                    // Adds options and optgroups
+                    if(seed_names.hasOwnProperty(name)){
+                        seed_names[name] += `<option value="${seedEntry.path}">${name + " (" + age + ")"}</option>`;
+
+                    }
+                    else {
+                        seed_names[name] = `<optgroup label=${name}>
+                                                <option value="${seedEntry.path}">${name + " (" + age + ")"}</option>`;
+                    }
+                });
+            let options = [];
+            for(let name in seed_names){
+                seed_names[name] += `</optgroup>`;
+                options.push(seed_names[name]);
+            }
+            span.innerHTML = options.join(``);
 
             // Selects a policy option
             span.addEventListener('input', evt => {
@@ -88,9 +111,17 @@ export default class MorphologiesList extends Component {
         this.element.querySelectorAll('button[name="addAgentButton"]').forEach((span, index) => {
             span.addEventListener('click', () => {
                 let morph = store.state.morphologies[index];
+                let seed = morph.seeds[store.state.currentSeedsIdx[morph.morphology]].name.split('/');
+                let name;
+                if(seed.length > 1){
+                    name = seed[0] + " (" + seed[1] + ")"
+                }
+                else {
+                    name = seed [0];
+                }
                 store.dispatch('addAgent', {
                     morphology: morph.morphology,
-                    name: morph.seeds[store.state.currentSeedsIdx[morph.morphology]].name,
+                    name: name,
                     path: morph.seeds[store.state.currentSeedsIdx[morph.morphology]].path,
                     init_pos: null
                 });
