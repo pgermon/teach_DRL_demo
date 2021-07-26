@@ -113,7 +113,10 @@ export default {
             ground: [],
             ceiling: []
         };
+
+        // Resets the simulation and deselects agent
         context.commit('resetSimulation', {keepPositions: true});
+        context.commit('selectAgent', -1);
     },
 
     /**
