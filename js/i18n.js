@@ -123,13 +123,19 @@ window.lang_dict = {
         'advancedOptions': {
             'renderingOptions': `<strong> Rendering Options </strong>`,
             'drawJoints': "Draw joints",
+            'drawJointsTooltip': "Joints are what bind the different bodies together. They also act as motors for the agents morphologies.",
             'drawLidars': "Draw lidars",
+            'drawLidarsTooltip': "Lidars are sensors which enable agents to detect nearby obstacles and water.",
             'drawNames': "Draw names",
+            'drawNamesTooltip': "Name of the agents.",
             'drawObservation': "Draw observations",
+            'drawObservationTooltip': "The observation is a partial view of the environment state at each step on which the agents rely to take an action.",
             'drawReward': "Draw rewards",
+            'drawRewardTooltip': "The reward is a value that indicates how good or bad the current state is, according to the objective of the agent.",
             'assetsTitle': `<strong> Assets </strong>`,
             'assetsText': "Here you can find several types of assets, which are objects that you can add to the simulation using the mouse.",
             'circle': `<i class="fas fa-circle"></i> Ball`,
+            'comingSoon': "More assets coming soon...",
         },
 
         'globalElements': {
@@ -396,13 +402,19 @@ window.lang_dict = {
         'advancedOptions': {
             'renderingOptions': `<strong> Options d'affichage </strong>`,
             'drawJoints': "Afficher les joints",
+            'drawJointsTooltip': "Les joints sont les liens qui attachent les différents objets physiques ensemble. Ils servent aussi de moteurs pour les morphologies des agents.",
             'drawLidars': "Afficher les lidars",
+            'drawLidarsTooltip': "Les lidars sont des capteurs qui permettent aux agents de détecter les obstacles et l'eau à proximité.",
             'drawNames': "Afficher les noms",
+            'drawNamesTooltip': "Nom des agents.",
             'drawObservation': "Afficher les observations",
+            'drawObservationTooltip': "L'observation d'un agent est une vue partielle de l'état actuel de l'environnement à chaque pas de temps, sur laquelle les agents s'appuient pour effectuer une action.",
             'drawReward': "Afficher les récompenses",
+            'drawRewardTooltip': "La récompense est une valeur qui indique la qualité de l'état actuel de l'environnement selon l'objectif que l'agent doit atteindre.",
             'assetsTitle': `<strong> Objets </strong>`,
             'assetsText': "Ici tu peux trouver plusieurs types d'objets que tu peux ajouter à la simulation avec la souris.",
             'circle': `<i class="fas fa-circle"></i> Boule`,
+            'comingSoon': "Plus d'objets à venir...",
         },
 
         'globalElements': {
@@ -453,7 +465,7 @@ window.lang_dict = {
                             L'idée principale est de <strong>récompenser ou punir</strong> un agent en fonction des actions qu'il effectue pour qu'il apprenne un comportement efficace pour atteindre un objectif.
                             <br>
                             Les approches d'<strong>AR</strong> sont généralement composées d'un <strong>agent</strong> qui évolue dans un <strong>monde</strong> ou <strong>environnement</strong>  et interagit avec.
-                            À chaque pas de temps, l'agent voit une <strong>observation</strong> de l'état actuel de l'environnement et décide d'effectuer une action.
+                            À chaque pas de temps, l'agent voit une <strong>observation</strong> partielle de l'état actuel de l'environnement et décide d'effectuer une action.
                             Chaque action effectuée par l'agent change l'état de l'environnement. L'agent reçoit également une <strong>récompense</strong> 
                             à chaque pas de temps, qui indique à quel point l'état actuel du monde est bon ou mauvais selon l'objectif que l'agent doit atteindre.
                         </p>

@@ -29,10 +29,26 @@ export default class AdvancedOptions extends Component {
         /* Rendering Options */
         this.element.querySelector('#renderingOptionsTitle').innerHTML = dict['renderingOptions'];
 
+
+        let drawJointsSwitch = this.element.querySelector('#drawJointsSwitch');
+        let drawLidarsSwitch = this.element.querySelector('#drawLidarsSwitch');
+        let drawNamesSwitch = this.element.querySelector('#drawNamesSwitch');
+        let drawObservationSwitch = this.element.querySelector('#drawObservationSwitch');
+        let drawRewardSwitch = this.element.querySelector('#drawRewardSwitch');
+
         // Checks the draw switches
-        this.element.querySelector('#drawJointsSwitch').checked = state.drawJoints;
-        this.element.querySelector('#drawLidarsSwitch').checked = state.drawLidars;
-        this.element.querySelector('#drawNamesSwitch').checked = state.drawNames;
+        drawJointsSwitch.checked = state.drawJoints;
+        drawLidarsSwitch.checked = state.drawLidars;
+        drawNamesSwitch.checked = state.drawNames;
+        drawObservationSwitch.checked = state.drawObservation;
+        drawRewardSwitch.checked = state.drawReward;
+
+        // Tooltips
+        drawJointsSwitch.title = dict['drawJointsTooltip'];
+        drawLidarsSwitch.title = dict['drawLidarsTooltip'];
+        drawNamesSwitch.title = dict['drawNamesTooltip'];
+        drawObservationSwitch.title = dict['drawObservationTooltip'];
+        drawRewardSwitch.title = dict['drawRewardTooltip'];
 
         // Switches labels
         this.element.querySelector('#drawJointsLabel').innerText = dict['drawJoints'];
@@ -45,6 +61,7 @@ export default class AdvancedOptions extends Component {
 
         this.element.querySelector('#assetsTitle').innerHTML = dict['assetsTitle'];
         this.element.querySelector('#assetsText').innerText = dict['assetsText'];
+        this.element.querySelector('#comingSoon').innerText = dict['comingSoon'];
 
         // Renders the assets buttons
         let circleAssetButton = this.element.querySelector('#circleAssetButton');
@@ -55,5 +72,12 @@ export default class AdvancedOptions extends Component {
         else{
             circleAssetButton.className = "btn btn-outline-asset";
         }
+
+        /* Initializes tooltips */
+        this.element.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el, index) => {
+            return new bootstrap.Tooltip(el, {
+                trigger: 'hover'
+            });
+        });
     }
 };

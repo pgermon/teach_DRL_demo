@@ -72,8 +72,12 @@
     <div class="container-fluid">
 
         <div class="row justify-content-md-left g-2">
-            <div class="col-9" id="canvas-and-main-buttons">
+            <div class="col-12 col-md-9 " id="canvas-and-main-buttons">
+
+                <!-- Canvas -->
                 <div id="canvas_container"></div>
+
+                <!-- Main buttons row -->
                 <div id="mainButtons" class="row justify-content-center">
                     <div class="col-auto py-2 px-1">
                         <button id="runButton" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Run the simulation"><i class="fas fa-play"></i></button>
@@ -83,16 +87,17 @@
                     </div>
 
                     <div class="col-auto py-2 px-1">
-                    <span data-toggle="modal" data-target="#saveEnvModal">
-                        <button id="saveEnvButton" class="btn btn-primary mx-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save the current environment">
-                            <i class="far fa-save fa-lg"></i>
-                        </button>
-                    </span>
-
+                        <span data-toggle="modal" data-target="#saveEnvModal">
+                            <button id="saveEnvButton" class="btn btn-primary mx-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save the current environment">
+                                <i class="far fa-save fa-lg"></i>
+                            </button>
+                        </span>
                     </div>
                 </div>
             </div>
-            <div id="agents_list_container" class="col border border-secondary rounded">
+
+            <!-- List of running agents -->
+            <div id="agents_list_container" class="col-12 col-md border border-secondary rounded">
                 <h1 class="has-text-centered my-2" id="agents_list_title"><strong> List of running agents </strong></h1>
                 <ol class="list-group" id="agents_list"></ol>
             </div>
@@ -381,23 +386,23 @@
                                 <h1 id="renderingOptionsTitle" class="has-text-centered my-2"><strong> Rendering Options </strong></h1>
                                 <div id="drawSelectors" class="mx-5 my-2">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="drawJointsSwitch">
+                                        <input class="form-check-input" type="checkbox" id="drawJointsSwitch" data-bs-toggle="tooltip" title="Draw joints">
                                         <label id="drawJointsLabel" class="form-check-label" for="drawJointsSwitch">Draw joints</label>
                                     </div>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="drawLidarsSwitch">
+                                        <input class="form-check-input" type="checkbox" id="drawLidarsSwitch" data-bs-toggle="tooltip" title="Draw lidars">
                                         <label id="drawLidarsLabel" class="form-check-label" for="drawLidarsSwitch">Draw lidars</label>
                                     </div>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="drawNamesSwitch">
+                                        <input class="form-check-input" type="checkbox" id="drawNamesSwitch" data-bs-toggle="tooltip" title="Draw names">
                                         <label id="drawNamesLabel" class="form-check-label" for="drawNamesSwitch">Draw names</label>
                                     </div>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="drawObservationSwitch">
+                                        <input class="form-check-input" type="checkbox" id="drawObservationSwitch" data-bs-toggle="tooltip" title="Draw observation">
                                         <label id="drawObservationLabel" class="form-check-label" for="drawObservationSwitch">Draw observations</label>
                                     </div>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="drawRewardSwitch">
+                                        <input class="form-check-input" type="checkbox" id="drawRewardSwitch" data-bs-toggle="tooltip" title="Draw rewards">
                                         <label id="drawRewardLabel" class="form-check-label" for="drawRewardSwitch">Draw rewards</label>
                                     </div>
                                 </div>
@@ -414,7 +419,7 @@
                                 </div>
 
                                 <button id="circleAssetButton" class="btn btn-outline-asset mx-3"><i class="fas fa-circle"></i> Circle </button>
-                                <span class="mx-3">More assets coming soon...</span>
+                                <span id="comingSoon" class="mx-3">More assets coming soon...</span>
                             </div>
                         </div>
                     </div>

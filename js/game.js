@@ -118,7 +118,7 @@ class Game {
 
         // Keeps the previous zoom and scroll
         window.game.env.set_zoom(zoom);
-        window.game.env.set_scroll(window.agent_selected, scroll[0], scroll[1]);
+        window.game.env.set_scroll(null, scroll[0], scroll[1]);
         this.env.render();
     }
 
