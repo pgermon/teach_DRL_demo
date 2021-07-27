@@ -431,6 +431,14 @@ window.delete_agent = (agent) => {
 }
 
 /**
+ * Returns the current language.
+ * @return {string}
+ */
+window.get_language = () => {
+    return store.state.language;
+}
+
+/**
  * Sets up and starts language selection with IntroJs.
  */
 window.langIntroSetUp = () => {

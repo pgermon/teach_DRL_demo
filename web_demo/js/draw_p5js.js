@@ -225,7 +225,8 @@ function drawName(agent, scale){
     else if(agent.morphology == "fish"){
         y_pos = pos.y + agent.agent_body.AGENT_HEIGHT * 2;
     }
-    text(agent.name, x_pos, RENDERING_VIEWER_H - y_pos);
+    let age = agent.age == "adult" ? "" : " (" + window.lang_dict[window.get_language()]['morphologies'][agent.age] + ")";
+    text(agent.name + age, x_pos, RENDERING_VIEWER_H - y_pos);
 }
 
 /**

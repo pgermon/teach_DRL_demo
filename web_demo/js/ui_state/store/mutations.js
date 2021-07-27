@@ -155,6 +155,7 @@ export default {
             policies: state.agents.map(a => {
                 return {
                     name: a.name,
+                    age: a.age,
                     path: a.path
                 };
             }),
@@ -199,13 +200,13 @@ export default {
     /**
      * Adds the given agent to the environment and renders it.
      * @param state {Object} - UI state
-     * @param payload {{morphology: string, name: string, path: string, init_pos: {x: number, y: number}}}
+     * @param payload {{morphology: string, name: string, age: string, path: string, init_pos: {x: number, y: number}}}
      * @return {Object} - UI state
      */
     addAgent(state, payload) {
         state.agents.push(payload);
         if(window.game != null){
-            window.game.env.add_agent(payload.morphology, {name: payload.name, path: payload.path}, payload.init_pos);
+            window.game.env.add_agent(payload.morphology, {name: payload.name, age: payload.age, path: payload.path}, payload.init_pos);
             window.game.env.render();
         }
         return state;

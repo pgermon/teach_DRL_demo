@@ -84,12 +84,12 @@ export default class MorphologiesList extends Component {
 
                     // Adds options and optgroups
                     if(seed_names.hasOwnProperty(name)){
-                        seed_names[name] += `<option value="${seedEntry.path}">${name + " (" + age + ")"}</option>`;
+                        seed_names[name] += `<option value="${seedEntry.path}">${name + " (" + dict[age] + ")"}</option>`;
 
                     }
                     else {
                         seed_names[name] = `<optgroup label=${name}>
-                                                <option value="${seedEntry.path}">${name + " (" + age + ")"}</option>`;
+                                                <option value="${seedEntry.path}">${name + " (" + dict[age] + ")"}</option>`;
                     }
                 });
             let options = [];
@@ -112,16 +112,10 @@ export default class MorphologiesList extends Component {
             span.addEventListener('click', () => {
                 let morph = store.state.morphologies[index];
                 let seed = morph.seeds[store.state.currentSeedsIdx[morph.morphology]].name.split('/');
-                let name;
-                if(seed.length > 1){
-                    name = seed[0] + " (" + seed[1] + ")"
-                }
-                else {
-                    name = seed [0];
-                }
                 store.dispatch('addAgent', {
                     morphology: morph.morphology,
-                    name: name,
+                    name: seed[0],
+                    age: seed[1],
                     path: morph.seeds[store.state.currentSeedsIdx[morph.morphology]].path,
                     init_pos: null
                 });

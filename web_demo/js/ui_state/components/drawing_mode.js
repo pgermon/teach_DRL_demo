@@ -21,16 +21,17 @@ export default class DrawingMode extends Component {
      */
     render() {
         const state = store.state.drawingModeState;
-        let drawingText = this.element.querySelector('#drawingText');
+        const dict = window.lang_dict[store.state.language]['drawingMode'];
+
         let drawGroundButton = this.element.querySelector('#drawGroundButton');
         let drawCeilingButton = this.element.querySelector('#drawCeilingButton');
         let eraseButton = this.element.querySelector('#eraseButton');
         let clearButton = this.element.querySelector('#clearButton');
         let generateTerrainButton = this.element.querySelector('#generateTerrainButton');
 
-        let dict = window.lang_dict[store.state.language]['drawingMode'];
+        this.element.querySelector('#drawingIntro').innerHTML = dict['intro'];
+        this.element.querySelector('#drawingText').innerHTML = dict['text'];
 
-        drawingText.innerHTML = dict['text'];
         drawGroundButton.innerHTML = `<i class="fas fa-pencil-alt"></i> ${dict['ground']}`;
         drawCeilingButton.innerHTML = `<i class="fas fa-pencil-alt"></i> ${dict['ceiling']}`;
         eraseButton.innerHTML = `<i class="fas fa-eraser"></i> ${dict['erase']}`;
