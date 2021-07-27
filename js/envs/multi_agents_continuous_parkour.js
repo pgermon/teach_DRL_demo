@@ -91,7 +91,7 @@ class MultiAgentsContinuousParkour {
     /**
      * Creates an agent with the given parameters.
      * @param morphology {string} - Name of the morphology
-     * @param policy {{name: string, path: string}} - Name and path of the policy model
+     * @param policy {{name: string, age: string, path: string}} - Name and path of the policy model
      * @param init_pos {{x: number, y: number}} - Initial position of the agent
      */
     create_agent(morphology, policy, init_pos){
@@ -99,6 +99,7 @@ class MultiAgentsContinuousParkour {
         let agent = {
             id: this.agents.length,
             name: policy.name,
+            age: policy.age,
             is_selected: false,
             morphology: morphology,
             policy: policy,

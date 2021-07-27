@@ -20,8 +20,10 @@ export default class AgentsList extends Component {
      */
     render() {
         let dict = window.lang_dict[store.state.language]['agentsList'];
+        let morph_dict = window.lang_dict[store.state.language]['morphologies'];
         this.element.querySelector('#agents_list_title').innerHTML = `<strong>${dict['title']}</strong>`;
         this.element.querySelector('#agents_list').innerHTML = store.state.agents.map(agent => {
+            let age = agent.age == "adult" ? "" : " (" + window.lang_dict[window.get_language()]['morphologies'][agent.age] + ")";
             // Creates a list item for each agent
             return `<li name="agent-list-item" class="list-group-item d-flex justify-content-between align-items-center px-0 py-1">
 
@@ -30,11 +32,11 @@ export default class AgentsList extends Component {
                              alt=${agent.morphology + "_thumbnail"}
                              width="8%"
                              class="mx-1"
-                             data-bs-toggle="tooltip" title=${window.lang_dict[store.state.language]['morphologies'][agent.morphology]['title']}>
+                             data-bs-toggle="tooltip" title=${morph_dict[agent.morphology]['title']}>
                              
                     <!-- Text field of the name of the agent -->
                     <div class="form-group">
-                        <input name="agentNameArea" type="text" class="form-control w-75 mx-1" placeholder="${agent.name}">
+                        <input name="agentNameArea" type="text" class="form-control w-75 mx-1" placeholder="${agent.name + age}">
                     </div>
                     
                     <!-- Follow switch -->         

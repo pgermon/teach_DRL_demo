@@ -216,13 +216,10 @@
                                     <div class="tab-pane fade show active" id="draw-tab" role="tabpanel" aria-labelledby="draw-tab-btn">
                                         <!-- Draw Yourself! tab pane -->
                                         <div class="mx-4 mt-2">
-                                            <p id="drawingText" class="has-text-centered">
-                                                Here you can draw your own parkour! Select the <strong style="color: green"><i class="fas fa-pencil-alt"></i> Ground</strong> or <strong style="color: dimgrey"><i class="fas fa-pencil-alt"></i> Ceiling</strong> button to start drawing the corresponding terrain shape with the mouse.<br>
-                                                Be careful not to draw more than one line at different heights if you want the result to be optimal.
-                                                You can use the <strong style="color: #FFC700"><i class="fas fa-eraser"></i> Erase</strong> button if you need to correct your drawing or the <strong style="color: red"><i class="fas fa-times"></i> Clear</strong> one to clear all your drawing.<br>
-                                                When you are satisfied with the result, just click the <strong style="color: green">Generate Terrain</strong> button.
+                                            <p id="drawingIntro" class="has-text-centered">
+                                                Here you can draw your own parkour!
                                             </p>
-                                            <div id="drawingMode" class="row justify-content-md-center g-2 mt-1">
+                                            <div id="drawingMode" class="row justify-content-md-center g-2 my-2">
                                                 <div class="col-auto">
                                                     <button id="drawGroundButton" class="btn btn-outline-success disabled"><i class="fas fa-pencil-alt"></i> Ground </button>
                                                 </div>
@@ -240,6 +237,13 @@
                                                     <button id="generateTerrainButton" class="btn btn-success disabled"> Generate Terrain </button>
                                                 </div>
                                             </div>
+
+                                            <p id="drawingText" class="has-text-centered my-2">
+                                                Select the <strong style="color: green"><i class="fas fa-pencil-alt"></i> Ground</strong> or <strong style="color: dimgrey"><i class="fas fa-pencil-alt"></i> Ceiling</strong> button to start drawing the corresponding terrain shape with the mouse.<br>
+                                                Be careful not to draw more than one line at different heights if you want the result to be optimal.
+                                                You can use the <strong style="color: #FFC700"><i class="fas fa-eraser"></i> Erase</strong> button if you need to correct your drawing or the <strong style="color: red"><i class="fas fa-times"></i> Clear</strong> one to clear all your drawing.<br>
+                                                When you are satisfied with the result, just click the <strong style="color: green">Generate Terrain</strong> button.
+                                            </p>
                                         </div>
                                     </div>
 

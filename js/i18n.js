@@ -55,8 +55,8 @@ window.lang_dict = {
         },
 
         'drawingMode': {
-            'text': `Here you can draw your own parkour! <br>
-                    Select the <strong style="color: green"><i class="fas fa-pencil-alt"></i> Ground</strong> or <strong style="color: dimgrey"><i class="fas fa-pencil-alt"></i> Ceiling</strong> button to start drawing the corresponding terrain shape with the mouse.<br>
+            'intro': 'Here you can draw your own parkour!',
+            'text': `Select the <strong style="color: green"><i class="fas fa-pencil-alt"></i> Ground</strong> or <strong style="color: dimgrey"><i class="fas fa-pencil-alt"></i> Ceiling</strong> button to start drawing the corresponding terrain shape with the mouse.<br>
                     Be careful not to draw more than one line at different heights if you want the result to be optimal. <br>
                     You can use the <strong style="color: #FFC700"><i class="fas fa-eraser"></i> Erase</strong> button if you need to correct your drawing or the <strong style="color: red"><i class="fas fa-times"></i> Clear</strong> one to clear all your drawing.<br>
                     When you are satisfied with the result, just click the <strong style="color: green">Generate Terrain</strong> button.`,
@@ -90,6 +90,9 @@ window.lang_dict = {
             'text': "Here you can add an agent to the simulation with the morphology of your choice.",
             'policySelectTooltip': "Select an agent",
             'addBtnTooltip': "Add the agent to the simulation",
+            'baby': "baby",
+            'teenager': "teenager",
+            'adult': "adult",
             'bipedal': {
                 'title': "Bipedal",
                 'description': "This morphology is composed of a head and two legs which allow it to walk on the floor."
@@ -334,8 +337,8 @@ window.lang_dict = {
         },
 
         'drawingMode': {
-            'text': `Ici tu peux dessiner ton propre parkour ! <br>
-                    Selectionne les boutons <strong style="color: green"><i class="fas fa-pencil-alt"></i> Sol</strong> ou <strong style="color: dimgrey"><i class="fas fa-pencil-alt"></i> Plafond</strong> pour commencer à dessiner l'élément du terrain correspondant avec la souris.<br>
+            'intro': 'Ici tu peux dessiner ton propre parkour !',
+            'text': `Selectionne les boutons <strong style="color: green"><i class="fas fa-pencil-alt"></i> Sol</strong> ou <strong style="color: dimgrey"><i class="fas fa-pencil-alt"></i> Plafond</strong> pour commencer à dessiner l'élément du terrain correspondant avec la souris.<br>
                     Fais attention à ne pas superposer plusieurs traits à différentes hauteurs pour obtenir un résultat optimal. <br>
                     Tu peux utiliser le bouton <strong style="color: #FFC700"><i class="fas fa-eraser"></i> Gommer</strong> pour corriger ton dessin ou le bouton <strong style="color: red"><i class="fas fa-times"></i> Effacer</strong> pour tout effacer.<br>
                     Une fois que tu es satisfait du résultat, clique sur le bouton <strong style="color: green"> Générer le terrain</strong>.`,
@@ -369,6 +372,9 @@ window.lang_dict = {
             'text': "Ici tu peux ajouter un agent à la simulation avec la morphologie de ton choix.",
             'policySelectTooltip': "Sélectionner un agent",
             'addBtnTooltip': "Ajouter l'agent à la simulation",
+            'baby': "bébé",
+            'teenager': "adolescent",
+            'adult': "adulte",
             'bipedal': {
                 'title': "Bipède",
                 'description': "Cette morphologie est composée d'une tête et de deux jambes qui lui permettent de marcher sur le sol."

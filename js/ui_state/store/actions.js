@@ -52,6 +52,7 @@ export default {
             context.commit('addAgent', {
                 morphology: agent.morphology,
                 name: agent.name,
+                age: agent.age,
                 path: agent.path,
                 init_pos: agent.init_pos
             });
@@ -392,5 +393,7 @@ export default {
             // Recreates the hints
             window.introTour.addHints();
         }
+
+        window.game.env.render();
     }
 };
