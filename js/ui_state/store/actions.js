@@ -329,7 +329,7 @@ export default {
      * @param context {Store}
      * @param payload {}
      */
-    clickOutsideCanvas(context, payload){
+    deselectDrawingButtons(context, payload){
         context.commit('deselectDrawingButtons', payload);
     },
 

@@ -352,6 +352,7 @@ class MultiAgentsContinuousParkour {
         }
 
         // Updates Box2D world
+        //this.world.Step(1.0 / FPS, 45, 15);
         this.world.Step(1.0 / FPS, 6 * 30, 2 * 30);
 
         for(let agent of this.agents) {
@@ -601,8 +602,8 @@ class MultiAgentsContinuousParkour {
         this.terrain_ceiling = [];
 
         // Smooths ground and ceiling by removing points that are too close in order to reduce the number of bodies created
-        let ground = smoothTerrainFiler(this.ground, TERRAIN_STEP * 3/4);
-        let ceiling = smoothTerrainFiler(this.ceiling, TERRAIN_STEP * 3/4);
+        let ground = smoothTerrainFiler(this.ground, TERRAIN_STEP);
+        let ceiling = smoothTerrainFiler(this.ceiling, TERRAIN_STEP);
 
         // Creates startpad
         for(let i = 0; i < INITIAL_TERRAIN_STARTPAD; i++){

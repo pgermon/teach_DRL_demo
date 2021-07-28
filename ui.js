@@ -402,8 +402,8 @@ window.loadDefaultEnv = () => {
 /**
  * Handles mouse clicks outside the canvas.
  */
-window.clickOutsideCanvas = () => {
-    store.dispatch('clickOutsideCanvas', {});
+window.deselectDrawingButtons = () => {
+    store.dispatch('deselectDrawingButtons', {});
 }
 
 /**

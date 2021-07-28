@@ -336,6 +336,9 @@ export default {
      */
     drawGround(state, payload){
         state.drawingModeState.drawing_ground = payload;
+        state.drawingModeState.drawing_ceiling = false;
+        state.drawingModeState.erasing = false;
+        state.advancedOptionsState.assets.circle = false;
         return state;
     },
 
@@ -346,7 +349,10 @@ export default {
      * @return {Object} - UI state
      */
     drawCeiling(state, payload){
+        state.drawingModeState.drawing_ground = false;
         state.drawingModeState.drawing_ceiling = payload;
+        state.drawingModeState.erasing = false;
+        state.advancedOptionsState.assets.circle = false;
         return state;
     },
 
@@ -357,7 +363,10 @@ export default {
      * @return {Object} - UI state
      */
     erase(state, payload){
+        state.drawingModeState.drawing_ground = false;
+        state.drawingModeState.drawing_ceiling = false;
         state.drawingModeState.erasing = payload;
+        state.advancedOptionsState.assets.circle = false;
         return state;
     },
 
@@ -368,6 +377,9 @@ export default {
      * @return {Object} - UI state
      */
     drawCircle(state, payload){
+        state.drawingModeState.drawing_ground = false;
+        state.drawingModeState.drawing_ceiling = false;
+        state.drawingModeState.erasing = false;
         state.advancedOptionsState.assets.circle = payload;
         return state;
     },

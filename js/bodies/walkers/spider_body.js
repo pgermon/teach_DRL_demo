@@ -88,14 +88,13 @@ class SpiderBody extends WalkerAbstractBody {
         // Legs bodies and joints
         let legs_coef = [];
         for(let i = 0; i < this.nb_pairs_of_legs; i++){
-            legs_coef.push(-1, +1);
+            legs_coef.push(+1, -1);
         }
         for(let i of legs_coef){
 
             // First part of the leg
             let upper_leg_angle = 0.25 * Math.PI * i;
             let upper_leg_x_distance = Math.sin(upper_leg_angle) * this.LEG_H / 2;
-            // TODO : check +cos or -cos
             let upper_leg_y_distance = Math.cos(upper_leg_angle) * this.LEG_H / 2;
             let upper_leg_x = init_x - i * MAIN_BODY_BOTTOM_WIDTH / this.SCALE / 2 - upper_leg_x_distance;
             let upper_leg_y = init_y + upper_leg_y_distance - this.LEG_DOWN;
