@@ -277,7 +277,7 @@ window.lang_dict = {
                                     <li id="ref3">[3] Portelas, R., Colas, C., Weng, L., Hofmann, K., & Oudeyer, P. Y. (2020). Automatic curriculum learning for deep rl: A short survey (2020). <a href="https://arxiv.org/abs/2003.04664">https://arxiv.org/abs/2003.04664</a></li>
                                     <li id="ref4">[4] Haarnoja, T., Zhou, A., Abbeel, P., & Levine, S. (2018, July). Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor. <em>In International conference on machine learning</em> (pp. 1861-1870). PMLR <a href="https://arxiv.org/abs/1801.01290">https://arxiv.org/abs/1801.01290</a></li>
                                     <li id="ref5">[5] Portelas, R., Colas, C., Hofmann, K., & Oudeyer, P. Y. (2020, May). Teacher algorithms for curriculum learning of deep rl in continuously parameterized environments. <em>In Conference on Robot Learning</em> (pp. 835-853). PMLR. <a href="https://arxiv.org/abs/1910.07224">https://arxiv.org/abs/1910.07224</a></li>
-                                    <li id="ref6">[6] Romac, C., Portelas, R., Hofmann, K., & Oudeyer, P. Y. (2021). TeachMyAgent: a Benchmark for Automatic Curriculum Learning in Deep RL. <a href="https://arxiv.org/abs/2103.09815">https://arxiv.org/abs/2103.09815</a></li>
+                                    <li id="ref6">[6] Romac, C., Portelas, R., Hofmann, K., & Oudeyer, P.-Y. (2021). TeachMyAgent: A Benchmark for Automatic Curriculum Learning in Deep RL. <em>International Conference on Machine Learning</em>, 9052–9063. <a href="https://arxiv.org/abs/2103.09815">https://arxiv.org/abs/2103.09815</a></li>
                                 </ul>`,
 
         }
@@ -569,7 +569,7 @@ window.lang_dict = {
                                     <li id="ref3">[3] Portelas, R., Colas, C., Weng, L., Hofmann, K., & Oudeyer, P. Y. (2020). Automatic curriculum learning for deep rl: A short survey (2020). <a href="https://arxiv.org/abs/2003.04664">https://arxiv.org/abs/2003.04664</a></li>
                                     <li id="ref4">[4] Haarnoja, T., Zhou, A., Abbeel, P., & Levine, S. (2018, July). Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor. <em>In International conference on machine learning</em> (pp. 1861-1870). PMLR <a href="https://arxiv.org/abs/1801.01290">https://arxiv.org/abs/1801.01290</a></li>
                                     <li id="ref5">[5] Portelas, R., Colas, C., Hofmann, K., & Oudeyer, P. Y. (2020, May). Teacher algorithms for curriculum learning of deep rl in continuously parameterized environments. <em>In Conference on Robot Learning</em> (pp. 835-853). PMLR. <a href="https://arxiv.org/abs/1910.07224">https://arxiv.org/abs/1910.07224</a></li>
-                                    <li id="ref6">[6] Romac, C., Portelas, R., Hofmann, K., & Oudeyer, P. Y. (2021). TeachMyAgent: a Benchmark for Automatic Curriculum Learning in Deep RL. <a href="https://arxiv.org/abs/2103.09815">https://arxiv.org/abs/2103.09815</a></li>
+                                    <li id="ref6">[6] Romac, C., Portelas, R., Hofmann, K., & Oudeyer, P.-Y. (2021). TeachMyAgent: A Benchmark for Automatic Curriculum Learning in Deep RL. <em>International Conference on Machine Learning</em>, 9052–9063. <a href="https://arxiv.org/abs/2103.09815">https://arxiv.org/abs/2103.09815</a></li>
                                 </ul>`,
 
         }

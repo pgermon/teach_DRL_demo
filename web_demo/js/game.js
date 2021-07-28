@@ -78,7 +78,7 @@ class Game {
 
         // Loads the policy for each agent before launching the simulation
         for(let agent of window.game.env.agents){
-            if(agent.morphology != "spider" && agent.policy.path != null){
+            if(agent.policy.path != null){
                 agent.model = await tf.loadGraphModel(agent.policy.path + '/model.json');
             }
             else{

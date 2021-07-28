@@ -260,12 +260,27 @@ function mousePressed(){
             window.game.env.render();
         }
     }
-
-    // Handles clicks outside canvas when drawing (deselect drawing buttons)
-    else if(window.is_drawing() || window.is_drawing_circle()){
-        window.clickOutsideCanvas();
-    }
 }
+
+// Handles clicks outside canvas when drawing (deselect drawing buttons)
+document.addEventListener('mousedown', (event) => {
+    if(window.is_drawing() || window.is_drawing_circle()){
+        let canvas_id = "#" + window.canvas.canvas.id;
+
+        // Elements that can be clicked without deselecting drawing buttons: canvas + ground, ceiling, erase buttons
+        let authorized_elements = [
+            document.querySelector(canvas_id),
+            document.querySelector('#drawGroundButton'),
+            document.querySelector('#drawCeilingButton'),
+            document.querySelector('#eraseButton')
+        ];
+
+        // If
+        if(authorized_elements.indexOf(event.target) == -1) {
+            window.deselectDrawingButtons();
+        }
+    }
+});
 
 /**
  * Handles actions when mouse is dragged.
