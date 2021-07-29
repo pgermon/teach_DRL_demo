@@ -353,7 +353,7 @@ class MultiAgentsContinuousParkour {
 
         // Updates Box2D world
         //this.world.Step(1.0 / FPS, 45, 15);
-        this.world.Step(1.0 / FPS, 6 * 30, 2 * 30);
+        this.world.Step(1.0 / FPS, 3 * 30, 1 * 30);
 
         for(let agent of this.agents) {
             // Creates joints between sensors ready to grasp if collision with graspable area was detected

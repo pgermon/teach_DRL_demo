@@ -173,7 +173,7 @@ window.lang_dict = {
 
                             <p class="mb-2">
                                 In this demo, all the agents have been <strong>autonomously trained</strong> to learn an efficient behaviour to navigate through a 2D environment,
-                                combining different methods so that they can be able to <strong>generalize their behaviour to never-seen-before situations</strong>.
+                                combining a DRL algorithm and a teacher algorithm (see <a href="#acl-title">below</a>) so that they can be able to <strong>generalize their behaviour to never-seen-before situations</strong>.
                             </p>
 
                             <p class="mb-4">
@@ -208,9 +208,9 @@ window.lang_dict = {
                         </div>`,
             'drlTitle': "Deep RL",
             'drlText': `<p class="mb-2">
-                            In order to remember and improve the actions taken by the agent, DRL algorithms utilizes <strong>artificial neural networks</strong>.
+                            In order to remember and improve the actions taken by the agent, DRL algorithms utilize <strong>artificial neural networks</strong>.
                             With <strong>training</strong>, these neural networks are able to <strong>learn to predict an optimal action to take at each step from the observation received</strong>,
-                            and relying on all the observations and rewards previously received after each action during training.
+                            thanks to all the observations and rewards previously received after each action during training.
                             Thanks to this, DRL algorithms are able to produce behaviours that are very effective in situations similar to those they were trained on.
                         </p>
 
@@ -457,7 +457,7 @@ window.lang_dict = {
                             <p class="mb-2">
                                 Dans cette démo, tous les agents ont été <strong>entraînés de manière autonome</strong> dans le but d'apprendre un 
                                 comportement efficace pour traverser un environnement 2D.
-                                Ils ont été entraînés grâce à la combinaison de différentes méthodes d'apprentissage pour qu'ils soient capables 
+                                Ils ont été entraînés en combinant un algorithme d'ARP et un algorithme enseignant (voir <a href="#acl-title">ci-dessous</a>) pour qu'ils soient capables 
                                 de <strong>généraliser leur comportement à des situations inédites</strong>.
                             </p>
 
@@ -492,10 +492,10 @@ window.lang_dict = {
                         </div>`,
             'drlTitle': "Apprentissage par renforcement profond",
             'drlText': `<p class="mb-2">
-                            Pour se souvenir des actions effectuées par les agents et les améliorer, les algorithmes d'<strong>ARP</strong> utilisent 
+                            Pour améliorer continuellement les actions effectuées par les agents, les algorithmes d'<strong>ARP</strong> utilisent 
                             des <strong>réseaux de neurones artificiels</strong>.
                             Avec de l'<strong>entraînement</strong>, ces réseaux de neurones sont capables d'<strong>apprendre à prédire une action optimale 
-                            à effectuer à chaque étape à partir de l'observation reçue</strong>,et en s'appuyant sur toutes les 
+                            à effectuer à chaque étape à partir de l'observation reçue</strong> grâce à toutes les 
                             observations et les récompenses préalablement reçues après chaque action effectuée au cours de l'entraînement.
                             Grâce à cela, les algorithmes d'<strong>ARP</strong> sont capables de produire des comportements très efficaces 
                             dans des situations similaires à celles sur lesquelles ils ont été entraînés.
