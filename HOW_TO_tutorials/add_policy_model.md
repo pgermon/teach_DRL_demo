@@ -11,8 +11,9 @@ You can easily add a new policy model for a specific morphology to visualize its
    ┃ ┃ ┗ 📜 variables.index  
    ┃ ┣ 📜 model_info.plk  
    ┃ ┗ 📜 saved_model.pb  
-   ┗ 📜 name.txt -- *contains the name of the policy*
+   ┗ 📜 name.txt -- *contains the name and age of the policy*
 
+The name and age of the policy in `name.txt` must be separated by a `/` and the age must be "adult", "teenager" or "baby".
 
 **2. Add the policy to the demo**  
    Then you just need to add this `policy_folder` to the corresponding **morphology folder** in [`policy_models`] among the following:  
