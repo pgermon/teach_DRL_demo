@@ -318,7 +318,7 @@ function drawObservation(agent, scale){
     let angle = head.GetAngle();
     let length = 2 * agent.agent_body.AGENT_WIDTH;
     if(agent.morphology == "spider"){
-        length = agent.agent_body.AGENT_WIDTH;
+        length = agent.agent_body.AGENT_WIDTH / 2;
     }
     let vertices = [
         [pos.x - length * Math.cos(angle), pos.y - length * Math.sin(angle)],
@@ -386,21 +386,23 @@ function drawReward(agent, scale){
     // Text reward
     if(window.game.rewards.length > 0){
 
+        let dict = window.lang_dict[window.get_language()]['advancedOptions'];
+
         let pos = agent.agent_body.reference_head_object.GetPosition();
 
         let x_pos;
         let y_pos;
         if(agent.morphology == "bipedal"){
-            x_pos = pos.x + 5 * agent.agent_body.AGENT_WIDTH;
-            y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/2;
+            x_pos = pos.x + agent.agent_body.AGENT_WIDTH * 3/2;
+            y_pos = pos.y + agent.agent_body.AGENT_HEIGHT;
         }
         else if(agent.morphology == "spider"){
-            x_pos = pos.x + 2 * agent.agent_body.AGENT_WIDTH;
-            y_pos = pos.y + agent.agent_body.AGENT_HEIGHT/2;
+            x_pos = pos.x + agent.agent_body.AGENT_WIDTH / 2;
+            y_pos = pos.y + agent.agent_body.AGENT_HEIGHT * 3/2;
         }
         else if(agent.morphology == "chimpanzee"){
-            x_pos = pos.x + 7 * agent.agent_body.AGENT_WIDTH;
-            y_pos = pos.y - agent.agent_body.AGENT_HEIGHT/2;
+            x_pos = pos.x + 8 * agent.agent_body.AGENT_WIDTH;
+            y_pos = pos.y - agent.agent_body.AGENT_HEIGHT;
         }
         else if(agent.morphology == "fish"){
             x_pos = pos.x + 9 * agent.agent_body.AGENT_WIDTH;
@@ -411,8 +413,8 @@ function drawReward(agent, scale){
         fill(0);
         textSize(20/ scale);
         textAlign(RIGHT);
-        text("Step reward = ", x_pos, RENDERING_VIEWER_H - y_pos);
-        text("Total reward = ", x_pos, RENDERING_VIEWER_H - (y_pos - 1));
+        text(dict['stepReward'] + " = ", x_pos, RENDERING_VIEWER_H - y_pos);
+        text(dict['totalReward'] + " = ", x_pos, RENDERING_VIEWER_H - (y_pos - 1));
 
         let reward = window.game.rewards[window.game.rewards.length - 1][agent.id].toPrecision(3);
         if(reward > 0.35){
