@@ -112,7 +112,7 @@ window.lang_dict = {
         },
 
         'envsSets': {
-            'baseSetText': "To begin you can select one of the following environments to load it into the simulation.",
+            'baseSetText': `To begin you can select one of the following environments to load it into the simulation, and then run it by clicking the <span style="color: green"><i class="fas fa-play"></i></span> button.`,
             'customSetText': `In this section you can store your own custom environments by saving them thanks to the <span style="color: blue"><i class="far fa-save fa-lg"></i></span> button above or by uploading them from a JSON file.`,
             'uploadCard': {
                 'title': "Upload an environment",
@@ -396,7 +396,7 @@ window.lang_dict = {
         },
 
         'envsSets': {
-            'baseSetText': "Pour commencer tu peux sélectionner un des environnments suivants en cliquant dessus pour le charger dans la simulation.",
+            'baseSetText': `Pour commencer tu peux sélectionner un des environnments suivants en cliquant dessus pour le charger dans la simulation, puis lancer celle-ci en cliquant sur le bouton <span style="color: green"><i class="fas fa-play"></i></span>.`,
             'customSetText': `Dans cette section tu peux stocker tes propres environnements personnalisés en les sauvegardant grâce au bouton <span style="color: blue"><i class="far fa-save fa-lg"></i></span> ci-dessus ou en les important depuis un fichier JSON.`,
             'uploadCard': {
                 'title': "Importer un environnement",
