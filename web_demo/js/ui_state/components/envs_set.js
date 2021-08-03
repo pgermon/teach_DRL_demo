@@ -23,7 +23,7 @@ export default class EnvsSet extends Component{
     render(){
         let dict = window.lang_dict[store.state.language]['envsSets'];
 
-        this.element.querySelector('#baseSetText').innerText = dict['baseSetText'];
+        this.element.querySelector('#baseSetText').innerHTML = dict['baseSetText'];
         this.element.querySelector('#customSetText').innerHTML = dict['customSetText'];
 
         /* Base envs set */
