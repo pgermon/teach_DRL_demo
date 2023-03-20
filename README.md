@@ -1,7 +1,6 @@
 # Deep Reinforcement Learning Interactive Demo
 
-This project aims at designing a popular science experiment in the form of an in-browser interactive demonstration in order to showcase the capabilities of Deep Reinforcement
-Learning agents, including their ability to generalize to unknown tasks. The demonstration is available online [here](https://pgermon.github.io/teach_DRL_demo/).
+This project aims at designing a popular science experiment in the form of an in-browser interactive demonstration in order to showcase the capabilities of Deep Reinforcement Learning agents, including their ability to generalize to unknown tasks. The demonstration is available online [here](https://pgermon.github.io/teach_DRL_demo/).
 
 ## Organization of the repository
 
